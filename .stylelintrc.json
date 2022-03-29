@@ -1,0 +1,12 @@
+{
+  "extends": ["stylelint-config-recommended"],
+  "customSyntax": "postcss-scss",
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "color-hex-case": "lower",
+    "no-descending-specificity": null,
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true
+  },
+  "ignoreFiles": ["dist/*", "node_modules/*"]
+}
