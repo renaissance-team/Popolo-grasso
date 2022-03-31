@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const PORT = process.env.PORT || 3002;
 const fs = require('fs');
 
@@ -47,14 +48,24 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
-        test: /\.(jpe?g|png|gif|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
-        use: 'url-loader',
+        test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
+        type: 'asset/inline',
+        generator: {
+          filename: 'assets/fonts/[hash][ext][query]',
+        },
       },
       {
-        test: /\.(png|jpg|jpeg|gif)$/,
-        loader: 'file-loader',
-        options: {
-          name: 'images/[name].[ext]',
+        test: /\.(woff|woff2|eot|ttf)(\?[a-z0-9=.]+)?$/,
+        type: 'asset/inline',
+        generator: {
+          filename: 'assets/images/[hash][ext][query]',
+        },
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[hash][ext][query]',
         },
       },
     ],
@@ -62,6 +73,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
+    }),
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: false,
     }),
   ],
   devServer: {
