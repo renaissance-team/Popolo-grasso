@@ -1,12 +1,12 @@
 import React, {ReactElement} from 'react';
 import '@/assets/images/motypest1-min.png';
 
-import './home.scss';
+import s from './home.module.scss';
 
 function Home(): ReactElement {
   return (
     <>
-      <h1>Hello Popolo grasso</h1>
+      <h1 className={s.h1}>Hello Popolo grasso</h1>
       <div>coming soon</div>
     </>
   );
