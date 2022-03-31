@@ -9,8 +9,6 @@ const PORT = process.env.PORT || 3002;
 const fs = require('fs');
 const devMode = process.env.NODE_ENV !== 'production';
 
-const devMode = process.env.NODE_ENV !== 'production';
-
 const moduleFileExtensions = [
   'web.mjs',
   'mjs',
