@@ -7,6 +7,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 
 const PORT = process.env.PORT || 3002;
 const fs = require('fs');
+
 const devMode = process.env.NODE_ENV !== 'production';
 
 const moduleFileExtensions = [
@@ -112,6 +113,10 @@ module.exports = {
           filename: 'assets/images/[hash][ext][query]',
         },
       },
+      {
+        test: /\.md$/,
+        use: 'raw-loader',
+      },
     ],
   },
   plugins: [
@@ -128,6 +133,7 @@ module.exports = {
     open: true,
     hot: true,
     allowedHosts: 'all',
+    historyApiFallback: true,
   },
   devtool: 'source-map',
 };

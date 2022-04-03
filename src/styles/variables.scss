@@ -1,0 +1,20 @@
+// colors
+$white: #fff;
+$black: #000;
+$blue: #1a4fe9;
+$green: #bab74b;
+$yellow: #fee74b;
+$purple: #b575bc;
+$red: #ec5435;
+$pink: #f8ecf2;
+
+// fonts
+$inter: "Inter", serif;
+
+// animations
+$ease: all 0.4s;
+
+// integrations 
+$text-color: lighten($black, 20%);
+$text-color-grey: lighten($black, 50%);
+$border-color: lighten($black, 70%);

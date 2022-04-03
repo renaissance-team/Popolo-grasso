@@ -1,0 +1,30 @@
+@import '../../styles/variables';
+
+.button {
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $blue;
+  border-radius: 8px;
+  color: $white;
+  border: none;
+  text-decoration: none;
+  width: 100%;
+  font-size: 13px;
+  transition: $ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &Disabled {
+    pointer-events: none;
+  }
+
+  &Transparent {
+    background: transparent;
+    color: $blue;
+  }
+}
+

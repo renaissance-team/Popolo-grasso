@@ -1,0 +1,28 @@
+@import '../../styles/variables.scss';
+
+.wrapper {
+  margin-bottom: 30px;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid $black;
+  height: 28px;
+  outline: none !important;
+  transition: $ease;
+
+  &IsFilled,
+  &:focus {
+    border-bottom-color: $blue;
+  }
+  &HasError {
+    border-bottom-color: $red;
+    color: $red;
+  }
+}
+
+.label {
+  color: $text-color-grey;
+  font-size: 9px;
+}
