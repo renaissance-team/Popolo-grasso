@@ -7,6 +7,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 
 const PORT = process.env.PORT || 3002;
 const fs = require('fs');
+
 const devMode = process.env.NODE_ENV !== 'production';
 
 const moduleFileExtensions = [
@@ -112,6 +113,10 @@ module.exports = {
         generator: {
           filename: 'assets/images/[hash][ext][query]',
         },
+      },
+      {
+        test: /\.md$/,
+        type: 'asset/source',
       },
     ],
   },

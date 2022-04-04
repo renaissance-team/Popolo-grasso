@@ -1,8 +1,8 @@
-@import '~styles/colors.scss';
+@import '~styles/variables.scss';
 
 .error {
   min-height: 100vh;
-  background: linear-gradient(to top left, $lightPurple, $purple);
+  background: linear-gradient(to top left, $pink, $purple);
   display: flex;
   align-items: center;
   text-align: center;
