@@ -14,7 +14,7 @@ export type TFormResponse = Record<string, string>;
 
 interface IFormProps {
   initialData: TField[];
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
   onSubmit: (data: TFormResponse) => void;
 }
 

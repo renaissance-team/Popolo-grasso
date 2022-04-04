@@ -7,7 +7,7 @@ import authController from '../../controllers/auth-controller';
 // import s from './profile.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const objToFormData = ({id, ...data}: TUserResponse) => data && Object.entries(data)
+const objToFormData = ({id, ...data}: TUserResponse) => Object.entries(data)
   .map(([name, value]) => ({name, value, label: name}));
 
 function Profile(): ReactElement {
