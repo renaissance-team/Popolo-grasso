@@ -6,7 +6,7 @@ interface IInputTProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export default function Input({
-  type = 'text', value = '', label, errorText, ...props
+  type = 'text', value, label, errorText, ...props
 }: IInputTProps) {
   return (
     <div className={s.wrapper}>

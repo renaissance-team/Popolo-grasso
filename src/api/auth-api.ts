@@ -3,16 +3,15 @@ import axios from 'axios';
 import {ENDPOINTS} from './consts';
 import {TUserResponse} from './types';
 
-axios.defaults.baseURL = ENDPOINTS.ROOT + ENDPOINTS.AUTH.PATH;
-axios.defaults.withCredentials = true;
+const baseURL = ENDPOINTS.AUTH.PATH;
 
-const signUp = (data: TFormResponse) => axios.post(ENDPOINTS.AUTH.SIGNUP, data);
+const signUp = (data: TFormResponse) => axios.post(baseURL + ENDPOINTS.AUTH.SIGNUP, data);
 
-const signIn = (data: TFormResponse) => axios.post(ENDPOINTS.AUTH.SIGNIN, data);
+const signIn = (data: TFormResponse) => axios.post(baseURL + ENDPOINTS.AUTH.SIGNIN, data);
 
-const getUser = () => axios.get<TUserResponse>(ENDPOINTS.AUTH.USER);
+const getUser = () => axios.get<TUserResponse>(baseURL + ENDPOINTS.AUTH.USER);
 
-const logout = () => axios.post(ENDPOINTS.AUTH.LOGOUT);
+const logout = () => axios.post(baseURL + ENDPOINTS.AUTH.LOGOUT);
 
 export default {
   signUp,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Input from '../Input/Input';
 import s from './form.module.scss';
 
@@ -40,6 +40,11 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
     // todo: input validation
     onSubmit(prepareFieldsData(fields));
   };
+
+  useEffect(() => {
+    setFields(initialData);
+  }, [initialData]);
+
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       {fields.map(({

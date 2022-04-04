@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import {TFormResponse} from '../components/Form/Form';
 import authAPI from '../api/auth-api';
-// import {TUserResponse} from '../api/types';
-// import {AxiosResponse} from 'axios';
 
 const signIn = async (data: TFormResponse) => {
   try {
