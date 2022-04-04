@@ -14,7 +14,7 @@ export type TFormResponse = Record<string, string>;
 
 interface IFormProps {
   initialData: TField[];
-  children: React.ReactNode;
+  children: React.ReactElement;
   onSubmit: (data: TFormResponse) => void;
 }
 
@@ -24,12 +24,12 @@ const prepareFieldsData = (fields: TField[]): TFormResponse => fields
 export default function Form({initialData, children, onSubmit}: IFormProps) {
   const [fields, setFields] = useState(initialData);
 
-  const handleInputChange = (event: any, name: TField['name']) => {
+  const handleInputChange = (event: React.FormEvent<HTMLInputElement>, name: TField['name']) => {
     setFields(
       fields.map((field) => (field.name === name
         ? {
           ...field,
-          value: event.target.value,
+          value: (event.target as HTMLInputElement).value,
         }
         : field)),
     );
