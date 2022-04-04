@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import authController from '../../controllers/auth';
+import authController from '../../controllers/auth-controller';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
 import Login from './Login';

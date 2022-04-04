@@ -13,10 +13,10 @@ export default function Login({
   title, formAction, initialFormData, controls,
 }: ILogin): ReactElement {
   return (
-    <div className={s.login}>
+    <div className={s.block}>
       <h1 className={s.title}>{title}</h1>
       <Form initialData={initialFormData} onSubmit={formAction}>
-        <div className={s.controls}>{controls}</div>
+        {controls}
       </Form>
     </div>
   );

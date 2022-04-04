@@ -18,6 +18,7 @@ export default function Input({
           ${errorText && errorText !== '' && s.inputHasError}
          `}
         type={type}
+        value={value}
         {...props}
       />
       {errorText && errorText !== '' && <span className={s.errorText} />}

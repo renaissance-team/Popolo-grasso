@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import {TFormResponse} from '../components/Form/Form';
-import authAPI from '../api/auth';
+import authAPI from '../api/auth-api';
+// import {TUserResponse} from '../api/types';
+// import {AxiosResponse} from 'axios';
 
 const signIn = async (data: TFormResponse) => {
   try {
@@ -22,7 +24,27 @@ const signUp = async (data: TFormResponse) => {
   }
 };
 
+const getUser = async () => {
+  try {
+    const user = await authAPI.getUser();
+    return user;
+  } catch (error) {
+    console.info(error);
+    return null;
+  }
+};
+
+const logout = async () => {
+  try {
+    await authAPI.logout();
+  } catch (error) {
+    console.info(error);
+  }
+};
+
 export default {
   signUp,
   signIn,
+  getUser,
+  logout,
 };

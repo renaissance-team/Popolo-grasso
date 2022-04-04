@@ -5,7 +5,7 @@ import s from './form.module.scss';
 export type TField = {
   name: string;
   label?: string
-  value?: string;
+  value?: string | number;
   type?: string;
   placeholder?: '';
 };
@@ -40,7 +40,6 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
     // todo: input validation
     onSubmit(prepareFieldsData(fields));
   };
-
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       {fields.map(({
@@ -55,7 +54,9 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
           onChange={(event) => handleInputChange(event, name)}
         />
       ))}
-      {children}
+      <div className={s.controls}>
+        {children}
+      </div>
     </form>
   );
 }
