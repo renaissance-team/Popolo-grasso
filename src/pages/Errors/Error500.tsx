@@ -1,11 +1,17 @@
 import React, {ReactElement} from 'react';
+import ErrorPage from './ErrorPage';
 
-function Error500(): ReactElement {
+type Error500PropsType = {
+  resetErrorBoundary: (...args: Array<unknown>) => void;
+};
+
+function Error500({resetErrorBoundary}: Error500PropsType): ReactElement {
   return (
-    <>
-      <div>Error 500</div>
-      <div>coming soon</div>
-    </>
+    <ErrorPage
+      code={500}
+      message="Мы уже знаем о проблеме и работаем над этим. Попробуйте перезагрузить страницу или зайти позже."
+      onClick={resetErrorBoundary}
+    />
   );
 }
 
