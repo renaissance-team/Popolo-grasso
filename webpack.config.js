@@ -72,6 +72,7 @@ module.exports = {
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '~styles': path.resolve(__dirname, './src/styles'),
     },
     extensions: moduleFileExtensions.map((ext) => `.${ext}`).filter((ext) => useTypeScript || !ext.includes('ts')),
   },
@@ -128,6 +129,7 @@ module.exports = {
     open: true,
     hot: true,
     allowedHosts: 'all',
+    historyApiFallback: true,
   },
   devtool: 'source-map',
 };

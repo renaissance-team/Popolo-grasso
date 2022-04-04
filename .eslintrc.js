@@ -34,6 +34,8 @@ module.exports = {
       },
     ],
     'react/jsx-filename-extension': [2, {extensions: ['.js', '.jsx', '.ts', '.tsx']}],
+    'max-len': ['error', {code: 120, tabWidth: 2}],
+    'react/require-default-props': 0,
   },
   env: {
     browser: true,
