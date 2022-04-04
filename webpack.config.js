@@ -73,6 +73,7 @@ module.exports = {
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '~styles': path.resolve(__dirname, './src/styles'),
     },
     extensions: moduleFileExtensions.map((ext) => `.${ext}`).filter((ext) => useTypeScript || !ext.includes('ts')),
   },

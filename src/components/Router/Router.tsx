@@ -1,10 +1,11 @@
+import {ROUTES} from '@/pages/consts';
+import Register from '@/pages/Login/Register';
+import Error404 from '@/pages/Errors/Error404';
 import React, {ReactElement} from 'react';
 import {Route, Routes} from 'react-router-dom';
-import {ROUTES} from '../../pages/consts';
 
 import Auth from '../../pages/Login/Auth';
 import Home from '../../pages/Home/Home';
-import Register from '../../pages/Login/Register';
 import Profile from '../../pages/Profile/Profile';
 
 function Router(): ReactElement {
@@ -15,6 +16,7 @@ function Router(): ReactElement {
       <Route path={ROUTES.REGISTRATION} element={<Register />} />
 
       <Route path={ROUTES.PROFILE} element={<Profile />} />
+      <Route path="*" element={<Error404 />} />
     </Routes>
   );
 }
