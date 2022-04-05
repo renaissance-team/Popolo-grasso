@@ -4,7 +4,12 @@ import {TFormResponse} from '../components/Form/Form';
 
 const changeUser = async (data: TFormResponse) => {
   try {
-    await userApi.changeUser(data);
+    const {oldPassword, newPassword, ...user} = data;
+    const [res] = await Promise.all([
+      userApi.changeUser(user),
+      userApi.changePassword({oldPassword, newPassword}),
+    ]);
+    console.info(res);
   } catch (error) {
     console.info(error);
   }

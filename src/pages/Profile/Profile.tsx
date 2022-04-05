@@ -14,7 +14,8 @@ const initialFormData = [
   {name: 'first_name', label: 'Имя'},
   {name: 'second_name', label: 'Фамилия'},
   {name: 'phone', label: 'Телефон', type: 'tel'},
-  {name: 'password', label: 'Новый пароль', type: 'password'},
+  {name: 'oldPassword', label: 'Старый пароль', type: 'password'},
+  {name: 'newPassword', label: 'Новый пароль', type: 'password'},
 ];
 
 function Profile(): ReactElement {
@@ -51,7 +52,7 @@ function Profile(): ReactElement {
     <Block title="Профиль">
       <Avatar value={userAvatar} onChange={changeAvatar} />
       <Form initialData={userFormData} onSubmit={saveForm}>
-        <Button type="submit">Войти</Button>
+        <Button type="submit">Сохранить</Button>
       </Form>
     </Block>
   );
