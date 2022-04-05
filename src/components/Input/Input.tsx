@@ -1,13 +1,13 @@
 import React from 'react';
 import s from './input.module.scss';
 
-interface IInputTProps extends React.HTMLProps<HTMLInputElement> {
+interface IInputProps extends React.HTMLProps<HTMLInputElement> {
   errorText?: string;
 }
 
 export default function Input({
   type = 'text', value, label, errorText, ...props
-}: IInputTProps) {
+}: IInputProps) {
   return (
     <div className={s.wrapper}>
       {label && <span className={s.label}>{label}</span>}

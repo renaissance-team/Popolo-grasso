@@ -17,7 +17,8 @@ $ease: all 0.4s;
 // integrations
 $text-color: lighten($black, 20%);
 $text-color-grey: lighten($black, 50%);
-$border-color: lighten($black, 70%);
+$border-color: lighten($black, 80%);
+$light-grey: lighten($black, 95%);
 
 // components
 @mixin block {

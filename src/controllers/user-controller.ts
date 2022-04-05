@@ -10,6 +10,18 @@ const changeUser = async (data: TFormResponse) => {
   }
 };
 
+const changeAvatar = async (file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    const res = await userApi.changeAvatar(formData);
+    console.info(res);
+  } catch (error) {
+    console.info(error);
+  }
+};
+
 export default {
   changeUser,
+  changeAvatar,
 };

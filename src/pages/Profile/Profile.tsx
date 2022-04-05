@@ -1,4 +1,5 @@
 import {TUserResponse} from '@/api/types';
+import Avatar from '@/components/Avatar/Avatar';
 import Block from '@/components/Block/Block';
 import Button from '@/components/Button/Button';
 import Form, {TFormResponse} from '@/components/Form/Form';
@@ -13,19 +14,22 @@ const initialFormData = [
   {name: 'first_name', label: 'Имя'},
   {name: 'second_name', label: 'Фамилия'},
   {name: 'phone', label: 'Телефон', type: 'tel'},
-  {name: 'password', label: 'Пароль', type: 'password'},
+  {name: 'password', label: 'Новый пароль', type: 'password'},
 ];
 
 function Profile(): ReactElement {
-  const [userData, setUserData] = useState(initialFormData);
+  const [userFormData, setUserFormData] = useState(initialFormData);
+  const [userAvatar, setUserAvatar] = useState<string>();
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await authController.getUser();
-      if (response?.data) {
-        setUserData(
-          userData.map((prop) => ({...prop, value: response.data[prop.name as keyof TUserResponse]})),
+      const userResponse = await authController.getUser();
+      if (userResponse?.data) {
+        const {avatar, ...formData} = userResponse.data;
+        setUserFormData(
+          userFormData.map((prop) => ({...prop, value: formData[prop.name as keyof Omit<TUserResponse, 'avatar'>]})),
         );
+        setUserAvatar(avatar);
       }
     };
     getUser();
@@ -35,9 +39,18 @@ function Profile(): ReactElement {
     userController.changeUser(data);
   };
 
+  const changeAvatar = (event: React.FormEvent<HTMLInputElement>) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files?.length) {
+      const file = target.files[0];
+      userController.changeAvatar(file);
+    }
+  };
+
   return (
     <Block title="Профиль">
-      <Form initialData={userData} onSubmit={saveForm}>
+      <Avatar value={userAvatar} onChange={changeAvatar} />
+      <Form initialData={userFormData} onSubmit={saveForm}>
         <Button type="submit">Войти</Button>
       </Form>
     </Block>

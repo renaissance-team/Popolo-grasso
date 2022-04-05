@@ -3,7 +3,7 @@ import s from './block.module.scss';
 
 interface ILogin {
   title: string;
-  children?: ReactElement;
+  children?: ReactElement | ReactElement[];
 }
 
 export default function Login({

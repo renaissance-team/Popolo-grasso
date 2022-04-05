@@ -9,7 +9,7 @@ const changeUser = (data: TFormResponse) => axios.put(baseURL + ENDPOINTS.USER.P
 
 const changePassword = (data: TFormResponse) => axios.put(baseURL + ENDPOINTS.USER.PASSWORD, data);
 
-const changeAvatar = (data: TFormResponse) => axios.put<TUserResponse>(baseURL + ENDPOINTS.USER.AVATAR, data, {
+const changeAvatar = (data: FormData) => axios.put<TUserResponse>(baseURL + ENDPOINTS.USER.AVATAR, data, {
   headers: {'Content-Type': 'text/plain'},
 });
 
