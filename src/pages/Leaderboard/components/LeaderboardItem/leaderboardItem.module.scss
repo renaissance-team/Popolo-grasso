@@ -1,0 +1,29 @@
+@import '~styles/variables.scss';
+
+.leaderboard_row {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  margin: 6px;
+  width: 70%;
+  background-color: $darkPurpleOpacity;
+  color: $pink;
+  border-radius: 7px;
+  &_win {
+    background-color: $darkPurple;
+    padding: 25px;
+    font-size: 24px;
+  }
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.leaderboard_cell {
+  padding: 0 16px;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

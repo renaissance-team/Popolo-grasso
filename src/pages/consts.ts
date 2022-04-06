@@ -9,4 +9,5 @@ export enum ROUTES {
   FORUM = '/forum',
   ERROR404 = '404',
   ERROR500 = '500',
+  LEADERBOARD = '/leaderboard',
 }
