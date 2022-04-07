@@ -10,31 +10,16 @@ import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 
 import useWindowVisualViewportSize from './hooks/useWindowVisualViewportSize/useWindowVisualViewportSize';
 
-const initialPlayerState: ICanvasRectangleObject = {
-  position: {
-    x: 50,
-    y: 50,
-  },
-  velocity: {
-    x: 0,
-    y: 1,
-  },
-  width: 50,
-  height: 50,
-};
-
-const initialPlatformState: ICanvasRectangleObject = {
-  position: {
-    x: 200,
-    y: 500,
-  },
-  velocity: {
-    x: 0,
-    y: 0,
-  },
-  width: 150,
-  height: 25,
-};
+const GRAVITY = 1;
+const PLAYER_INITIAL_VELOCITY_X = 0;
+const PLAYER_INITIAL_VELOCITY_Y = GRAVITY;
+const PLAYER_INITIAL_POSITION_X_DEVIDER = 6;
+const PLAYEY_INITIAL_POSITION_Y = 0;
+const PLAYER_WIDTH = 25;
+const PLAYER_HEIGHT = 25;
+const MOVE_TO_LEFT_VELOCITY = 10;
+const MOVE_TO_UP_VELOCITY = 10;
+const MOVE_TO_RIGHT_VELOCITY = 10;
 
 const initialKeyboardState: IKeyboardInteractionState = {
   arrowLeft: {
@@ -58,13 +43,50 @@ export default function Game(): React.ReactElement {
 
   const requestAnimationFrameIdRef = React.useRef<number | null>(null);
 
-  const playerStateRef = React.useRef<ICanvasRectangleObject>(initialPlayerState);
+  const playerStateRef = React.useRef<ICanvasRectangleObject>({
+    position: {
+      x: windowVisualViewportSize.width / PLAYER_INITIAL_POSITION_X_DEVIDER,
+      y: PLAYEY_INITIAL_POSITION_Y,
+    },
+    velocity: {
+      x: PLAYER_INITIAL_VELOCITY_X,
+      y: PLAYER_INITIAL_VELOCITY_Y,
+    },
+    width: PLAYER_WIDTH,
+    height: PLAYER_HEIGHT,
+  });
 
-  const platformStateRef = React.useRef<ICanvasRectangleObject>(initialPlatformState);
+  const platformsStateRef = React.useRef<ICanvasRectangleObject[]>([
+    {
+      position: {
+        x: 600,
+        y: 600,
+      },
+      velocity: {
+        x: 0,
+        y: 0,
+      },
+      width: 150,
+      height: 25,
+    },
+
+    {
+      position: {
+        x: 900,
+        y: 400,
+      },
+      velocity: {
+        x: 0,
+        y: 0,
+      },
+      width: 100,
+      height: 25,
+    },
+  ]);
 
   const keyboardInteractionStateRef = React.useRef<IKeyboardInteractionState>(initialKeyboardState);
 
-  const drawPlatform = () => {
+  const drawPlatforms = () => {
     if (!canvasRef.current) {
       return;
     }
@@ -75,40 +97,38 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    canvasContext.fillStyle = 'red';
-    canvasContext.fillRect(
-      platformStateRef.current.position.x,
-      platformStateRef.current.position.y,
-      platformStateRef.current.width,
-      platformStateRef.current.height,
-    );
+    platformsStateRef.current.forEach((platformState) => {
+      canvasContext.fillStyle = 'red';
+      canvasContext.fillRect(
+        platformState.position.x,
+        platformState.position.y,
+        platformState.width,
+        platformState.height,
+      );
+    });
   };
 
-  const handlePlayerGoLeftStart = () => {
-    const PLAYER_GO_LEFT_VELOCITY = 5;
-
-    playerStateRef.current.velocity.x = -PLAYER_GO_LEFT_VELOCITY;
+  const handlePlayerMoveToLeftStart = () => {
+    playerStateRef.current.velocity.x = -MOVE_TO_LEFT_VELOCITY;
   };
 
-  const handlePlayerGoUpStart = () => {
-    const PLAYER_GO_UP_VELOCITY = 10;
-
-    playerStateRef.current.velocity.y = -PLAYER_GO_UP_VELOCITY;
+  const handlePlayerMoveToUpStart = () => {
+    playerStateRef.current.velocity.y = -MOVE_TO_UP_VELOCITY;
   };
 
-  const handlePlayerGoRightStart = () => {
-    const PLAYER_GO_RIGHT_VELOCITY = 5;
-
-    playerStateRef.current.velocity.x = PLAYER_GO_RIGHT_VELOCITY;
+  const handlePlayerMoveToRightStart = () => {
+    playerStateRef.current.velocity.x = MOVE_TO_RIGHT_VELOCITY;
   };
 
-  const handlePlayerGoLeftAndRightStop = () => {
+  const handlePlayerMoveToLeftAndRightStop = () => {
     playerStateRef.current.velocity.x = 0;
   };
 
-  const handlePlayerGravity = () => {
-    const GRAVITY = 1;
+  const handlePlayerMoveToBottomStop = () => {
+    playerStateRef.current.velocity.y = 0;
+  };
 
+  const handlePlayerGravity = () => {
     if (!canvasRef.current) {
       return;
     }
@@ -118,21 +138,10 @@ export default function Game(): React.ReactElement {
         + playerStateRef.current.velocity.y
       >= canvasRef.current.height;
 
-    const isPlayerCollisionWithPlatformOnXDetected = rectangleCollisionDetectionX(
-      playerStateRef.current,
-      platformStateRef.current,
-    );
-
-    const isPlayerCollisionWithPlatformOnYDetected = rectangleCollisionDetectionY(
-      playerStateRef.current,
-      platformStateRef.current,
-    );
-
-    if (!bottomEdgeOfTheCanvasReached
-      && (!isPlayerCollisionWithPlatformOnXDetected || !isPlayerCollisionWithPlatformOnYDetected)) {
+    if (!bottomEdgeOfTheCanvasReached) {
       playerStateRef.current.velocity.y += GRAVITY;
     } else {
-      playerStateRef.current.velocity.y = 0;
+      handlePlayerMoveToBottomStop();
     }
   };
 
@@ -176,19 +185,51 @@ export default function Game(): React.ReactElement {
     [handleChangePlayerPositionX, handleChangePlayerPositionY],
   );
 
+  const handleMovePlatforms = () => {
+    if (keyboardInteractionStateRef.current.arrowRight.pressed) {
+      platformsStateRef.current = platformsStateRef.current.map((platformState) => (
+        {
+          ...platformState,
+          position: {
+            ...platformState.position,
+            x: platformState.position.x - MOVE_TO_LEFT_VELOCITY,
+          },
+        }
+      ));
+    } else if (keyboardInteractionStateRef.current.arrowLeft.pressed) {
+      platformsStateRef.current = platformsStateRef.current.map((platformState) => (
+        {
+          ...platformState,
+          position: {
+            ...platformState.position,
+            x: platformState.position.x + MOVE_TO_RIGHT_VELOCITY,
+          },
+        }
+      ));
+    }
+  };
+
   const handleChangePlayerVelocityX = React.useCallback(() => {
-    if (keyboardInteractionStateRef.current.arrowLeft.pressed) {
-      handlePlayerGoLeftStart();
-    } else if (keyboardInteractionStateRef.current.arrowRight.pressed) {
-      handlePlayerGoRightStart();
+    const leftStopEdgePositionX = windowVisualViewportSize.width / 6;
+    const rightStopEdgePositionX = windowVisualViewportSize.width / 3;
+
+    const isPlayerHitLeftStopEdge = playerStateRef.current.position.x > leftStopEdgePositionX;
+    const isPlayerHitRightStopEdge = playerStateRef.current.position.x <= rightStopEdgePositionX;
+
+    if (keyboardInteractionStateRef.current.arrowLeft.pressed && isPlayerHitLeftStopEdge) {
+      handlePlayerMoveToLeftStart();
+    } else if (keyboardInteractionStateRef.current.arrowRight.pressed && isPlayerHitRightStopEdge) {
+      handlePlayerMoveToRightStart();
     } else {
-      handlePlayerGoLeftAndRightStop();
+      handlePlayerMoveToLeftAndRightStop();
+
+      handleMovePlatforms();
     }
   }, []);
 
   const handleChangePlayerVelocityY = React.useCallback(() => {
     if (keyboardInteractionStateRef.current.arrowUp.pressed) {
-      handlePlayerGoUpStart();
+      handlePlayerMoveToUpStart();
     }
   }, []);
 
@@ -211,28 +252,48 @@ export default function Game(): React.ReactElement {
     );
   };
 
-  const animatePlayer = React.useCallback(() => {
-    requestAnimationFrameIdRef.current = requestAnimationFrame(animatePlayer);
+  const playerCollisionDetectionWithPlatforms = () => {
+    platformsStateRef.current.forEach((platformsState) => {
+      const isPlayerCollisionWithPlatformOnXDetected = rectangleCollisionDetectionX(
+        playerStateRef.current,
+        platformsState,
+      );
+
+      const isPlayerCollisionWithPlatformOnYDetected = rectangleCollisionDetectionY(
+        playerStateRef.current,
+        platformsState,
+      );
+
+      if (isPlayerCollisionWithPlatformOnXDetected && isPlayerCollisionWithPlatformOnYDetected) {
+        handlePlayerMoveToBottomStop();
+      }
+    });
+  };
+
+  const animate = React.useCallback(() => {
+    requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
 
     handleClearCanvas();
 
     updatePlayer();
 
-    drawPlatform();
+    drawPlatforms();
 
     handleChangePlayerVelocityX();
     handleChangePlayerVelocityY();
+
+    playerCollisionDetectionWithPlatforms();
   }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY]);
 
   React.useLayoutEffect(() => {
-    requestAnimationFrameIdRef.current = requestAnimationFrame(animatePlayer);
+    requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
 
     return () => {
       if (requestAnimationFrameIdRef.current) {
         cancelAnimationFrame(requestAnimationFrameIdRef.current);
       }
     };
-  }, [animatePlayer]);
+  }, [animate]);
 
   const handleKeyboardInteraction = (event: KeyboardEvent) => {
     const {keyCode, type} = event;
