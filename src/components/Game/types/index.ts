@@ -1,2 +1,2 @@
+export {ICanvasRectangleObject} from './ICanvasRectangleObject';
 export {IKeyboardInteractionState} from './IKeyboardInteractionState';
-export {IPlayerState} from './IPlayerState';

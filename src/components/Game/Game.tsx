@@ -1,13 +1,16 @@
 import React from 'react';
 
 import {
+  ICanvasRectangleObject,
   IKeyboardInteractionState,
-  IPlayerState,
 } from './types';
+
+import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
+import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 
 import useWindowVisualViewportSize from './hooks/useWindowVisualViewportSize/useWindowVisualViewportSize';
 
-const initialPlayerState: IPlayerState = {
+const initialPlayerState: ICanvasRectangleObject = {
   position: {
     x: 50,
     y: 50,
@@ -18,6 +21,19 @@ const initialPlayerState: IPlayerState = {
   },
   width: 50,
   height: 50,
+};
+
+const initialPlatformState: ICanvasRectangleObject = {
+  position: {
+    x: 200,
+    y: 500,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  width: 150,
+  height: 25,
 };
 
 const initialKeyboardState: IKeyboardInteractionState = {
@@ -42,9 +58,31 @@ export default function Game(): React.ReactElement {
 
   const requestAnimationFrameIdRef = React.useRef<number | null>(null);
 
-  const playerStateRef = React.useRef<IPlayerState>(initialPlayerState);
+  const playerStateRef = React.useRef<ICanvasRectangleObject>(initialPlayerState);
+
+  const platformStateRef = React.useRef<ICanvasRectangleObject>(initialPlatformState);
 
   const keyboardInteractionStateRef = React.useRef<IKeyboardInteractionState>(initialKeyboardState);
+
+  const drawPlatform = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    canvasContext.fillStyle = 'red';
+    canvasContext.fillRect(
+      platformStateRef.current.position.x,
+      platformStateRef.current.position.y,
+      platformStateRef.current.width,
+      platformStateRef.current.height,
+    );
+  };
 
   const handlePlayerGoLeftStart = () => {
     const PLAYER_GO_LEFT_VELOCITY = 5;
@@ -68,7 +106,7 @@ export default function Game(): React.ReactElement {
     playerStateRef.current.velocity.x = 0;
   };
 
-  const handleGravity = () => {
+  const handlePlayerGravity = () => {
     const GRAVITY = 1;
 
     if (!canvasRef.current) {
@@ -78,20 +116,30 @@ export default function Game(): React.ReactElement {
     const bottomEdgeOfTheCanvasReached = playerStateRef.current.position.y
         + playerStateRef.current.height
         + playerStateRef.current.velocity.y
-      <= canvasRef.current.height;
+      >= canvasRef.current.height;
 
-    if (bottomEdgeOfTheCanvasReached) {
+    const isPlayerCollisionWithPlatformOnXDetected = rectangleCollisionDetectionX(
+      playerStateRef.current,
+      platformStateRef.current,
+    );
+
+    const isPlayerCollisionWithPlatformOnYDetected = rectangleCollisionDetectionY(
+      playerStateRef.current,
+      platformStateRef.current,
+    );
+
+    if (!bottomEdgeOfTheCanvasReached
+      && (!isPlayerCollisionWithPlatformOnXDetected || !isPlayerCollisionWithPlatformOnYDetected)) {
       playerStateRef.current.velocity.y += GRAVITY;
     } else {
       playerStateRef.current.velocity.y = 0;
-      playerStateRef.current.position.y = canvasRef.current.height - playerStateRef.current.height;
     }
   };
 
   const handleChangePlayerPositionY = React.useCallback(() => {
     playerStateRef.current.position.y += playerStateRef.current.velocity.y;
 
-    handleGravity();
+    handlePlayerGravity();
   }, []);
 
   const handleChangePlayerPositionX = React.useCallback(() => {
@@ -128,7 +176,7 @@ export default function Game(): React.ReactElement {
     [handleChangePlayerPositionX, handleChangePlayerPositionY],
   );
 
-  const handleChangeVelocityX = React.useCallback(() => {
+  const handleChangePlayerVelocityX = React.useCallback(() => {
     if (keyboardInteractionStateRef.current.arrowLeft.pressed) {
       handlePlayerGoLeftStart();
     } else if (keyboardInteractionStateRef.current.arrowRight.pressed) {
@@ -138,7 +186,7 @@ export default function Game(): React.ReactElement {
     }
   }, []);
 
-  const handleChangeVelocityY = React.useCallback(() => {
+  const handleChangePlayerVelocityY = React.useCallback(() => {
     if (keyboardInteractionStateRef.current.arrowUp.pressed) {
       handlePlayerGoUpStart();
     }
@@ -170,9 +218,11 @@ export default function Game(): React.ReactElement {
 
     updatePlayer();
 
-    handleChangeVelocityX();
-    handleChangeVelocityY();
-  }, [updatePlayer, handleChangeVelocityX, handleChangeVelocityY]);
+    drawPlatform();
+
+    handleChangePlayerVelocityX();
+    handleChangePlayerVelocityY();
+  }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY]);
 
   React.useLayoutEffect(() => {
     requestAnimationFrameIdRef.current = requestAnimationFrame(animatePlayer);
