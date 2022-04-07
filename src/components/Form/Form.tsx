@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Input from '../Input/Input';
 import s from './form.module.scss';
 
 export type TField = {
   name: string;
   label?: string
-  value?: string;
+  value?: string | number;
   type?: string;
   placeholder?: '';
 };
@@ -14,7 +14,7 @@ export type TFormResponse = Record<string, string>;
 
 interface IFormProps {
   initialData: TField[];
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
   onSubmit: (data: TFormResponse) => void;
 }
 
@@ -41,6 +41,10 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
     onSubmit(prepareFieldsData(fields));
   };
 
+  useEffect(() => {
+    setFields(initialData);
+  }, [initialData]);
+
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       {fields.map(({
@@ -55,7 +59,9 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
           onChange={(event) => handleInputChange(event, name)}
         />
       ))}
-      {children}
+      <div className={s.controls}>
+        {children}
+      </div>
     </form>
   );
 }

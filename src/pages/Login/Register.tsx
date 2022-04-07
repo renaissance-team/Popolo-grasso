@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {TFormResponse} from '../../components/Form/Form';
-import authController from '../../controllers/auth';
+import Block from '@/components/Block/Block';
+import Form, {TFormResponse} from '../../components/Form/Form';
+import authController from '../../controllers/auth-controller';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
-import Login from './Login';
 
 const initialFormData = [
   {name: 'email', label: 'Почта', type: 'email'},
@@ -16,19 +16,17 @@ const initialFormData = [
 ];
 
 export default function Register() {
-  return Login({
-    title: 'Регистрация',
-    formAction: (data: TFormResponse) => {
-      authController.signUp(data);
-    },
-    initialFormData,
-    controls: (
-      <>
+  const formAction = (data: TFormResponse) => {
+    authController.signUp(data);
+  };
+  return (
+    <Block title="Вход">
+      <Form initialData={initialFormData} onSubmit={formAction}>
         <Button type="submit">Зарегистритроваться</Button>
         <Link to={ROUTES.AUTH}>
           <Button view={EButtonView.transparent}>Войти</Button>
         </Link>
-      </>
-    ),
-  });
+      </Form>
+    </Block>
+  );
 }

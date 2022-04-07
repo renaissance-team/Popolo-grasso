@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const ENDPOINTS = {
   ROOT: 'https://ya-praktikum.tech/api/v2',
+  FILES_ROOT: 'https://ya-praktikum.tech',
   SOCKET: 'wss://ya-praktikum.tech/ws',
   AUTH: {
     PATH: '/auth',
