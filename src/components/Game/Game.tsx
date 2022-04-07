@@ -275,9 +275,9 @@ export default function Game(): React.ReactElement {
 
     handleClearCanvas();
 
-    updatePlayer();
-
     drawPlatforms();
+
+    updatePlayer();
 
     handleChangePlayerVelocityX();
     handleChangePlayerVelocityY();
