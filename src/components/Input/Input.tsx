@@ -3,15 +3,17 @@ import s from './input.module.scss';
 
 interface IInputProps extends React.HTMLProps<HTMLInputElement> {
   errorText?: string;
+  className?: string
 }
 
 export default function Input({
-  type = 'text', value, label, errorText, ...props
+  type = 'text', value, label, errorText, className, id, ...props
 }: IInputProps) {
   return (
-    <div className={s.wrapper}>
-      {label && <span className={s.label}>{label}</span>}
+    <div className={`${s.wrapper} ${className}`}>
+      {label && <label className={s.label} htmlFor={id}>{label}</label>}
       <input
+        id={id}
         className={`
           ${s.input}
           ${value && value !== '' && s.inputIsFilled}
