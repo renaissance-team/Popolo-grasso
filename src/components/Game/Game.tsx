@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useRef,
+  useCallback,
+  useLayoutEffect,
+  useEffect,
+} from 'react';
 
 import {
   ICanvasRectangleObject,
@@ -40,11 +45,11 @@ const initialKeyboardState: IKeyboardInteractionState = {
 export default function Game(): React.ReactElement {
   const windowVisualViewportSize = useWindowVisualViewportSize();
 
-  const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const requestAnimationFrameIdRef = React.useRef<number | null>(null);
+  const requestAnimationFrameIdRef = useRef<number | null>(null);
 
-  const playerStateRef = React.useRef<ICanvasRectangleObject & {
+  const playerStateRef = useRef<ICanvasRectangleObject & {
     score: number,
     onTheBasePlatform: boolean,
   }>({
@@ -62,7 +67,7 @@ export default function Game(): React.ReactElement {
     onTheBasePlatform: false,
   });
 
-  const basePlatformStateRef = React.useRef<ICanvasRectangleObject>({
+  const basePlatformStateRef = useRef<ICanvasRectangleObject>({
     position: {
       x: 0,
       y: windowVisualViewportSize.height - 25,
@@ -75,7 +80,7 @@ export default function Game(): React.ReactElement {
     height: 25,
   });
 
-  const platformsStateRef = React.useRef<(ICanvasRectangleObject & {
+  const platformsStateRef = useRef<(ICanvasRectangleObject & {
     playerOnThePlatform: boolean,
   })[]>([
       {
@@ -119,7 +124,7 @@ export default function Game(): React.ReactElement {
       },
     ]);
 
-  const keyboardInteractionStateRef = React.useRef<IKeyboardInteractionState>(initialKeyboardState);
+  const keyboardInteractionStateRef = useRef<IKeyboardInteractionState>(initialKeyboardState);
 
   const drawBasePlatform = () => {
     if (!canvasRef.current) {
@@ -218,13 +223,13 @@ export default function Game(): React.ReactElement {
     }
   };
 
-  const handleChangePlayerPositionY = React.useCallback(() => {
+  const handleChangePlayerPositionY = useCallback(() => {
     playerStateRef.current.position.y += playerStateRef.current.velocity.y;
 
     handlePlayerGravity();
   }, []);
 
-  const handleChangePlayerPositionX = React.useCallback(() => {
+  const handleChangePlayerPositionX = useCallback(() => {
     playerStateRef.current.position.x += playerStateRef.current.velocity.x;
   }, []);
 
@@ -248,7 +253,7 @@ export default function Game(): React.ReactElement {
     );
   };
 
-  const updatePlayer = React.useCallback(
+  const updatePlayer = useCallback(
     () => {
       drawPlayer();
 
@@ -288,7 +293,7 @@ export default function Game(): React.ReactElement {
     }
   };
 
-  const handleChangePlayerVelocityX = React.useCallback(() => {
+  const handleChangePlayerVelocityX = useCallback(() => {
     const leftStopEdgePositionX = windowVisualViewportSize.width / 6;
     const rightStopEdgePositionX = windowVisualViewportSize.width / 3;
 
@@ -306,7 +311,7 @@ export default function Game(): React.ReactElement {
     }
   }, []);
 
-  const handleChangePlayerVelocityY = React.useCallback(() => {
+  const handleChangePlayerVelocityY = useCallback(() => {
     if (keyboardInteractionStateRef.current.arrowUp.pressed) {
       handlePlayerMoveToUpStart();
     }
@@ -389,7 +394,7 @@ export default function Game(): React.ReactElement {
     }
   };
 
-  const animate = React.useCallback(() => {
+  const animate = useCallback(() => {
     requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
 
     handleClearCanvas();
@@ -409,7 +414,7 @@ export default function Game(): React.ReactElement {
     console.log(`Player score: ${playerStateRef.current.score}`);
   }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY]);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
 
     return () => {
@@ -443,7 +448,7 @@ export default function Game(): React.ReactElement {
     }
   };
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     window.addEventListener('keydown', handleKeyboardInteraction);
 
     return () => {
@@ -451,7 +456,7 @@ export default function Game(): React.ReactElement {
     };
   }, []);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     window.addEventListener('keyup', handleKeyboardInteraction);
 
     return () => {
@@ -459,7 +464,7 @@ export default function Game(): React.ReactElement {
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.document.body.style.overflowX = 'hidden';
     window.document.body.style.overflowY = 'hidden';
     window.document.body.style.margin = '0';
