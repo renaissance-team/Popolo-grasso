@@ -1,5 +1,27 @@
+@import '~styles/variables.scss';
+
 .empty {
   margin: 0 auto;
   text-align: center;
   padding: 24px 16px 16px 16px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $darkPurple;
+  height: 100vh;
+  &_header {
+    padding: 20px;
+    color: $red;
+  }
+  &_content {
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+  }
+  &_footer {
+    padding: 20px;
+  }
 }

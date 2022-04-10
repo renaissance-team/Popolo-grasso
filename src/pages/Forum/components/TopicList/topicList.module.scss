@@ -1,6 +1,13 @@
-.container {
+@import '~styles/variables.scss';
+
+.topics {
   display: flex;
   flex-direction: column;
+  background-color: $darkPurple01;
+  height: 100vh;
+  &_content {
+    overflow: auto;
+  }
 }
 
 .create {

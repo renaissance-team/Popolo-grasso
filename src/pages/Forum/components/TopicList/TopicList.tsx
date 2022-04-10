@@ -18,7 +18,7 @@ export type TopicListPropsType = {
 
 export default function TopicList({topics}: TopicListPropsType): ReactElement<TopicListPropsType> {
   return (
-    <div className={s.container}>
+    <div className={s.topics}>
       <form className={s.create}>
         <Input label="Тема для обсуждения" className={s.input} />
         <Button>
@@ -26,7 +26,7 @@ export default function TopicList({topics}: TopicListPropsType): ReactElement<To
         </Button>
       </form>
       {topics?.length ? (
-        <div>
+        <div className={s.topics_content}>
           {topics.map((e) => (
             <Topic {...e} key={e.topic_id} />
           ))}

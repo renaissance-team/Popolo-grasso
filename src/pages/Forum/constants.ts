@@ -26,4 +26,17 @@ export const topics = [
   },
 ];
 
-export default '';
+export const messages = [
+  {
+    user: 'User1',
+    message: 'Текст сообщения',
+    date: '2022-11-04', // TODO formate
+  },
+  {
+    user: 'User2',
+    message: 'Текст сообщения',
+    date: '2022-12-04',
+  },
+];
+
+export default ''; // TODO удалить после мерджа с 43-refactoring
