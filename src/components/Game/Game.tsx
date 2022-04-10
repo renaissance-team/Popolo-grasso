@@ -6,7 +6,10 @@ import React, {
 } from 'react';
 
 import {
+  ICanvasButtonObject,
   ICanvasRectangleObject,
+  IGameMenu,
+  IGameState,
   IKeyboardInteractionState,
   IPlatformState,
   IPlayerState,
@@ -46,7 +49,13 @@ const initialKeyboardState: IKeyboardInteractionState = {
   },
 };
 
+const initialGameState: IGameState = {
+  started: false,
+};
+
 export default function Game(): React.ReactElement {
+  const gameStateRef = useRef<IGameState>(initialGameState);
+
   const windowVisualViewportSize = useWindowVisualViewportSize();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -86,6 +95,18 @@ export default function Game(): React.ReactElement {
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
   const platformsStateRef = useRef<IPlatformState[]>(FIRST_LEVEL);
+
+  const mouseInteractionStateRef = useRef<{
+    click: {
+      clientX: number,
+      clientY: number,
+    }
+  }>({
+    click: {
+      clientX: 0,
+      clientY: 0,
+    },
+  });
 
   const keyboardInteractionStateRef = useRef<IKeyboardInteractionState>(initialKeyboardState);
 
@@ -332,15 +353,15 @@ export default function Game(): React.ReactElement {
   };
 
   const playerCollisionDetectionWithPlatforms = () => {
-    platformsStateRef.current.forEach((platformsState, index) => {
+    platformsStateRef.current.forEach((platformState, index) => {
       const isPlayerCollisionWithPlatformOnXDetected = rectangleCollisionDetectionX(
         playerStateRef.current,
-        platformsState,
+        platformState,
       );
 
       const isPlayerCollisionWithPlatformOnYDetected = rectangleCollisionDetectionY(
         playerStateRef.current,
-        platformsState,
+        platformState,
       );
 
       if (isPlayerCollisionWithPlatformOnXDetected
@@ -373,23 +394,116 @@ export default function Game(): React.ReactElement {
     }
   };
 
+  const handleMenuStartButtonClick = () => {
+    gameStateRef.current.started = true;
+  };
+
+  const menuStateRef = useRef<IGameMenu>({
+    buttons: [
+      {
+        title: 'Старт',
+        onClick: handleMenuStartButtonClick,
+        position: {
+          x: 0,
+          y: 0,
+        },
+        width: 0,
+        height: 0,
+      },
+    ],
+  });
+
+  const drawMenu = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const DEFAULT_BUTTON_MARGIN = 10;
+
+    canvasContext.fillStyle = 'red';
+    canvasContext.font = 'bold 44px sans-serif';
+
+    menuStateRef.current.buttons = menuStateRef.current.buttons.map((buttonState, index) => {
+      const buttonTextMeasurements = canvasContext.measureText(buttonState.title);
+
+      const {width} = buttonTextMeasurements;
+      const height = Math.abs(
+        buttonTextMeasurements.actualBoundingBoxAscent,
+      ) + Math.abs(
+        buttonTextMeasurements.actualBoundingBoxDescent,
+      );
+
+      const position: ICanvasButtonObject['position'] = {
+        x: (windowVisualViewportSize.width / 2) - (width / 2),
+        y: index === 0
+          ? (windowVisualViewportSize.height / 2)
+          : (windowVisualViewportSize.height / 2) + (index * height) + DEFAULT_BUTTON_MARGIN,
+      };
+
+      canvasContext.fillText(
+        buttonState.title,
+        position.x,
+        position.y,
+      );
+
+      return {
+        ...buttonState,
+        position,
+        width,
+        height,
+      };
+    });
+  };
+
+  const resetMouseInteractionState = () => {
+    mouseInteractionStateRef.current.click = {
+      clientX: 0,
+      clientY: 0,
+    };
+  };
+
+  const userInteractionDetectionWithMenu = () => {
+    menuStateRef.current.buttons.forEach((buttonState) => {
+      if (
+        mouseInteractionStateRef.current.click.clientX + 1 >= buttonState.position.x
+        && mouseInteractionStateRef.current.click.clientX + 1 <= buttonState.position.x + buttonState.width
+        && mouseInteractionStateRef.current.click.clientY + 1 >= buttonState.position.y - buttonState.height
+        && mouseInteractionStateRef.current.click.clientY + 1 <= buttonState.position.y
+      ) {
+        buttonState.onClick();
+      }
+    });
+
+    resetMouseInteractionState();
+  };
+
   const animate = useCallback(() => {
     requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
 
     handleClearCanvas();
 
-    drawBasePlatform();
+    if (gameStateRef.current.started) {
+      drawBasePlatform();
 
-    drawPlatforms();
+      drawPlatforms();
 
-    updatePlayer();
+      updatePlayer();
 
-    handleChangePlayerVelocityX();
-    handleChangePlayerVelocityY();
+      handleChangePlayerVelocityX();
+      handleChangePlayerVelocityY();
 
-    playerCollisionDetectionWithPlatforms();
+      playerCollisionDetectionWithPlatforms();
 
-    drawPlayerScore();
+      drawPlayerScore();
+    } else {
+      drawMenu();
+    }
   }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY]);
 
   useLayoutEffect(() => {
@@ -425,6 +539,28 @@ export default function Game(): React.ReactElement {
       default:
     }
   };
+
+  const handleMouseClick = (event: MouseEvent) => {
+    const {
+      clientX,
+      clientY,
+    } = event;
+
+    mouseInteractionStateRef.current.click = {
+      clientX,
+      clientY,
+    };
+
+    userInteractionDetectionWithMenu();
+  };
+
+  useLayoutEffect(() => {
+    window.addEventListener('click', handleMouseClick);
+
+    return () => {
+      window.removeEventListener('click', handleMouseClick);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     window.addEventListener('keydown', handleKeyboardInteraction);
