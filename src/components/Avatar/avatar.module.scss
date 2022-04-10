@@ -1,0 +1,24 @@
+@import '~styles/variables';
+
+.readOnly {
+    pointer-events: none;
+}
+.image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: $light-grey;
+  background-size: cover;
+  background-position: center center;
+  border: 2px solid $border-color;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.input {
+  display: none;
+}

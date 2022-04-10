@@ -1,4 +1,23 @@
-.h1 {
-  color: #27aedb;
+@import '../../styles/variables.scss';
+$container-width: 860px;
+.wrapper {
+  margin: auto;
+  max-width: $container-width;
+  padding: 50px 0;
+}
+.content {
+  width: 100%;
+  img {
+    max-width: 100%;
+  }
+}
+.controls {
+  background: $white;
   text-align: center;
+  position: fixed;
+  margin: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: $container-width;
 }
