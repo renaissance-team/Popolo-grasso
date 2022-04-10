@@ -1,0 +1,19 @@
+@import '~styles/variables.scss';
+
+.forum {
+  display: flex;
+  height: 100vh;
+  color: $white;
+  justify-content: center;
+  &_item {
+    width: 50vw;
+    overflow: auto;
+    height: inherit;
+  }
+  &_right {
+    background-color: $darkPurple;
+  }
+  &_left {
+    background-color: $darkPurple01;
+  }
+}
