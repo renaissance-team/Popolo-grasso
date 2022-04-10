@@ -263,6 +263,22 @@ export default function Game(): React.ReactElement {
     [handleChangePlayerPositionX, handleChangePlayerPositionY],
   );
 
+  const drawPlayerScore = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    canvasContext.fillStyle = 'black';
+    canvasContext.font = 'bold 24px sans-serif';
+    canvasContext.fillText(`${playerStateRef.current.score}`, 50, 50);
+  };
+
   const handleMovePlatforms = () => {
     if (keyboardInteractionStateRef.current.arrowRight.pressed) {
       platformsStateRef.current = platformsStateRef.current.map((platformState) => {
@@ -410,8 +426,7 @@ export default function Game(): React.ReactElement {
 
     playerCollisionDetectionWithPlatforms();
 
-    // eslint-disable-next-line no-console
-    console.log(`Player score: ${playerStateRef.current.score}`);
+    drawPlayerScore();
   }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY]);
 
   useLayoutEffect(() => {
