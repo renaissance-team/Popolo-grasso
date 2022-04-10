@@ -2,11 +2,14 @@
 
 .error {
   min-height: 100vh;
-  background: linear-gradient(to top left, $pink, $purple);
+  background-image: linear-gradient(to top, rgba(95, 95, 95, 0.6), rgba(0, 12, 119, 0.7)), url(https://images.hdqwalls.com/download/mountains-clouds-illustration-minimalism-eo-3840x2400.jpg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
   display: flex;
   align-items: center;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Comic Sans Ms', sans-serif;
 
   &_container {
     margin: 0 auto;

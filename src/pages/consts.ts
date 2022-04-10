@@ -5,8 +5,8 @@ export enum ROUTES {
   REGISTRATION = '/registration',
   PROFILE = '/profile',
   GAME = '/game',
-  SCORES = '/scores',
   FORUM = '/forum',
   ERROR404 = '404',
   ERROR500 = '500',
+  LEADERBOARD = '/leaderboard',
 }

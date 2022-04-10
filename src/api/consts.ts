@@ -24,3 +24,5 @@ export const ENDPOINTS = {
     TOKEN: '/token',
   },
 };
+
+export const DEFAULT_SERVER_ERROR = 'Сервер временно не доступен. Приносим извинения за доставленные неудобства.';
