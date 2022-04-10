@@ -1,4 +1,4 @@
-import http from '@/utils/AxiosClient';
+import {http} from '@/utils';
 
 export type LeaderType = {
   popolo_grasso_display_name: string;

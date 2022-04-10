@@ -11,9 +11,8 @@ interface IAvatarProps {
 export default function Input({value, className, onChange}: IAvatarProps) {
   const readOnly = !onChange;
   return (
-    // eslint-disable-next-line jsx-a11y/label-has-associated-control
-    <label className={`${s.avatar} ${readOnly && s.readOnly} ${className}`}>
-      <input type="file" className={s.input} onChange={onChange} disabled={readOnly} />
+    <label className={`${s.avatar} ${readOnly && s.readOnly} ${className}`} htmlFor="avatar">
+      <input type="file" className={s.input} onChange={onChange} disabled={readOnly} id="avatar" />
       <div
         className={s.image}
         style={value ? {

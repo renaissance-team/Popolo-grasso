@@ -42,6 +42,7 @@ module.exports = {
     camelcase: 0,
     'class-methods-use-this': 1,
     '@typescript-eslint/no-unused-vars': 1,
+    'import/prefer-default-export': 0,
   },
   env: {
     browser: true,
