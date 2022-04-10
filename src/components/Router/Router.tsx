@@ -8,6 +8,7 @@ import Home from '@/pages/Home/Home';
 import Auth from '@/pages/Login/Auth';
 import Leaderboard from '@/pages/Leaderboard/Leaderboard';
 import Profile from '@/pages/Profile/Profile';
+import Game from '../Game/Game';
 
 function Router(): ReactElement {
   return (
@@ -18,6 +19,7 @@ function Router(): ReactElement {
       <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
       <Route path={ROUTES.PROFILE} element={<Profile />} />
       <Route path="*" element={<Error404 />} />
+      <Route path="/game" element={<Game />} />
     </Routes>
   );
 }
