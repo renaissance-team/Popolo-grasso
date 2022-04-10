@@ -8,7 +8,11 @@ import React, {
 import {
   ICanvasRectangleObject,
   IKeyboardInteractionState,
+  IPlatformState,
+  IPlayerState,
 } from './types';
+
+import FIRST_LEVEL from './levels/firstLevel';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
@@ -49,10 +53,7 @@ export default function Game(): React.ReactElement {
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
 
-  const playerStateRef = useRef<ICanvasRectangleObject & {
-    score: number,
-    onTheBasePlatform: boolean,
-  }>({
+  const DEFAULT_PLAYER_STATE: IPlayerState = {
     position: {
       x: windowVisualViewportSize.width / PLAYER_INITIAL_POSITION_X_DEVIDER,
       y: PLAYEY_INITIAL_POSITION_Y,
@@ -65,9 +66,11 @@ export default function Game(): React.ReactElement {
     height: PLAYER_HEIGHT,
     score: 0,
     onTheBasePlatform: false,
-  });
+  };
 
-  const basePlatformStateRef = useRef<ICanvasRectangleObject>({
+  const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
+
+  const DEFAULT_BASE_PLATFORM_STATE: ICanvasRectangleObject = {
     position: {
       x: 0,
       y: windowVisualViewportSize.height - 25,
@@ -78,51 +81,11 @@ export default function Game(): React.ReactElement {
     },
     width: windowVisualViewportSize.width,
     height: 25,
-  });
+  };
 
-  const platformsStateRef = useRef<(ICanvasRectangleObject & {
-    playerOnThePlatform: boolean,
-  })[]>([
-      {
-        position: {
-          x: 100,
-          y: 400,
-        },
-        velocity: {
-          x: 0,
-          y: 0,
-        },
-        width: 200,
-        height: 25,
-        playerOnThePlatform: false,
-      },
-      {
-        position: {
-          x: 300,
-          y: 600,
-        },
-        velocity: {
-          x: 0,
-          y: 0,
-        },
-        width: 300,
-        height: 25,
-        playerOnThePlatform: false,
-      },
-      {
-        position: {
-          x: 900,
-          y: 400,
-        },
-        velocity: {
-          x: 0,
-          y: 0,
-        },
-        width: 800,
-        height: 25,
-        playerOnThePlatform: false,
-      },
-    ]);
+  const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
+
+  const platformsStateRef = useRef<IPlatformState[]>(FIRST_LEVEL);
 
   const keyboardInteractionStateRef = useRef<IKeyboardInteractionState>(initialKeyboardState);
 
@@ -157,8 +120,8 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    platformsStateRef.current.forEach((platformState) => {
-      canvasContext.fillStyle = 'blue';
+    platformsStateRef.current.forEach((platformState, index, array) => {
+      canvasContext.fillStyle = index === array.length - 1 ? 'yellow' : 'blue';
       canvasContext.fillRect(
         platformState.position.x,
         platformState.position.y,
@@ -276,7 +239,7 @@ export default function Game(): React.ReactElement {
 
     canvasContext.fillStyle = 'black';
     canvasContext.font = 'bold 24px sans-serif';
-    canvasContext.fillText(`${playerStateRef.current.score}`, 50, 50);
+    canvasContext.fillText(`Score: ${playerStateRef.current.score}`, 50, 50);
   };
 
   const handleMovePlatforms = () => {
