@@ -1,9 +1,8 @@
 import React, {ReactElement} from 'react';
 import cn from 'classnames';
 
-import {LeaderType} from '../../Leaderboard';
-
 import s from './leaderboardItem.module.scss';
+import {LeaderType} from '../../api/getLeaderboard';
 
 export type LeaderboardItemPropsType = Partial<LeaderType> & {rating?: number};
 

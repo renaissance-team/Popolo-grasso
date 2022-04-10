@@ -1,22 +1,11 @@
-import axios from 'axios';
 import React, {ReactElement, useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import {DEFAULT_SERVER_ERROR, ENDPOINTS} from '@/api/consts';
+import {DEFAULT_SERVER_ERROR} from '@/api/consts';
 import LeaderboardItem from './components/LeaderboardItem/LeaderboardItem';
+import {getLeaderboard, LeaderResponseType} from './api/getLeaderboard';
 
 import s from './leaderboard.module.scss';
-
-export type LeaderType = {
-  popolo_grasso_display_name: string;
-  popolo_grasso_points: number;
-  popolo_grasso_avatar: string;
-  popolo_grasso_user_id: string;
-};
-
-export type LeaderResponseType = {
-  data: LeaderType;
-};
 
 export default function Leaderboard(): ReactElement {
   const limit = 5;
@@ -33,9 +22,9 @@ export default function Leaderboard(): ReactElement {
       limit,
     };
     try {
-      const response = await axios.post(`${ENDPOINTS.ROOT}/leaderboard/all`, body);
-      if (response?.data?.length) {
-        const result = page === 0 ? response?.data : data.concat(response?.data);
+      const response = await getLeaderboard(body);
+      if (response?.length) {
+        const result = page === 0 ? response : data.concat(response);
         setData(result);
         setPage(page + limit);
       } else {
