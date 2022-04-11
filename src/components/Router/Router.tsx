@@ -8,7 +8,8 @@ import Home from '@/pages/Home/Home';
 import Auth from '@/pages/Login/Auth';
 import Leaderboard from '@/pages/Leaderboard/Leaderboard';
 import Profile from '@/pages/Profile/Profile';
-import Game from '../Game/Game';
+import Forum from '@/pages/Forum/Forum';
+import Game from '@/components/Game/Game';
 
 function Router(): ReactElement {
   return (
@@ -18,8 +19,9 @@ function Router(): ReactElement {
       <Route path={ROUTES.REGISTRATION} element={<Register />} />
       <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
       <Route path={ROUTES.PROFILE} element={<Profile />} />
+      <Route path={ROUTES.FORUM} element={<Forum />} />
+      <Route path={ROUTES.GAME} element={<Game />} />
       <Route path="*" element={<Error404 />} />
-      <Route path="/game" element={<Game />} />
     </Routes>
   );
 }

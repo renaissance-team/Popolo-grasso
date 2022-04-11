@@ -9,6 +9,7 @@ export default function useWindowVisualViewportSize() {
   });
 
   React.useEffect(() => {
+    // eslint-disable-next-line no-undef
     let timeoutId: NodeJS.Timeout | null = null;
 
     const handleResize = () => {

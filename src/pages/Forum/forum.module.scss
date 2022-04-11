@@ -1,0 +1,11 @@
+@import '~styles/variables.scss';
+
+.forum {
+  display: flex;
+  color: $white;
+  justify-content: center;
+  height: 100vh;
+  &_item {
+    width: 50vw;
+  }
+}
