@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import s from './Button.module.scss';
 
 export enum EButtonView {
@@ -17,7 +18,7 @@ export default function Button({
 }: IButtonTProps) {
   return (
     <button
-      className={`${s.button} ${view === EButtonView.transparent && s.buttonTransparent}`}
+      className={cn(s.button, {[s.buttonTransparent]: view === EButtonView.transparent})}
       // eslint-disable-next-line react/button-has-type
       type={type}
       {...props}

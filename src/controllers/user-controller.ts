@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import userApi from '@/api/user-api';
 import {TFormResponse} from '../components/Form/Form';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import s from './input.module.scss';
 
 interface IInputProps extends React.HTMLProps<HTMLInputElement> {
@@ -10,15 +11,19 @@ export default function Input({
   type = 'text', value, label, errorText, className, id, ...props
 }: IInputProps) {
   return (
-    <div className={`${s.wrapper} ${className}`}>
-      {label && <label className={s.label} htmlFor={id}>{label}</label>}
+    <div className={cn(s.wrapper, className)}>
+      {label && (
+        <label className={s.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         id={id}
-        className={`
-          ${s.input}
-          ${value && value !== '' && s.inputIsFilled}
-          ${errorText && errorText !== '' && s.inputHasError}
-         `}
+        className={cn(
+          s.input,
+          {[s.inputIsFilled]: value && value !== ''},
+          {[s.inputHasError]: errorText && errorText !== ''},
+        )}
         type={type}
         value={value == null ? '' : value}
         {...props}
