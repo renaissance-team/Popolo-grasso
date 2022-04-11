@@ -38,5 +38,3 @@ export const messages = [
     date: '2022-12-04',
   },
 ];
-
-export default ''; // TODO удалить после мерджа с 43-refactoring
