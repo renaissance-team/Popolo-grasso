@@ -79,13 +79,5 @@
     "lint": "yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
     "test": "jest --watch"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "*.{scss,sass}": [
-      "stylelint --fix"
-    ]
   }
 }
