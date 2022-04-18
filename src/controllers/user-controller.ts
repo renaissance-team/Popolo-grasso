@@ -1,4 +1,5 @@
 import userApi from '@/api/user-api';
+import {createError} from '@/utils';
 import {TFormResponse} from '../components/Form/Form';
 
 const changeUser = async (data: TFormResponse) => {
@@ -6,11 +7,11 @@ const changeUser = async (data: TFormResponse) => {
     const {oldPassword, newPassword, ...user} = data;
     const [res] = await Promise.all([
       userApi.changeUser(user),
-      userApi.changePassword({oldPassword, newPassword}),
+      oldPassword && newPassword && userApi.changePassword({oldPassword, newPassword}),
     ]);
-    console.info(res);
+    return res;
   } catch (error) {
-    console.info(error);
+    throw createError(error);
   }
 };
 
@@ -21,7 +22,7 @@ const changeAvatar = async (file: File) => {
     const res = await userApi.changeAvatar(formData);
     console.info(res);
   } catch (error) {
-    console.info(error);
+    throw createError(error);
   }
 };
 

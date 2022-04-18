@@ -14,11 +14,11 @@ interface IButtonTProps extends React.HTMLProps<HTMLButtonElement> {
 }
 
 export default function Button({
-  type = 'button', children, view, ...props
+  type = 'button', children, view, className, ...props
 }: IButtonTProps) {
   return (
     <button
-      className={cn(s.button, {[s.buttonTransparent]: view === EButtonView.transparent})}
+      className={cn(s.button, className, {[s.buttonTransparent]: view === EButtonView.transparent})}
       // eslint-disable-next-line react/button-has-type
       type={type}
       {...props}

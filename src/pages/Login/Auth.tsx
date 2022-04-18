@@ -1,19 +1,23 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Block from '@/components/Block/Block';
-import authController from '../../controllers/auth-controller';
+import {useDispatch} from 'react-redux';
+import {EAuthActionType} from '@/store/auth/saga';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
 import Form, {TFormResponse} from '../../components/Form/Form';
 
 const initialFormData = [
-  {name: 'login', label: 'Логин'},
-  {name: 'password', label: 'Пароль', type: 'password'},
+  {name: 'login', label: 'Логин', value: 'Vod'},
+  {
+    name: 'password', label: 'Пароль', type: 'password', value: 'Max03081992',
+  },
 ];
 
 export default function Auth() {
+  const dispatch = useDispatch();
   const formAction = (data: TFormResponse) => {
-    authController.signIn(data);
+    dispatch({type: EAuthActionType.SIGN_IN, data});
   };
   return (
     <Block title="Вход">
