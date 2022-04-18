@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button snapshots renders default button 1`] = `
+<button
+  className="button"
+  type="button"
+/>
+`;
+
+exports[`Button snapshots renders submit button 1`] = `
+<button
+  className="button"
+  type="submit"
+/>
+`;
+
+exports[`Button snapshots renders submit button 2`] = `
+<button
+  className="button"
+  type="reset"
+/>
+`;
+
+exports[`Button snapshots renders submit button 3`] = `
+<button
+  className="button buttonTransparent"
+  type="button"
+/>
+`;
