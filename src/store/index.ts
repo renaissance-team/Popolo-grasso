@@ -4,10 +4,8 @@ import {all} from 'redux-saga/effects';
 
 import authReducer from './auth/reducer';
 import authWatcher from './auth/saga';
-import todosReducer from './todos';
 
 const rootReducer = combineReducers({
-  todos: todosReducer,
   auth: authReducer,
 });
 
