@@ -21,5 +21,6 @@
     },
     "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
-  "include": ["src", "typings/**/*.d.ts", "./node_modules/@types", ".eslintrc.js", "webpack.config.js"],
+  "include": ["src", "typings/**/*.d.ts", "./node_modules/@types"],
+  "exclude": ["**/*.js", "**/__tests__"]
 }
