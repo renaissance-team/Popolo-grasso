@@ -8,9 +8,9 @@ import {ROUTES} from '../consts';
 import Form, {TFormResponse} from '../../components/Form/Form';
 
 const initialFormData = [
-  {name: 'login', label: 'Логин', value: 'Vod'},
+  {name: 'login', label: 'Логин'},
   {
-    name: 'password', label: 'Пароль', type: 'password', value: 'Max03081992',
+    name: 'password', label: 'Пароль', type: 'password',
   },
 ];
 
