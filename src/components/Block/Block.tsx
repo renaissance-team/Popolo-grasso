@@ -6,13 +6,13 @@ interface ILogin {
   children?: ReactElement | ReactElement[];
 }
 
-export default function Login({
-  title, children,
-}: ILogin): ReactElement {
+export default function Login({title, children}: ILogin): ReactElement {
   return (
-    <div className={s.block}>
-      <h1 className={s.title}>{title}</h1>
-      {children}
+    <div className={s.container}>
+      <div className={s.block}>
+        <h1 className={s.title}>{title}</h1>
+        {children}
+      </div>
     </div>
   );
 }

@@ -12,11 +12,6 @@ export default function Input({
 }: IInputProps) {
   return (
     <div className={cn(s.wrapper, className)}>
-      {label && (
-        <label className={s.label} htmlFor={id}>
-          {label}
-        </label>
-      )}
       <input
         id={id}
         className={cn(
@@ -27,7 +22,13 @@ export default function Input({
         type={type}
         value={value == null ? '' : value}
         {...props}
+        placeholder="placeholder"
       />
+      {label && (
+        <label className={s.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
       {errorText && errorText !== '' && <span className={s.errorText} />}
     </div>
   );

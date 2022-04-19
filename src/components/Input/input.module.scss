@@ -1,16 +1,27 @@
 @import '../../styles/variables.scss';
 
 .wrapper {
-  margin-bottom: 30px;
+  margin: 16px 0;
+  position: relative;
+  width: 100%;
 }
 
 .input {
   width: 100%;
   border: none;
   border-bottom: 1px solid $black;
-  height: 28px;
   outline: none !important;
   transition: $ease;
+  font-size: 13px;
+  line-height: 13px;
+
+  &::placeholder {
+    color: transparent;
+  }
+  &:focus ~ .label,
+  &:not(:placeholder-shown) ~ .label {
+    transform: translateY(-16px) scale(0.7);
+  }
 
   &IsFilled,
   &:focus {
@@ -24,5 +35,12 @@
 
 .label {
   color: $text-color-grey;
-  font-size: 9px;
+  font-size: 13px;
+  line-height: 13px;
+  pointer-events: none;
+  position: absolute;
+  transform-origin: 0 50%;
+  transition: transform 200ms, color 200ms;
+  left: 0;
+  top: 0;
 }
