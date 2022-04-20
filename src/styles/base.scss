@@ -2,13 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400&display=swap');
 
 html,
-body,
-main {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  height: 1px;
-  width: 100%;
+body {
   font-family: $inter;
 }
 
