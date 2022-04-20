@@ -2,7 +2,8 @@
 
 .container {
   @include centered;
-  flex-grow: 1;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(to top, $darkPurple02, $purple);
 }
 
