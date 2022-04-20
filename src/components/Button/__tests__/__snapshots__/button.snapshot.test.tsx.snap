@@ -7,6 +7,13 @@ exports[`Button snapshots renders default button 1`] = `
 />
 `;
 
+exports[`Button snapshots renders reset button 1`] = `
+<button
+  className="button"
+  type="reset"
+/>
+`;
+
 exports[`Button snapshots renders submit button 1`] = `
 <button
   className="button"
@@ -26,4 +33,22 @@ exports[`Button snapshots renders submit button 3`] = `
   className="button buttonTransparent"
   type="button"
 />
+`;
+
+exports[`Button snapshots renders transparent button 1`] = `
+<button
+  className="button buttonTransparent"
+  type="button"
+/>
+`;
+
+exports[`Button snapshots renders whith children button 1`] = `
+<button
+  className="button"
+  type="button"
+>
+  <span>
+    Text
+  </span>
+</button>
 `;

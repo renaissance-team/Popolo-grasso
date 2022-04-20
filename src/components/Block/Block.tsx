@@ -10,8 +10,10 @@ export default function Login({title, children}: ILogin): ReactElement {
   return (
     <div className={s.container}>
       <div className={s.block}>
-        <h1 className={s.title}>{title}</h1>
-        {children}
+        <div className={s.header}>
+          <h1 className={s.title}>{title}</h1>
+        </div>
+        <div className={s.inner}>{children}</div>
       </div>
     </div>
   );

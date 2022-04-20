@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Block snapshots renders block whith children 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="block"
+  >
+    <div
+      className="header"
+    >
+      <h1
+        className="title"
+      >
+        title
+      </h1>
+    </div>
+    <div
+      className="inner"
+    >
+      <span>
+        Text
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Block snapshots renders default block 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="block"
+  >
+    <div
+      className="header"
+    >
+      <h1
+        className="title"
+      >
+        title
+      </h1>
+    </div>
+    <div
+      className="inner"
+    />
+  </div>
+</div>
+`;
+
+exports[`Button snapshots renders default button 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="block"
+  >
+    <div
+      className="header"
+    >
+      <h1
+        className="title"
+      >
+        title
+      </h1>
+    </div>
+    <div
+      className="inner"
+    />
+  </div>
+</div>
+`;
+
+exports[`Button snapshots renders submit button 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="block"
+  >
+    <div
+      className="header"
+    >
+      <h1
+        className="title"
+      >
+        title
+      </h1>
+    </div>
+    <div
+      className="inner"
+    >
+      <span>
+        Text
+      </span>
+    </div>
+  </div>
+</div>
+`;

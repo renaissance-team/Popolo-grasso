@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import s from './input.module.scss';
 
-interface IInputProps extends React.HTMLProps<HTMLInputElement> {
+export interface IInputProps extends React.HTMLProps<HTMLInputElement> {
   errorText?: string;
   className?: string
 }
@@ -29,7 +29,7 @@ export default function Input({
           {label}
         </label>
       )}
-      {errorText && errorText !== '' && <span className={s.errorText} />}
+      {errorText && errorText !== '' && <span className={s.errorText}>{errorText}</span>}
     </div>
   );
 }

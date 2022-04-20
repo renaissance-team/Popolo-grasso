@@ -7,15 +7,19 @@ describe('Button snapshots', () => {
     const tree = renderer.create(<Button />).toJSON();
     expect(tree).toMatchSnapshot();
   });
+  it('renders whith children button', () => {
+    const tree = renderer.create(<Button><span>Text</span></Button>).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
   it('renders submit button', () => {
     const tree = renderer.create(<Button type="submit" />).toJSON();
     expect(tree).toMatchSnapshot();
   });
-  it('renders submit button', () => {
+  it('renders reset button', () => {
     const tree = renderer.create(<Button type="reset" />).toJSON();
     expect(tree).toMatchSnapshot();
   });
-  it('renders submit button', () => {
+  it('renders transparent button', () => {
     const tree = renderer.create(<Button view={EButtonView.transparent} />).toJSON();
     expect(tree).toMatchSnapshot();
   });

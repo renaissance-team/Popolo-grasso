@@ -21,11 +21,12 @@
   &:focus ~ .label,
   &:not(:placeholder-shown) ~ .label {
     transform: translateY(-16px) scale(0.7);
+    color: $purple;
   }
 
   &IsFilled,
   &:focus {
-    border-bottom-color: $blue;
+    border-bottom-color: $purple;
   }
   &HasError {
     border-bottom-color: $red;
@@ -43,4 +44,8 @@
   transition: transform 200ms, color 200ms;
   left: 0;
   top: 0;
+}
+
+.errorText {
+  color: $red;
 }

@@ -8,11 +8,13 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
+    "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
+    "@testing-library/react": "12.1.2",
+    "@testing-library/user-event": "^14.1.1",
     "@types/jest": "^27.4.1",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
     "@types/react-infinite-scroll-component": "^5.0.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-test-renderer": "^18.0.0",
@@ -63,7 +65,7 @@
     "husky": "^7.0.4",
     "normalize.css": "^8.0.1",
     "react": "^18.0.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.0.0",
     "react-error-boundary": "^3.1.4",
     "react-hook-form": "^7.28.1",
     "react-infinite-scroll-component": "^6.1.0",
@@ -78,6 +80,7 @@
     "lint:style": "yarn stylelint './src/**/*.{scss,sass}'",
     "lint": "yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:upd": "jest --updateSnapshot"
   }
 }
