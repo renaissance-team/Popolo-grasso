@@ -19,8 +19,11 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["jest", "node"],
     "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
-  "include": ["src", "typings/**/*.d.ts", "./node_modules/@types"],
-  "exclude": ["**/*.js", "**/__tests__"]
+  "include": [
+    "src",
+  ],
+  "exclude": ["**/node_modules"]
 }
