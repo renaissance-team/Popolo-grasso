@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import Block from '@/components/Block/Block';
 import {useDispatch} from 'react-redux';
 import {signUp} from '@/store/auth/actions';
+import {useAppSelector} from '@/utils';
 import Form, {TFormResponse} from '../../components/Form/Form';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
@@ -19,12 +20,13 @@ const initialFormData = [
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {loading} = useAppSelector((state) => state.auth);
   const formAction = (data: TFormResponse) => {
     dispatch(signUp({data, redirectFn: () => navigate(ROUTES.HOME)}));
   };
   return (
     <Block title="Вход">
-      <Form initialData={initialFormData} onSubmit={formAction}>
+      <Form initialData={initialFormData} onSubmit={formAction} loading={loading}>
         <Button type="submit">Зарегистритроваться</Button>
         <Link to={ROUTES.AUTH}>
           <Button view={EButtonView.transparent}>Войти</Button>

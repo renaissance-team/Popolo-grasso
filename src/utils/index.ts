@@ -8,7 +8,7 @@ export const createErrorString = (error: unknown) => {
   if (typeof error === 'string') {
     errorMessage = error;
   } else if (axios.isAxiosError(error)) {
-    errorMessage = error.message;
+    errorMessage = error.response?.data.reason || error.message;
   } else if (error instanceof Error) {
     errorMessage = error.toString();
   }

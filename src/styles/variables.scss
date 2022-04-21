@@ -49,3 +49,46 @@ $light-grey: lighten($black, 95%);
     margin-top: auto;
   }
 }
+
+@mixin busy {
+  pointer-events: none;
+  display: block;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($white, 0.8);
+    z-index: 98;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: -15px;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 4px solid $blue;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    color: $black;
+    background-color: transparent;
+    animation: loader 0.9s linear infinite;
+    z-index: 99;
+
+    @keyframes loader {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}

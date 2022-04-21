@@ -21,7 +21,7 @@ const initialFormData = [
 
 function Profile(): ReactElement {
   const dispatch = useDispatch();
-  const {data: userData} = useAppSelector((state) => state.user);
+  const {data: userData, loading} = useAppSelector((state) => state.user);
 
   const [userFormData, setUserFormData] = useState(initialFormData);
   const [userAvatar, setUserAvatar] = useState<string>();
@@ -50,7 +50,7 @@ function Profile(): ReactElement {
   return (
     <Block title="Профиль">
       <Avatar value={userAvatar} onChange={changeAvatarHandler} />
-      <Form initialData={userFormData} onSubmit={saveForm}>
+      <Form initialData={userFormData} onSubmit={saveForm} loading={loading}>
         <Button type="submit">Сохранить</Button>
       </Form>
     </Block>

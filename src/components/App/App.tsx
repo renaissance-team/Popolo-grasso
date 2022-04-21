@@ -4,7 +4,7 @@ import {ErrorBoundary} from 'react-error-boundary';
 
 import Error500 from '@/pages/Errors/Error500';
 import {useDispatch} from 'react-redux';
-import {getUser} from '@/store/auth/actions';
+import {getUser, init} from '@/store/auth/actions';
 import {useAppSelector, useDidUpdateEffect} from '@/utils';
 import setAppHeightStyleProperty from '@/utils/setAppHeightStyleProperty';
 import Router from '../Router/Router';
@@ -21,7 +21,7 @@ function App(): ReactElement {
   const {data: userData} = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(init());
   }, []);
 
   useDidUpdateEffect(() => {
