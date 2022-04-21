@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Block from '@/components/Block/Block';
 import {useDispatch} from 'react-redux';
-import {EAuthActionType} from '@/store/auth/saga';
+import {signIn} from '@/store/auth/actions';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
 import Form, {TFormResponse} from '../../components/Form/Form';
@@ -17,7 +17,7 @@ const initialFormData = [
 export default function Auth() {
   const dispatch = useDispatch();
   const formAction = (data: TFormResponse) => {
-    dispatch({type: EAuthActionType.SIGN_IN, data});
+    dispatch(signIn(data));
   };
   return (
     <Block title="Вход">

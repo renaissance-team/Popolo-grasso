@@ -1,7 +1,9 @@
 import {TUserResponse} from '@/api/types';
 import {isLoadingAction, isRejectedAction} from '@/utils';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {getUser} from './actions';
+import {createSlice, isAnyOf, PayloadAction} from '@reduxjs/toolkit';
+import {
+  getUser, logout, signIn, signUp,
+} from './actions';
 
 interface IUserState {
   loading: boolean;
@@ -37,6 +39,12 @@ const authSlice = createSlice({
       state.error = '';
       state.isAuth = true;
       state.userData = action.payload;
+    })
+    .addCase(logout.fulfilled.type, (state) => {
+      Object.assign(state, initialState);
+    })
+    .addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled), (state) => {
+      state.isAuth = true;
     })
     .addMatcher(
       isRejectedAction,

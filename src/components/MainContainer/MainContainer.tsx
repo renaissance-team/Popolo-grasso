@@ -1,10 +1,10 @@
 import React, {ReactElement} from 'react';
 import cn from 'classnames';
 import {ROUTES} from '@/pages/consts';
-import {EAuthActionType} from '@/store/auth/saga';
 import {useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {useAppSelector} from '@/utils';
+import {logout} from '@/store/auth/actions';
 import Button from '../Button/Button';
 import s from './MainContainer.module.scss';
 
@@ -26,7 +26,7 @@ export default function MainContainer({children}: IMainContainer) {
 
   const dispatch = useDispatch();
   const handleLogout = () => {
-    dispatch({type: EAuthActionType.LOGOUT});
+    dispatch(logout());
   };
 
   return (
