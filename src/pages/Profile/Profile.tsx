@@ -4,7 +4,7 @@ import Block from '@/components/Block/Block';
 import Button from '@/components/Button/Button';
 import Form, {TFormResponse} from '@/components/Form/Form';
 import userController from '@/controllers/user-controller';
-import {EAuthActionType} from '@/store/auth/saga';
+import {signUp} from '@/store/auth/actions';
 import {useAppSelector} from '@/utils';
 import React, {ReactElement, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
@@ -38,7 +38,7 @@ function Profile(): ReactElement {
   }, [userData]);
 
   const saveForm = (data: TFormResponse) => {
-    dispatch({type: EAuthActionType.SET_USER, data});
+    dispatch(signUp(data));
   };
 
   const changeAvatar = (event: React.FormEvent<HTMLInputElement>) => {
