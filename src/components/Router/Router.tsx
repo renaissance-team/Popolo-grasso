@@ -16,7 +16,7 @@ import Private from './Private';
 function Router(): ReactElement {
   const {loading, isAuth} = useAppSelector((state) => state.auth);
 
-  if (!isAuth && loading) return <div>loading...</div>;
+  if (loading) return <div>loading...</div>;
 
   return (
     <Routes>

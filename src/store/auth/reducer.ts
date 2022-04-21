@@ -11,7 +11,7 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  loading: false,
+  loading: true,
   error: '',
   isAuth: false,
 };
@@ -27,10 +27,11 @@ const authSlice = createSlice({
       state.isAuth = true;
     })
     .addCase(logout.fulfilled.type, (state) => {
-      Object.assign(state, initialState);
+      Object.assign(state, {...initialState, loading: false});
     })
     .addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled), (state) => {
       state.isAuth = true;
+      state.loading = false;
     })
     .addMatcher(isRejectedAction, (state, action) => {
       state.error = action.payload;
