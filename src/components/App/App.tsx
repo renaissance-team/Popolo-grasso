@@ -4,7 +4,7 @@ import {ErrorBoundary} from 'react-error-boundary';
 
 import Error500 from '@/pages/Errors/Error500';
 import {useDispatch} from 'react-redux';
-import {EAuthActionType} from '@/store/auth/saga';
+import {getUser} from '@/store/auth/actions';
 import Router from '../Router/Router';
 import MainContainer from '../MainContainer/MainContainer';
 
@@ -12,7 +12,7 @@ function App(): ReactElement {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({type: EAuthActionType.GET_USER});
+    dispatch(getUser());
   }, []);
   return (
     <BrowserRouter>

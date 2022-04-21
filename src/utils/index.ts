@@ -1,9 +1,10 @@
+import {AnyAction} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export {default as http} from './AxiosClient';
 export * from './hooks';
 
-export const createError = (error: unknown) => {
+export const createErrorString = (error: unknown) => {
   let errorMessage = 'Неизвестная ошибка';
   if (typeof error === 'string') {
     errorMessage = error;
@@ -12,5 +13,8 @@ export const createError = (error: unknown) => {
   } else if (error instanceof Error) {
     errorMessage = error.toString();
   }
-  throw new Error(errorMessage);
+  return errorMessage;
 };
+
+export const isRejectedAction = (action: AnyAction) => action.type.endsWith('rejected');
+export const isLoadingAction = (action: AnyAction) => action.type.endsWith('pending');

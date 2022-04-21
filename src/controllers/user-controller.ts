@@ -1,5 +1,5 @@
 import userApi from '@/api/user-api';
-import {createError} from '@/utils';
+import {createErrorString} from '@/utils';
 import {TFormResponse} from '../components/Form/Form';
 
 const changeUser = async (data: TFormResponse) => {
@@ -11,7 +11,7 @@ const changeUser = async (data: TFormResponse) => {
     ]);
     return res;
   } catch (error) {
-    throw createError(error);
+    throw createErrorString(error);
   }
 };
 
@@ -22,7 +22,7 @@ const changeAvatar = async (file: File) => {
     const res = await userApi.changeAvatar(formData);
     console.info(res);
   } catch (error) {
-    throw createError(error);
+    throw createErrorString(error);
   }
 };
 
