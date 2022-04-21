@@ -6,8 +6,14 @@ import Error500 from '@/pages/Errors/Error500';
 import {useDispatch} from 'react-redux';
 import {getUser} from '@/store/auth/actions';
 import {useAppSelector, useDidUpdateEffect} from '@/utils';
+import setAppHeightStyleProperty from '@/utils/setAppHeightStyleProperty';
 import Router from '../Router/Router';
 import MainContainer from '../MainContainer/MainContainer';
+
+window.visualViewport.addEventListener('resize', setAppHeightStyleProperty);
+window.visualViewport.addEventListener('scroll', setAppHeightStyleProperty);
+
+setAppHeightStyleProperty();
 
 function App(): ReactElement {
   const dispatch = useDispatch();
