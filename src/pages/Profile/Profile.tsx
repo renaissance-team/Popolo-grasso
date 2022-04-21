@@ -3,8 +3,7 @@ import Avatar from '@/components/Avatar/Avatar';
 import Block from '@/components/Block/Block';
 import Button from '@/components/Button/Button';
 import Form, {TFormResponse} from '@/components/Form/Form';
-import userController from '@/controllers/user-controller';
-import {signUp} from '@/store/auth/actions';
+import {changeAvatar, changeUser} from '@/store/user/actions';
 import {useAppSelector} from '@/utils';
 import React, {ReactElement, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
@@ -22,7 +21,7 @@ const initialFormData = [
 
 function Profile(): ReactElement {
   const dispatch = useDispatch();
-  const {userData} = useAppSelector((state) => state.auth);
+  const {data: userData} = useAppSelector((state) => state.user);
 
   const [userFormData, setUserFormData] = useState(initialFormData);
   const [userAvatar, setUserAvatar] = useState<string>();
@@ -38,20 +37,19 @@ function Profile(): ReactElement {
   }, [userData]);
 
   const saveForm = (data: TFormResponse) => {
-    dispatch(signUp(data));
+    dispatch(changeUser(data));
   };
 
-  const changeAvatar = (event: React.FormEvent<HTMLInputElement>) => {
+  const changeAvatarHandler = (event: React.FormEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files?.length) {
       const file = target.files[0];
-      userController.changeAvatar(file);
+      dispatch(changeAvatar(file));
     }
   };
-
   return (
     <Block title="Профиль">
-      <Avatar value={userAvatar} onChange={changeAvatar} />
+      <Avatar value={userAvatar} onChange={changeAvatarHandler} />
       <Form initialData={userFormData} onSubmit={saveForm}>
         <Button type="submit">Сохранить</Button>
       </Form>

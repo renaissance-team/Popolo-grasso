@@ -5,9 +5,9 @@ import {TUserResponse} from './types';
 
 const baseURL = ENDPOINTS.ROOT + ENDPOINTS.USER.PATH;
 
-const changeUser = (data: TFormResponse) => axios.put(baseURL + ENDPOINTS.USER.PROFILE, data);
+const changeUser = (data: TFormResponse) => axios.put<TUserResponse>(baseURL + ENDPOINTS.USER.PROFILE, data);
 
-const changePassword = (data: TFormResponse) => axios.put(baseURL + ENDPOINTS.USER.PASSWORD, data);
+const changePassword = (data: TFormResponse) => axios.put<string>(baseURL + ENDPOINTS.USER.PASSWORD, data);
 
 const changeAvatar = (data: FormData) => axios.put<TUserResponse>(baseURL + ENDPOINTS.USER.AVATAR, data, {
   headers: {'Content-Type': 'text/plain'},

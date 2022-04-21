@@ -14,22 +14,22 @@ import Game from '@/components/Game/Game';
 import Private from './Private';
 
 function Router(): ReactElement {
-  const {loading, userData} = useAppSelector((state) => state.auth);
+  const {loading, isAuth} = useAppSelector((state) => state.auth);
 
-  if (!userData && loading) return <div>loading...</div>;
+  if (!isAuth && loading) return <div>loading...</div>;
 
   return (
     <Routes>
       <Route path={ROUTES.HOME} element={<Home />} />
-      <Route path={ROUTES.AUTH} element={<Private Component={Auth} allowed={!userData} redirectPath={ROUTES.HOME} />} />
+      <Route path={ROUTES.AUTH} element={<Private Component={Auth} allowed={!isAuth} redirectPath={ROUTES.HOME} />} />
       <Route
         path={ROUTES.REGISTRATION}
-        element={<Private Component={Register} allowed={!userData} redirectPath={ROUTES.HOME} />}
+        element={<Private Component={Register} allowed={!isAuth} redirectPath={ROUTES.HOME} />}
       />
-      <Route path={ROUTES.LEADERBOARD} element={<Private Component={Leaderboard} allowed={!!userData} />} />
-      <Route path={ROUTES.PROFILE} element={<Private Component={Profile} allowed={!!userData} />} />
-      <Route path={ROUTES.FORUM} element={<Private Component={Forum} allowed={!!userData} />} />
-      <Route path={ROUTES.GAME} element={<Private Component={Game} allowed={!!userData} />} />
+      <Route path={ROUTES.LEADERBOARD} element={<Private Component={Leaderboard} allowed={!!isAuth} />} />
+      <Route path={ROUTES.PROFILE} element={<Private Component={Profile} allowed={!!isAuth} />} />
+      <Route path={ROUTES.FORUM} element={<Private Component={Forum} allowed={!!isAuth} />} />
+      <Route path={ROUTES.GAME} element={<Private Component={Game} allowed={!!isAuth} />} />
       <Route path="*" element={<Error404 />} />
     </Routes>
   );

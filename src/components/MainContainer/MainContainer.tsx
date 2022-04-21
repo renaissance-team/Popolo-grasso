@@ -22,7 +22,7 @@ const navItems:Record<string, TNavItem> = {
 };
 
 export default function MainContainer({children}: IMainContainer) {
-  const {userData} = useAppSelector((state) => state.auth);
+  const {isAuth} = useAppSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -35,7 +35,7 @@ export default function MainContainer({children}: IMainContainer) {
         <nav className={s.nav}>
           <ul className={s.list}>
             {Object.values(navItems)
-              .filter((item) => (userData ? item : !item.private))
+              .filter((item) => (isAuth ? item : !item.private))
               .map(({label, link}) => (
                 <li key={label} className={s.list_item}>
                   <Link to={link} className={s.link}>
@@ -43,7 +43,7 @@ export default function MainContainer({children}: IMainContainer) {
                   </Link>
                 </li>
               ))}
-            {userData && (
+            {isAuth && (
             <li className={cn(s.list_item, s.list_item_last)}>
               <Button onClick={handleLogout} className={s.button_logout}>
                 Выход
