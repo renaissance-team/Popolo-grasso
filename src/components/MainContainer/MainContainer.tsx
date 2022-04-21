@@ -2,7 +2,7 @@ import React, {ReactElement} from 'react';
 import cn from 'classnames';
 import {ROUTES} from '@/pages/consts';
 import {useDispatch} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useAppSelector} from '@/utils';
 import {logout} from '@/store/auth/actions';
 import Button from '../Button/Button';
@@ -22,11 +22,12 @@ const navItems:Record<string, TNavItem> = {
 };
 
 export default function MainContainer({children}: IMainContainer) {
+  const navigate = useNavigate();
   const {isAuth} = useAppSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout(() => navigate(ROUTES.AUTH)));
   };
 
   return (

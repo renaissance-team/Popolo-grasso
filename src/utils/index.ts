@@ -1,4 +1,3 @@
-import {AnyAction} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export {default as http} from './AxiosClient';
@@ -15,6 +14,3 @@ export const createErrorString = (error: unknown) => {
   }
   return errorMessage;
 };
-
-export const isRejectedAction = (action: AnyAction) => action.type.endsWith('rejected');
-export const isLoadingAction = (action: AnyAction) => action.type.endsWith('pending');

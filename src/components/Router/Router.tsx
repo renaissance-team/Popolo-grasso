@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {Route, Routes} from 'react-router-dom';
 
 import {useAppSelector} from '@/utils';
@@ -14,22 +14,27 @@ import Game from '@/components/Game/Game';
 import Private from './Private';
 
 function Router(): ReactElement {
-  const {loading, isAuth} = useAppSelector((state) => state.auth);
+  const {isAuth, loading} = useAppSelector((state) => state.auth);
+  const [initializing, setInitializing] = useState(true);
 
-  if (loading) return <div>loading...</div>;
+  useEffect(() => {
+    if (!loading) setInitializing(false);
+  }, [loading]);
+
+  if (initializing) return <div>loading...</div>;
 
   return (
     <Routes>
       <Route path={ROUTES.HOME} element={<Home />} />
-      <Route path={ROUTES.AUTH} element={<Private Component={Auth} allowed={!isAuth} redirectPath={ROUTES.HOME} />} />
+      <Route path={ROUTES.AUTH} element={<Private Component={Auth} allowed={!isAuth} />} />
       <Route
         path={ROUTES.REGISTRATION}
-        element={<Private Component={Register} allowed={!isAuth} redirectPath={ROUTES.HOME} />}
+        element={<Private Component={Register} allowed={!isAuth} />}
       />
-      <Route path={ROUTES.LEADERBOARD} element={<Private Component={Leaderboard} allowed={!!isAuth} />} />
-      <Route path={ROUTES.PROFILE} element={<Private Component={Profile} allowed={!!isAuth} />} />
-      <Route path={ROUTES.FORUM} element={<Private Component={Forum} allowed={!!isAuth} />} />
-      <Route path={ROUTES.GAME} element={<Private Component={Game} allowed={!!isAuth} />} />
+      <Route path={ROUTES.LEADERBOARD} element={<Private Component={Leaderboard} allowed={isAuth} />} />
+      <Route path={ROUTES.PROFILE} element={<Private Component={Profile} allowed={isAuth} />} />
+      <Route path={ROUTES.FORUM} element={<Private Component={Forum} allowed={isAuth} />} />
+      <Route path={ROUTES.GAME} element={<Private Component={Game} allowed={isAuth} />} />
       <Route path="*" element={<Error404 />} />
     </Routes>
   );

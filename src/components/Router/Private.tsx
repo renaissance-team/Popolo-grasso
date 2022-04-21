@@ -1,15 +1,13 @@
-import {ROUTES} from '@/pages/consts';
+import Error404 from '@/pages/Errors/Error404';
 import React from 'react';
-import {Navigate} from 'react-router-dom';
 
 interface IPrivateProps {
-    Component: React.FC;
-    allowed: boolean;
-    redirectPath?: string;
-  }
+  Component: React.FC;
+  allowed: boolean;
+}
 
-function Private({Component, allowed, redirectPath = ROUTES.AUTH}: IPrivateProps) {
-  return allowed ? <Component /> : <Navigate to={redirectPath} />;
+function Private({Component, allowed}: IPrivateProps) {
+  return allowed ? <Component /> : <Error404 />;
 }
 
 export default Private;
