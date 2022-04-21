@@ -18,7 +18,6 @@ module.exports = {
       },
     },
   },
-  parserOptions: {project: ['./tsconfig.json']},
   rules: {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
