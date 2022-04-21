@@ -6,6 +6,7 @@ $green: #bab74b;
 $yellow: #fee74b;
 $purple: #b575bc;
 $darkPurple01: #261b30;
+$darkPurple02: #452960;
 $darkPurple: #362644;
 $darkPurpleOpacity: rgba($darkPurple, 0.7);
 $red: #ec5435;
@@ -48,4 +49,10 @@ $light-grey: lighten($black, 95%);
     padding-top: 50px;
     margin-top: auto;
   }
+}
+
+@mixin centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

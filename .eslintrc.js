@@ -18,7 +18,6 @@ module.exports = {
       },
     },
   },
-  parserOptions: {project: ['./tsconfig.json']},
   rules: {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
@@ -43,8 +42,10 @@ module.exports = {
     'class-methods-use-this': 1,
     '@typescript-eslint/no-unused-vars': 1,
     'import/prefer-default-export': 0,
+    'comma-dangle': ['error', 'only-multiline'],
   },
   env: {
     browser: true,
+    jest: true,
   },
 };
