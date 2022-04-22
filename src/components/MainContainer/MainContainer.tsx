@@ -1,5 +1,6 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import classNames from 'classnames';
+import {AnyAction} from 'redux';
 import {ROUTES} from '@/pages/consts';
 import {useDispatch} from 'react-redux';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
@@ -41,7 +42,7 @@ export default function MainContainer({children}: IMainContainer) {
   }, [location.pathname]);
 
   const handleLogout = () => {
-    dispatch(logout(() => navigate(ROUTES.AUTH)));
+    dispatch(logout(() => navigate(ROUTES.AUTH)) as unknown as AnyAction);
   };
 
   const hideError = (key: string) => {

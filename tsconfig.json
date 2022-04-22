@@ -19,7 +19,11 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["jest", "node"],
     "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
-  "include": ["src", "typings/**/*.d.ts", "./node_modules/@types", ".eslintrc.js", "webpack.config.js"],
+  "include": [
+    "src",
+  ],
+  "exclude": ["**/node_modules"]
 }

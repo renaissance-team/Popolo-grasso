@@ -1,4 +1,5 @@
 import React, {ReactElement, useEffect} from 'react';
+import {AnyAction} from 'redux';
 import {BrowserRouter} from 'react-router-dom';
 import {ErrorBoundary} from 'react-error-boundary';
 
@@ -21,11 +22,11 @@ function App(): ReactElement {
   const {data: userData} = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(init());
+    dispatch(init() as unknown as AnyAction);
   }, []);
 
   useDidUpdateEffect(() => {
-    if (isAuth && !userData) dispatch(getUser());
+    if (isAuth && !userData) dispatch(getUser() as unknown as AnyAction);
   }, [isAuth, userData]);
 
   return (

@@ -1,4 +1,5 @@
 import {TUserResponse} from '@/api/types';
+import {AnyAction} from 'redux';
 import Avatar from '@/components/Avatar/Avatar';
 import Block from '@/components/Block/Block';
 import Button from '@/components/Button/Button';
@@ -37,14 +38,14 @@ function Profile(): ReactElement {
   }, [userData]);
 
   const saveForm = (data: TFormResponse) => {
-    dispatch(changeUser(data));
+    dispatch(changeUser(data) as unknown as AnyAction);
   };
 
   const changeAvatarHandler = (event: React.FormEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files?.length) {
       const file = target.files[0];
-      dispatch(changeAvatar(file));
+      dispatch(changeAvatar(file) as unknown as AnyAction);
     }
   };
   return (
