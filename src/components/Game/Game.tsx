@@ -21,8 +21,6 @@ import characterWalkLeft from './sprites/character/characterWalkLeft.png';
 import characterStandRight from './sprites/character/characterStandRight.png';
 import characterStandLeft from './sprites/character/characterStandLeft.png';
 
-import FIRST_LEVEL from './levels/firstLevel';
-
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 
@@ -40,6 +38,47 @@ const MOVE_TO_LEFT_VELOCITY = 10;
 const MOVE_TO_UP_VELOCITY = 15;
 const MOVE_TO_RIGHT_VELOCITY = 10;
 const SCORE_TERM = 1;
+
+const PLATFORM_COLOR = 'blue';
+const PLATFORM_HEIGHT = 25;
+const BASE_PLATFORM_HEIGHT = PLATFORM_HEIGHT;
+
+const PLAYER_JUMP_HEIGHT = (MOVE_TO_UP_VELOCITY ** 2) / (GRAVITY * 2); // APPROXIMATE (?)
+const FIRST_LEVEL_PLATFORM_HEIGHT = CANVAS_HEIGHT - BASE_PLATFORM_HEIGHT - PLAYER_JUMP_HEIGHT;
+const SECOND_LEVEL_PLATFORM_HEIGHT = FIRST_LEVEL_PLATFORM_HEIGHT - PLAYER_JUMP_HEIGHT;
+
+const MEDIUM_PLATFORM_WIDTH = 250;
+const LARGE_PLATFORM_WIDTH = 500;
+
+const MEDIUM_DISTANCE_BETWEEN_PLATFORMS = 150;
+const LARGE_DISTANCE_BETWEEN_PLATFORMS = 200;
+
+const DEFAULT_BASE_PLATFORM_STATE: ICanvasRectangleObject = {
+  position: {
+    x: 0,
+    y: CANVAS_HEIGHT - BASE_PLATFORM_HEIGHT,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  width: CANVAS_WIDTH,
+  height: BASE_PLATFORM_HEIGHT,
+};
+
+const FIRST_PLATFORM: IPlatformState = {
+  position: {
+    x: 0,
+    y: FIRST_LEVEL_PLATFORM_HEIGHT,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  width: CANVAS_WIDTH,
+  height: PLATFORM_HEIGHT,
+  playerOnThePlatform: false,
+};
 
 const initialKeyboardState: IKeyboardInteractionState = {
   arrowLeft: {
@@ -70,6 +109,7 @@ CHARACTER_STAND_LEFT_IMAGE.src = characterStandLeft;
 
 const initialGameState: IGameState = {
   started: false,
+  offsetX: 0,
 };
 
 export default function Game(): React.ReactElement {
@@ -105,22 +145,9 @@ export default function Game(): React.ReactElement {
 
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
 
-  const DEFAULT_BASE_PLATFORM_STATE: ICanvasRectangleObject = {
-    position: {
-      x: 0,
-      y: CANVAS_HEIGHT - 25,
-    },
-    velocity: {
-      x: 0,
-      y: 0,
-    },
-    width: CANVAS_WIDTH,
-    height: 25,
-  };
-
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
-  const platformsStateRef = useRef<IPlatformState[]>(FIRST_LEVEL);
+  const platformsStateRef = useRef<IPlatformState[]>([FIRST_PLATFORM]);
 
   const mouseInteractionStateRef = useRef<IMouseInteractionState>({
     click: {
@@ -162,8 +189,8 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    platformsStateRef.current.forEach((platformState, index, array) => {
-      canvasContext.fillStyle = index === array.length - 1 ? 'yellow' : 'blue';
+    platformsStateRef.current.forEach((platformState) => {
+      canvasContext.fillStyle = PLATFORM_COLOR;
       canvasContext.fillRect(
         platformState.position.x,
         platformState.position.y,
@@ -282,6 +309,46 @@ export default function Game(): React.ReactElement {
     [handleChangePlayerPositionX, handleChangePlayerPositionY],
   );
 
+  const increaseGameOffsetX = () => {
+    if (keyboardInteractionStateRef.current.arrowRight.pressed) {
+      gameStateRef.current.offsetX += MOVE_TO_LEFT_VELOCITY;
+    }
+  };
+
+  const getRandomBoolean = (): boolean => Math.random() < 0.5;
+
+  const handleAddPlatformInPlatformsState = () => {
+    const randomBooleanForPlatformLevel = getRandomBoolean();
+    const randomBooleanForPlatformWidth = getRandomBoolean();
+    const randomBooleanForDistanceBetweenPlatforms = getRandomBoolean();
+
+    const lastPlatformInState = platformsStateRef.current[platformsStateRef.current.length - 1];
+
+    platformsStateRef.current.push({
+      position: {
+        x: randomBooleanForDistanceBetweenPlatforms
+          ? lastPlatformInState.position.x + lastPlatformInState.width + MEDIUM_DISTANCE_BETWEEN_PLATFORMS
+          : lastPlatformInState.position.x + lastPlatformInState.width + LARGE_DISTANCE_BETWEEN_PLATFORMS,
+        y: randomBooleanForPlatformLevel
+          ? FIRST_LEVEL_PLATFORM_HEIGHT
+          : SECOND_LEVEL_PLATFORM_HEIGHT,
+      },
+      width: randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH,
+      height: PLATFORM_HEIGHT,
+      playerOnThePlatform: false,
+      velocity: {
+        x: 0,
+        y: 0,
+      },
+    });
+  };
+
+  const handleChangeGameOffsetX = () => {
+    if (!(gameStateRef.current.offsetX % (CANVAS_WIDTH / 2)) && gameStateRef.current.offsetX > 0) {
+      handleAddPlatformInPlatformsState();
+    }
+  };
+
   const handleMovePlatforms = () => {
     if (keyboardInteractionStateRef.current.arrowRight.pressed) {
       platformsStateRef.current = platformsStateRef.current.map((platformState) => {
@@ -289,15 +356,13 @@ export default function Game(): React.ReactElement {
           increasePlayerScore();
         }
 
-        return (
-          {
-            ...platformState,
-            position: {
-              ...platformState.position,
-              x: platformState.position.x - MOVE_TO_LEFT_VELOCITY,
-            },
-          }
-        );
+        return {
+          ...platformState,
+          position: {
+            ...platformState.position,
+            x: platformState.position.x - MOVE_TO_LEFT_VELOCITY,
+          },
+        };
       });
     } else if (keyboardInteractionStateRef.current.arrowLeft.pressed) {
       platformsStateRef.current = platformsStateRef.current.map((platformState) => (
@@ -316,12 +381,12 @@ export default function Game(): React.ReactElement {
     const leftStopEdgePositionX = CANVAS_WIDTH / 6;
     const rightStopEdgePositionX = CANVAS_WIDTH / 3;
 
-    const isPlayerHitLeftStopEdge = playerStateRef.current.position.x > leftStopEdgePositionX;
-    const isPlayerHitRightStopEdge = playerStateRef.current.position.x <= rightStopEdgePositionX;
+    const isPlayerHitLeftStopEdge = playerStateRef.current.position.x < leftStopEdgePositionX;
+    const isPlayerHitRightStopEdge = playerStateRef.current.position.x > rightStopEdgePositionX;
 
-    if (keyboardInteractionStateRef.current.arrowLeft.pressed && isPlayerHitLeftStopEdge) {
+    if (keyboardInteractionStateRef.current.arrowLeft.pressed && !isPlayerHitLeftStopEdge) {
       handlePlayerMoveToLeftStart();
-    } else if (keyboardInteractionStateRef.current.arrowRight.pressed && isPlayerHitRightStopEdge) {
+    } else if (keyboardInteractionStateRef.current.arrowRight.pressed && !isPlayerHitRightStopEdge) {
       handlePlayerMoveToRightStart();
     } else {
       handlePlayerMoveToLeftAndRightStop();
@@ -632,6 +697,10 @@ export default function Game(): React.ReactElement {
 
       handleChangePlayerVelocityX();
       handleChangePlayerVelocityY();
+
+      increaseGameOffsetX();
+
+      handleChangeGameOffsetX();
 
       playerCollisionDetectionWithPlatforms();
 
