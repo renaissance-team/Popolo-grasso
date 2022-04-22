@@ -11,6 +11,7 @@ import {
   IGameMenu,
   IGameState,
   IKeyboardInteractionState,
+  IMouseInteractionState,
   IPlatformState,
   IPlayerState,
 } from './types';
@@ -20,7 +21,8 @@ import FIRST_LEVEL from './levels/firstLevel';
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 
-import useWindowVisualViewportSize from './hooks/useWindowVisualViewportSize/useWindowVisualViewportSize';
+const CANVAS_HEIGHT = 500;
+const CANVAS_WIDTH = 500;
 
 const GRAVITY = 1;
 const PLAYER_INITIAL_VELOCITY_X = 0;
@@ -56,15 +58,13 @@ const initialGameState: IGameState = {
 export default function Game(): React.ReactElement {
   const gameStateRef = useRef<IGameState>(initialGameState);
 
-  const windowVisualViewportSize = useWindowVisualViewportSize();
-
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
 
   const DEFAULT_PLAYER_STATE: IPlayerState = {
     position: {
-      x: windowVisualViewportSize.width / PLAYER_INITIAL_POSITION_X_DEVIDER,
+      x: CANVAS_WIDTH / PLAYER_INITIAL_POSITION_X_DEVIDER,
       y: PLAYEY_INITIAL_POSITION_Y,
     },
     velocity: {
@@ -82,13 +82,13 @@ export default function Game(): React.ReactElement {
   const DEFAULT_BASE_PLATFORM_STATE: ICanvasRectangleObject = {
     position: {
       x: 0,
-      y: windowVisualViewportSize.height - 25,
+      y: CANVAS_HEIGHT - 25,
     },
     velocity: {
       x: 0,
       y: 0,
     },
-    width: windowVisualViewportSize.width,
+    width: CANVAS_WIDTH,
     height: 25,
   };
 
@@ -96,15 +96,10 @@ export default function Game(): React.ReactElement {
 
   const platformsStateRef = useRef<IPlatformState[]>(FIRST_LEVEL);
 
-  const mouseInteractionStateRef = useRef<{
+  const mouseInteractionStateRef = useRef<IMouseInteractionState>({
     click: {
-      clientX: number,
-      clientY: number,
-    }
-  }>({
-    click: {
-      clientX: 0,
-      clientY: 0,
+      clientXOnCanvasElem: 0,
+      clientYOnCanvasElem: 0,
     },
   });
 
@@ -247,22 +242,6 @@ export default function Game(): React.ReactElement {
     [handleChangePlayerPositionX, handleChangePlayerPositionY],
   );
 
-  const drawPlayerScore = () => {
-    if (!canvasRef.current) {
-      return;
-    }
-
-    const canvasContext = canvasRef.current.getContext('2d');
-
-    if (!canvasContext) {
-      return;
-    }
-
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = 'bold 24px sans-serif';
-    canvasContext.fillText(`Score: ${playerStateRef.current.score}`, 50, 50);
-  };
-
   const handleMovePlatforms = () => {
     if (keyboardInteractionStateRef.current.arrowRight.pressed) {
       platformsStateRef.current = platformsStateRef.current.map((platformState) => {
@@ -294,8 +273,8 @@ export default function Game(): React.ReactElement {
   };
 
   const handleChangePlayerVelocityX = useCallback(() => {
-    const leftStopEdgePositionX = windowVisualViewportSize.width / 6;
-    const rightStopEdgePositionX = windowVisualViewportSize.width / 3;
+    const leftStopEdgePositionX = CANVAS_WIDTH / 6;
+    const rightStopEdgePositionX = CANVAS_WIDTH / 3;
 
     const isPlayerHitLeftStopEdge = playerStateRef.current.position.x > leftStopEdgePositionX;
     const isPlayerHitRightStopEdge = playerStateRef.current.position.x <= rightStopEdgePositionX;
@@ -328,7 +307,9 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    canvasContext.clearRect(
+    canvasContext.fillStyle = 'white';
+
+    canvasContext.fillRect(
       0,
       0,
       canvasRef.current.width,
@@ -398,6 +379,21 @@ export default function Game(): React.ReactElement {
     gameStateRef.current.started = true;
   };
 
+  const handlePauseButtonClick = () => {
+    gameStateRef.current.started = false;
+  };
+
+  const pauseButtonRef = useRef<ICanvasButtonObject>({
+    title: 'Пауза',
+    onClick: handlePauseButtonClick,
+    position: {
+      x: 0,
+      y: 0,
+    },
+    width: 0,
+    height: 0,
+  });
+
   const menuStateRef = useRef<IGameMenu>({
     buttons: [
       {
@@ -413,6 +409,80 @@ export default function Game(): React.ReactElement {
     ],
   });
 
+  const drawPlayerScore = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const DEFAULT_SCORE_TEXT_MARGIN_TOP = 10;
+    const DEFAULT_SCORE_TEXT_MARGIN_LEFT = 10;
+    const DEFAULT_SCORE_FONT_SIZE = 16;
+
+    canvasContext.fillStyle = 'red';
+    canvasContext.font = `bold ${DEFAULT_SCORE_FONT_SIZE}px sans-serif`;
+
+    const scoreText = `Счёт: ${playerStateRef.current.score}`;
+
+    const scoreTextMeasurements = canvasContext.measureText(scoreText);
+
+    const height = Math.abs(
+      scoreTextMeasurements.actualBoundingBoxAscent,
+    ) + Math.abs(
+      scoreTextMeasurements.actualBoundingBoxDescent,
+    );
+
+    canvasContext.fillText(
+      scoreText,
+      DEFAULT_SCORE_TEXT_MARGIN_LEFT,
+      height + DEFAULT_SCORE_TEXT_MARGIN_TOP,
+    );
+  };
+
+  const drawPauseGameButton = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const DEFAULT_PAUSE_GAME_BUTTON_TITLE_MARGIN_TOP = 10;
+    const DEFAULT_PAUSE_GAME_BUTTON_TITLE_MARGIN_RIGHT = 10;
+    const DEFAULT_PAUSE_GAME_BUTTON_TITLE_FONT_SIZE = 16;
+
+    canvasContext.fillStyle = 'red';
+    canvasContext.font = `bold ${DEFAULT_PAUSE_GAME_BUTTON_TITLE_FONT_SIZE}px sans-serif`;
+
+    const pauseGameButtonTitleTextMeasuremnts = canvasContext.measureText(pauseButtonRef.current.title);
+
+    const {width} = pauseGameButtonTitleTextMeasuremnts;
+    const height = Math.abs(
+      pauseGameButtonTitleTextMeasuremnts.actualBoundingBoxAscent,
+    ) + Math.abs(
+      pauseGameButtonTitleTextMeasuremnts.actualBoundingBoxDescent,
+    );
+
+    pauseButtonRef.current.width = width;
+    pauseButtonRef.current.height = height;
+    pauseButtonRef.current.position.x = CANVAS_WIDTH - width - DEFAULT_PAUSE_GAME_BUTTON_TITLE_MARGIN_RIGHT;
+    pauseButtonRef.current.position.y = height + DEFAULT_PAUSE_GAME_BUTTON_TITLE_MARGIN_TOP;
+
+    canvasContext.fillText(
+      pauseButtonRef.current.title,
+      pauseButtonRef.current.position.x,
+      pauseButtonRef.current.position.y,
+    );
+  };
+
   const drawMenu = () => {
     if (!canvasRef.current) {
       return;
@@ -425,9 +495,10 @@ export default function Game(): React.ReactElement {
     }
 
     const DEFAULT_BUTTON_MARGIN = 10;
+    const DEFAULT_BUTTON_FONT_SIZE = 24;
 
     canvasContext.fillStyle = 'red';
-    canvasContext.font = 'bold 44px sans-serif';
+    canvasContext.font = `bold ${DEFAULT_BUTTON_FONT_SIZE}px sans-serif`;
 
     menuStateRef.current.buttons = menuStateRef.current.buttons.map((buttonState, index) => {
       const buttonTextMeasurements = canvasContext.measureText(buttonState.title);
@@ -440,10 +511,10 @@ export default function Game(): React.ReactElement {
       );
 
       const position: ICanvasButtonObject['position'] = {
-        x: (windowVisualViewportSize.width / 2) - (width / 2),
+        x: (CANVAS_WIDTH / 2) - (width / 2),
         y: index === 0
-          ? (windowVisualViewportSize.height / 2)
-          : (windowVisualViewportSize.height / 2) + (index * height) + DEFAULT_BUTTON_MARGIN,
+          ? (CANVAS_HEIGHT / 2)
+          : (CANVAS_HEIGHT / 2) + (index * height) + DEFAULT_BUTTON_MARGIN,
       };
 
       canvasContext.fillText(
@@ -463,24 +534,41 @@ export default function Game(): React.ReactElement {
 
   const resetMouseInteractionState = () => {
     mouseInteractionStateRef.current.click = {
-      clientX: 0,
-      clientY: 0,
+      clientXOnCanvasElem: 0,
+      clientYOnCanvasElem: 0,
     };
   };
 
+  const userMouseInteractionWithCanvasButtonObjectHappened = (
+    mouseInteractionState: IMouseInteractionState,
+    canvasButtonObject: ICanvasButtonObject,
+  ): boolean => (
+    mouseInteractionState.click.clientXOnCanvasElem + 1 >= canvasButtonObject.position.x
+        && (mouseInteractionState.click.clientXOnCanvasElem + 1
+          <= canvasButtonObject.position.x + canvasButtonObject.width)
+        && (mouseInteractionState.click.clientYOnCanvasElem + 1
+          >= canvasButtonObject.position.y - canvasButtonObject.height)
+        && mouseInteractionState.click.clientYOnCanvasElem + 1 <= canvasButtonObject.position.y
+  );
+
   const userInteractionDetectionWithMenu = () => {
     menuStateRef.current.buttons.forEach((buttonState) => {
-      if (
-        mouseInteractionStateRef.current.click.clientX + 1 >= buttonState.position.x
-        && mouseInteractionStateRef.current.click.clientX + 1 <= buttonState.position.x + buttonState.width
-        && mouseInteractionStateRef.current.click.clientY + 1 >= buttonState.position.y - buttonState.height
-        && mouseInteractionStateRef.current.click.clientY + 1 <= buttonState.position.y
-      ) {
+      if (userMouseInteractionWithCanvasButtonObjectHappened(
+        mouseInteractionStateRef.current,
+        buttonState,
+      )) {
         buttonState.onClick();
       }
     });
+  };
 
-    resetMouseInteractionState();
+  const userInteractionDetectionWithPauseButton = () => {
+    if (userMouseInteractionWithCanvasButtonObjectHappened(
+      mouseInteractionStateRef.current,
+      pauseButtonRef.current,
+    )) {
+      pauseButtonRef.current.onClick();
+    }
   };
 
   const animate = useCallback(() => {
@@ -491,8 +579,6 @@ export default function Game(): React.ReactElement {
     if (gameStateRef.current.started) {
       drawBasePlatform();
 
-      drawPlatforms();
-
       updatePlayer();
 
       handleChangePlayerVelocityX();
@@ -500,7 +586,9 @@ export default function Game(): React.ReactElement {
 
       playerCollisionDetectionWithPlatforms();
 
+      drawPlatforms();
       drawPlayerScore();
+      drawPauseGameButton();
     } else {
       drawMenu();
     }
@@ -541,17 +629,26 @@ export default function Game(): React.ReactElement {
   };
 
   const handleMouseClick = (event: MouseEvent) => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasRect = canvasRef.current.getBoundingClientRect();
+
     const {
       clientX,
       clientY,
     } = event;
 
     mouseInteractionStateRef.current.click = {
-      clientX,
-      clientY,
+      clientXOnCanvasElem: clientX - canvasRect.x,
+      clientYOnCanvasElem: clientY - canvasRect.y,
     };
 
     userInteractionDetectionWithMenu();
+    userInteractionDetectionWithPauseButton();
+
+    resetMouseInteractionState();
   };
 
   useLayoutEffect(() => {
@@ -583,17 +680,33 @@ export default function Game(): React.ReactElement {
     window.document.body.style.overflowY = 'hidden';
     window.document.body.style.margin = '0';
 
+    const rootElem = window.document.querySelector<HTMLElement>('#root');
+
+    if (rootElem) {
+      rootElem.style.height = 'var(--app-height)';
+      rootElem.style.display = 'flex';
+      rootElem.style.backgroundColor = 'black';
+    }
+
     return () => {
       window.document.body.style.overflowX = 'auto';
       window.document.body.style.overflowY = 'auto';
+      window.document.body.style.height = 'unset';
+
+      if (rootElem) {
+        rootElem.style.height = 'unset';
+        rootElem.style.display = 'unset';
+        rootElem.style.backgroundColor = 'unset';
+      }
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      width={windowVisualViewportSize.width}
-      height={windowVisualViewportSize.height}
+      width={CANVAS_WIDTH}
+      height={CANVAS_HEIGHT}
+      style={{margin: 'auto'}}
     />
   );
 }
