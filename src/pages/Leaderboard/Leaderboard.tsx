@@ -1,49 +1,38 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, useEffect} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {useDispatch, useSelector} from 'react-redux';
+import {AnyAction} from 'redux';
+import {
+  selectLeaderboardData,
+  selectLeaderboardError,
+  setRequestParams,
+  selectLeaderboardHasMore,
+} from './redux/LeaderboardSlice';
 
-import {DEFAULT_SERVER_ERROR} from '@/api/consts';
 import LeaderboardItem from './components/LeaderboardItem/LeaderboardItem';
-import {getLeaderboard, LeaderResponseType} from './api/getLeaderboard';
+import {LeaderResponseType} from './api/getLeaderboard';
 
 import s from './leaderboard.module.scss';
 
 export default function Leaderboard(): ReactElement {
-  const limit = 5;
-  const [data, setData] = useState<LeaderResponseType[]>([]);
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
+  const data = useSelector(selectLeaderboardData);
+  const error = useSelector(selectLeaderboardError);
+  const dispatch = useDispatch();
+  const hasMore = useSelector(selectLeaderboardHasMore);
 
-  const fetchLeaderboard = async () => {
-    setError(undefined);
-    const body = {
-      ratingFieldName: 'popolo_grasso_points',
-      cursor: page,
-      limit,
-    };
-    try {
-      const response = await getLeaderboard(body);
-      if (response?.length) {
-        const result = page === 0 ? response : data.concat(response);
-        setData(result);
-        setPage(page + limit);
-      } else {
-        setHasMore(false);
-      }
-    } catch (e) {
-      setError(DEFAULT_SERVER_ERROR);
-    }
+  const getLeaderboard = async () => {
+    dispatch(setRequestParams() as unknown as AnyAction);
   };
 
   useEffect(() => {
-    fetchLeaderboard();
+    getLeaderboard();
   }, []);
 
   const renderLeaderboardContent = () => (
     <InfiniteScroll
       className={s.content}
       dataLength={data?.length}
-      next={fetchLeaderboard}
+      next={getLeaderboard}
       hasMore={hasMore}
       loader={!error ? <h4>&nbsp;Загрузка...</h4> : null}
       height={400}
