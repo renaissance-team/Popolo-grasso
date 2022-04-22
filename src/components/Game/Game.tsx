@@ -469,12 +469,13 @@ export default function Game(): React.ReactElement {
   };
 
   const userInteractionDetectionWithMenu = () => {
+    /* TODO исправить прибавление константных 90 пикселей, они здесь ииз-за смещения канвы засчет меню */
     menuStateRef.current.buttons.forEach((buttonState) => {
       if (
         mouseInteractionStateRef.current.click.clientX + 1 >= buttonState.position.x
         && mouseInteractionStateRef.current.click.clientX + 1 <= buttonState.position.x + buttonState.width
-        && mouseInteractionStateRef.current.click.clientY + 1 >= buttonState.position.y - buttonState.height
-        && mouseInteractionStateRef.current.click.clientY + 1 <= buttonState.position.y
+        && mouseInteractionStateRef.current.click.clientY + 1 >= buttonState.position.y - buttonState.height + 90
+        && mouseInteractionStateRef.current.click.clientY + 1 <= buttonState.position.y + 90
       ) {
         buttonState.onClick();
       }
