@@ -1,4 +1,5 @@
 import React, {ReactElement} from 'react';
+import {AnyAction} from 'redux';
 import cn from 'classnames';
 import {ROUTES} from '@/pages/consts';
 import {useDispatch} from 'react-redux';
@@ -27,7 +28,7 @@ export default function MainContainer({children}: IMainContainer) {
 
   const dispatch = useDispatch();
   const handleLogout = () => {
-    dispatch(logout(() => navigate(ROUTES.AUTH)));
+    dispatch(logout(() => navigate(ROUTES.AUTH)) as unknown as AnyAction);
   };
 
   return (

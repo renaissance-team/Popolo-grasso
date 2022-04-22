@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import s from './input.module.scss';
 
-interface IInputProps extends React.HTMLProps<HTMLInputElement> {
+export interface IInputProps extends React.HTMLProps<HTMLInputElement> {
   errorText?: string;
   className?: string
 }
@@ -12,11 +12,6 @@ export default function Input({
 }: IInputProps) {
   return (
     <div className={cn(s.wrapper, className)}>
-      {label && (
-        <label className={s.label} htmlFor={id}>
-          {label}
-        </label>
-      )}
       <input
         id={id}
         className={cn(
@@ -27,8 +22,14 @@ export default function Input({
         type={type}
         value={value == null ? '' : value}
         {...props}
+        placeholder="placeholder"
       />
-      {errorText && errorText !== '' && <span className={s.errorText} />}
+      {label && (
+        <label className={s.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
+      {errorText && errorText !== '' && <span className={s.errorText}>{errorText}</span>}
     </div>
   );
 }

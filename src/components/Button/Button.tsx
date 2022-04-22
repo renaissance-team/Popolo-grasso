@@ -14,7 +14,7 @@ interface IButtonTProps extends React.HTMLProps<HTMLButtonElement> {
 }
 
 export default function Button({
-  type = 'button', children, view, className, ...props
+  type = 'button', children, className, view = EButtonView.default, ...props
 }: IButtonTProps) {
   return (
     <button

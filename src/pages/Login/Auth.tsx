@@ -1,4 +1,5 @@
 import React from 'react';
+import {AnyAction} from 'redux';
 import {Link, useNavigate} from 'react-router-dom';
 import Block from '@/components/Block/Block';
 import {useDispatch} from 'react-redux';
@@ -18,7 +19,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formAction = (data: TFormResponse) => {
-    dispatch(signIn({data, redirectFn: () => navigate(ROUTES.HOME)}));
+    dispatch(signIn({data, redirectFn: () => navigate(ROUTES.HOME)}) as unknown as AnyAction);
   };
   return (
     <Block title="Вход">

@@ -8,10 +8,16 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
+    "@testing-library/dom": "^8.13.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "12.1.2",
+    "@testing-library/user-event": "^14.1.1",
+    "@types/jest": "^27.4.1",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
     "@types/react-infinite-scroll-component": "^5.0.0",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "autoprefixer": "^10.4.4",
@@ -29,19 +35,24 @@
     "eslint-plugin-react-hooks": "^4.4.0",
     "eslint-webpack-plugin": "^3.1.1",
     "html-webpack-plugin": "^5.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
     "lint-staged": "^12.1.7",
     "mini-css-extract-plugin": "^2.6.0",
     "path": "^0.12.7",
     "postcss-loader": "^6.2.1",
     "postcss-scss": "^4.0.3",
     "prettier": "^2.6.1",
+    "react-app-polyfill": "^3.0.0",
     "react-dev-utils": "^12.0.0",
+    "react-test-renderer": "^18.0.0",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "stylelint": "^14.6.1",
     "stylelint-config-recommended": "^7.0.0",
     "stylelint-scss": "^4.2.0",
+    "ts-jest": "^27.1.4",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.3",
     "webpack": "^5.70.0",
@@ -60,7 +71,7 @@
     "react-hook-form": "^7.28.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-markdown": "^8.0.2",
-    "react-redux": "7.2.3",
+    "react-redux": "8.0.1",
     "react-router-dom": "^6.2.2",
     "react-use": "^17.3.2",
     "redux": "^4.2.0",
@@ -71,14 +82,8 @@
     "build": "webpack --mode production",
     "lint:style": "yarn stylelint './src/**/*.{scss,sass}'",
     "lint": "yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
-    "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "*.{scss,sass}": [
-      "stylelint --fix"
-    ]
+    "prepare": "husky install",
+    "test": "jest --watch",
+    "test:upd": "jest --updateSnapshot"
   }
 }
