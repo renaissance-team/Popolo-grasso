@@ -16,6 +16,11 @@ import {
   IPlayerState,
 } from './types';
 
+import characterWalkRight from './sprites/character/characterWalkRight.png';
+import characterWalkLeft from './sprites/character/characterWalkLeft.png';
+import characterStandRight from './sprites/character/characterStandRight.png';
+import characterStandLeft from './sprites/character/characterStandLeft.png';
+
 import FIRST_LEVEL from './levels/firstLevel';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
@@ -29,10 +34,10 @@ const PLAYER_INITIAL_VELOCITY_X = 0;
 const PLAYER_INITIAL_VELOCITY_Y = GRAVITY;
 const PLAYER_INITIAL_POSITION_X_DEVIDER = 6;
 const PLAYEY_INITIAL_POSITION_Y = 0;
-const PLAYER_WIDTH = 25;
-const PLAYER_HEIGHT = 25;
+const PLAYER_WIDTH = 100;
+const PLAYER_HEIGHT = 145;
 const MOVE_TO_LEFT_VELOCITY = 10;
-const MOVE_TO_UP_VELOCITY = 10;
+const MOVE_TO_UP_VELOCITY = 15;
 const MOVE_TO_RIGHT_VELOCITY = 10;
 const SCORE_TERM = 1;
 
@@ -50,6 +55,18 @@ const initialKeyboardState: IKeyboardInteractionState = {
     pressed: false,
   },
 };
+
+const CHARACTER_WALK_RIGHT_IMAGE = new Image();
+CHARACTER_WALK_RIGHT_IMAGE.src = characterWalkRight;
+
+const CHARACTER_WALK_LEFT_IMAGE = new Image();
+CHARACTER_WALK_LEFT_IMAGE.src = characterWalkLeft;
+
+const CHARACTER_STAND_RIGHT_IMAGE = new Image();
+CHARACTER_STAND_RIGHT_IMAGE.src = characterStandRight;
+
+const CHARACTER_STAND_LEFT_IMAGE = new Image();
+CHARACTER_STAND_LEFT_IMAGE.src = characterStandLeft;
 
 const initialGameState: IGameState = {
   started: false,
@@ -75,6 +92,15 @@ export default function Game(): React.ReactElement {
     height: PLAYER_HEIGHT,
     score: 0,
     onTheBasePlatform: false,
+    onThePlatform: false,
+    sprites: {
+      currentSprite: CHARACTER_STAND_RIGHT_IMAGE,
+      walkRightSprite: CHARACTER_WALK_RIGHT_IMAGE,
+      walkLeftSprite: CHARACTER_WALK_LEFT_IMAGE,
+      standRightSprite: CHARACTER_STAND_RIGHT_IMAGE,
+      standLeftSprite: CHARACTER_STAND_LEFT_IMAGE,
+    },
+    frame: 0,
   };
 
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
@@ -223,8 +249,12 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    canvasContext.fillStyle = 'red';
-    canvasContext.fillRect(
+    canvasContext.drawImage(
+      playerStateRef.current.sprites.currentSprite,
+      100 * playerStateRef.current.frame,
+      0,
+      100,
+      145,
       playerStateRef.current.position.x,
       playerStateRef.current.position.y,
       playerStateRef.current.width,
@@ -232,8 +262,18 @@ export default function Game(): React.ReactElement {
     );
   };
 
+  const updatePlayerFrame = () => {
+    playerStateRef.current.frame += 1;
+
+    if (playerStateRef.current.frame > 59) {
+      playerStateRef.current.frame = 0;
+    }
+  };
+
   const updatePlayer = useCallback(
     () => {
+      updatePlayerFrame();
+
       drawPlayer();
 
       handleChangePlayerPositionX();
@@ -291,7 +331,12 @@ export default function Game(): React.ReactElement {
   }, []);
 
   const handleChangePlayerVelocityY = useCallback(() => {
-    if (keyboardInteractionStateRef.current.arrowUp.pressed) {
+    const isPlayerCanMoveToUp = keyboardInteractionStateRef.current.arrowUp.pressed
+    && (
+      playerStateRef.current.onThePlatform || playerStateRef.current.onTheBasePlatform
+    );
+
+    if (isPlayerCanMoveToUp) {
       handlePlayerMoveToUpStart();
     }
   }, []);
@@ -322,6 +367,7 @@ export default function Game(): React.ReactElement {
 
     if (currPlatform && !currPlatform.playerOnThePlatform) {
       currPlatform.playerOnThePlatform = true;
+      playerStateRef.current.onThePlatform = true;
     }
   };
 
@@ -330,6 +376,7 @@ export default function Game(): React.ReactElement {
 
     if (currPlatform && currPlatform.playerOnThePlatform) {
       currPlatform.playerOnThePlatform = false;
+      playerStateRef.current.onThePlatform = false;
     }
   };
 
@@ -579,6 +626,8 @@ export default function Game(): React.ReactElement {
     if (gameStateRef.current.started) {
       drawBasePlatform();
 
+      drawPlatforms();
+
       updatePlayer();
 
       handleChangePlayerVelocityX();
@@ -586,7 +635,6 @@ export default function Game(): React.ReactElement {
 
       playerCollisionDetectionWithPlatforms();
 
-      drawPlatforms();
       drawPlayerScore();
       drawPauseGameButton();
     } else {
@@ -607,21 +655,28 @@ export default function Game(): React.ReactElement {
   const handleKeyboardInteraction = (event: KeyboardEvent) => {
     const {keyCode, type} = event;
 
+    const pressed = type === 'keydown';
+
     switch (keyCode) {
       case 37:
-        keyboardInteractionStateRef.current.arrowLeft.pressed = type === 'keydown';
+        keyboardInteractionStateRef.current.arrowLeft.pressed = pressed;
+        playerStateRef.current.sprites.currentSprite = pressed
+          ? playerStateRef.current.sprites.walkLeftSprite
+          : playerStateRef.current.sprites.standLeftSprite;
         break;
-
       case 38:
-        keyboardInteractionStateRef.current.arrowUp.pressed = type === 'keydown';
+        keyboardInteractionStateRef.current.arrowUp.pressed = pressed;
         break;
 
       case 39:
-        keyboardInteractionStateRef.current.arrowRight.pressed = type === 'keydown';
+        keyboardInteractionStateRef.current.arrowRight.pressed = pressed;
+        playerStateRef.current.sprites.currentSprite = pressed
+          ? playerStateRef.current.sprites.walkRightSprite
+          : playerStateRef.current.sprites.standRightSprite;
         break;
 
       case 40:
-        keyboardInteractionStateRef.current.arrowDown.pressed = type === 'keydown';
+        keyboardInteractionStateRef.current.arrowDown.pressed = pressed;
         break;
 
       default:
