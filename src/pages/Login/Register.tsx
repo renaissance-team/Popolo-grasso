@@ -1,8 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {AnyAction} from 'redux';
+import {Link, useNavigate} from 'react-router-dom';
 import Block from '@/components/Block/Block';
+import {useDispatch} from 'react-redux';
+import {signUp} from '@/store/auth/actions';
 import Form, {TFormResponse} from '../../components/Form/Form';
-import authController from '../../controllers/auth-controller';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
 
@@ -16,8 +18,10 @@ const initialFormData = [
 ];
 
 export default function Register() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const formAction = (data: TFormResponse) => {
-    authController.signUp(data);
+    dispatch(signUp({data, redirectFn: () => navigate(ROUTES.HOME)}) as unknown as AnyAction);
   };
   return (
     <Block title="Вход">

@@ -23,6 +23,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'no-console': ['error', {allow: ['warn', 'info']}],
     'object-curly-spacing': ['error', 'never'],
+    'no-param-reassign': ['error', {props: true, ignorePropertyModificationsFor: ['state']}],
     'import/extensions': [
       'error',
       'ignorePackages',

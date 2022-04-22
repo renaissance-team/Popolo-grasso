@@ -6,7 +6,7 @@ import s from './avatar.module.scss';
 interface IAvatarProps {
   value?: string;
   className?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export default function Input({value, className, onChange}: IAvatarProps) {
@@ -17,7 +17,7 @@ export default function Input({value, className, onChange}: IAvatarProps) {
       <div
         className={s.image}
         style={value ? {
-          backgroundImage: `url(${ENDPOINTS.FILES_ROOT}${value})`,
+          backgroundImage: `url(${ENDPOINTS.ROOT + ENDPOINTS.AUTH.RESOURCES}${value})`,
         } : {}}
       />
     </label>
