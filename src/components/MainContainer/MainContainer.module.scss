@@ -26,8 +26,21 @@
     height: 100%;
     display: flex;
     align-items: center;
+    position: relative;
     &_last {
       margin-left: auto;
+    }
+    &_active {
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: $blue;
+        display: block;
+      }
     }
   }
 }
@@ -55,4 +68,15 @@
   color: $yellow;
   border-bottom: 3px solid $yellow;
   cursor: default;
+}
+
+.error {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 20px;
+  background: $red;
+  padding: 20px;
+  color: $white;
+  border-radius: 10px;
 }

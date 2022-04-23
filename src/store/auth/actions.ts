@@ -8,6 +8,11 @@ type TSignProps = {
   redirectFn: () => void;
 };
 
+export const init = createAsyncThunk('auth/init', async () => {
+  const response = await authAPI.getUser();
+  return response.data;
+});
+
 export const getUser = createAsyncThunk('auth/getUser', async (_, thunkAPI) => {
   try {
     const response = await authAPI.getUser();
@@ -17,41 +22,32 @@ export const getUser = createAsyncThunk('auth/getUser', async (_, thunkAPI) => {
   }
 });
 
-export const logout = createAsyncThunk(
-  'auth/logout',
-  // eslint-disable-next-line consistent-return
-  async (redirectFn: () => void, thunkAPI) => {
-    try {
-      await authAPI.logout();
-      redirectFn();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(createErrorString(error));
-    }
-  },
-);
+export const logout = createAsyncThunk('auth/logout', async (redirectFn: () => void, thunkAPI) => {
+  try {
+    const response = await authAPI.logout();
+    redirectFn();
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(createErrorString(error));
+  }
+});
 
-export const signIn = createAsyncThunk(
-  'auth/signIn',
-  // eslint-disable-next-line consistent-return
-  async ({data, redirectFn}: TSignProps, thunkAPI) => {
-    try {
-      await authAPI.signIn(data);
-      redirectFn();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(createErrorString(error));
-    }
-  },
-);
+export const signIn = createAsyncThunk('auth/signIn', async ({data, redirectFn}: TSignProps, thunkAPI) => {
+  try {
+    const response = await authAPI.signIn(data);
+    redirectFn();
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(createErrorString(error));
+  }
+});
 
-export const signUp = createAsyncThunk(
-  'auth/signUp',
-  // eslint-disable-next-line consistent-return
-  async ({data, redirectFn}: TSignProps, thunkAPI) => {
-    try {
-      await authAPI.signUp(data);
-      redirectFn();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(createErrorString(error));
-    }
-  },
-);
+export const signUp = createAsyncThunk('auth/signUp', async ({data, redirectFn}: TSignProps, thunkAPI) => {
+  try {
+    const response = await authAPI.signUp(data);
+    redirectFn();
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(createErrorString(error));
+  }
+});
