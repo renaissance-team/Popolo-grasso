@@ -29,16 +29,15 @@ export default function MainContainer({children}: IMainContainer) {
   const {error: userError} = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const [errorsObject, setErrorsObject] = useState<Record<string, string>>({authError, userError});
+  const errorsStore = {authError, userError};
+
+  const [errorsLocal, setErrorsLocal] = useState<Record<string, string>>({...errorsStore});
   useEffect(() => {
-    setErrorsObject({
-      authError,
-      userError,
-    });
-  }, [authError, userError]);
+    setErrorsLocal({...errorsStore});
+  }, [errorsStore]);
 
   useDidUpdateEffect(() => {
-    setErrorsObject({});
+    setErrorsLocal({});
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -46,8 +45,8 @@ export default function MainContainer({children}: IMainContainer) {
   };
 
   const hideError = (key: string) => {
-    setErrorsObject({
-      ...errorsObject,
+    setErrorsLocal({
+      ...errorsLocal,
       [key]: '',
     });
   };
@@ -75,7 +74,7 @@ export default function MainContainer({children}: IMainContainer) {
             )}
           </ul>
         </nav>
-        {Object.entries(errorsObject)
+        {Object.entries(errorsLocal)
           .filter(([, error]) => error !== '')
           .map(([key, error]) => (
             <div
