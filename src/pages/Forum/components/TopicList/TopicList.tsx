@@ -1,7 +1,7 @@
 import {Button, Input} from '@/components';
 import React, {ReactElement} from 'react';
 import Topic from '../Topic/Topic';
-import s from './topicList.module.scss';
+import style from './topicList.module.scss';
 
 export type TopicType = {
   topic_id: number;
@@ -18,21 +18,21 @@ export type TopicListPropsType = {
 
 export default function TopicList({topics}: TopicListPropsType): ReactElement<TopicListPropsType> {
   return (
-    <div className={s.topics}>
-      <form className={s.create}>
-        <Input label="Тема для обсуждения" className={s.input} />
+    <div className={style.topics}>
+      <form className={style.create}>
+        <Input label="Тема для обсуждения" className={style.input} />
         <Button>
           <span>+ Создать</span>
         </Button>
       </form>
       {topics?.length ? (
-        <div className={s.topics_content}>
+        <div className={style.topics_content}>
           {topics.map((e) => (
             <Topic {...e} key={e.topic_id} />
           ))}
         </div>
       ) : (
-        <div className={s.empty}>Создайте первую тему</div>
+        <div className={style.empty}>Создайте первую тему</div>
       )}
     </div>
   );

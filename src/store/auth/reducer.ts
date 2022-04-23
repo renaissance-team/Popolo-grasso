@@ -1,8 +1,8 @@
 import {
-  AnyAction, createSlice, isFulfilled, isPending, isRejected,
+  AnyAction, createSlice, isFulfilled, isPending, isRejected, isRejectedWithValue,
 } from '@reduxjs/toolkit';
 import {
-  getUser, logout, signIn, signUp,
+  init, getUser, logout, signIn, signUp,
 } from './actions';
 
 interface IAuthState {
@@ -23,7 +23,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => builder
-    .addMatcher(isFulfilled(getUser), (state) => {
+    .addMatcher(isFulfilled(init, signUp, signIn, getUser), (state) => {
       state.error = '';
       state.isAuth = true;
       state.loading = false;
@@ -31,16 +31,14 @@ const authSlice = createSlice({
     .addMatcher(isFulfilled(logout), (state) => {
       Object.assign(state, {...initialState, loading: false});
     })
-    .addMatcher(isFulfilled(signUp, signIn), (state) => {
-      state.error = '';
-      state.isAuth = true;
-      state.loading = false;
-    })
-    .addMatcher(isRejected(getUser, logout, signIn, signUp), (state, action: AnyAction) => {
+    .addMatcher(isRejectedWithValue(getUser, logout, signIn, signUp), (state, action: AnyAction) => {
       state.error = action.payload;
       state.loading = false;
     })
-    .addMatcher(isPending(getUser, logout, signIn, signUp), (state) => {
+    .addMatcher(isRejected(init), (state) => {
+      state.loading = false;
+    })
+    .addMatcher(isPending(init, getUser, logout, signIn, signUp), (state) => {
       state.loading = true;
     }),
 });

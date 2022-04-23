@@ -1,8 +1,8 @@
 import {TUserResponse} from '@/api/types';
 import {
-  AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction,
+  AnyAction, createSlice, isFulfilled, isPending, isRejectedWithValue, PayloadAction,
 } from '@reduxjs/toolkit';
-import {getUser, logout} from '../auth/actions';
+import {getUser, logout, init} from '../auth/actions';
 import {changeAvatar, changeUser} from './actions';
 
 interface IUserState {
@@ -26,14 +26,14 @@ const authSlice = createSlice({
       Object.assign(state, initialState);
     })
     .addMatcher(
-      isFulfilled(changeUser, changeAvatar, getUser),
+      isFulfilled(changeUser, changeAvatar, getUser, init),
       (state, action: PayloadAction<TUserResponse>) => {
         state.loading = false;
         state.error = '';
         state.data = action.payload;
       },
     )
-    .addMatcher(isRejected(changeAvatar, changeUser), (state, action: AnyAction) => {
+    .addMatcher(isRejectedWithValue(changeAvatar, changeUser), (state, action: AnyAction) => {
       state.error = action.payload;
       state.loading = false;
     })

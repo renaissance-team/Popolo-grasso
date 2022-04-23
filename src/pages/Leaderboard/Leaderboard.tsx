@@ -12,7 +12,7 @@ import {
 import LeaderboardItem from './components/LeaderboardItem/LeaderboardItem';
 import {LeaderResponseType} from './api/getLeaderboard';
 
-import s from './leaderboard.module.scss';
+import style from './leaderboard.module.scss';
 
 export default function Leaderboard(): ReactElement {
   const data = useSelector(selectLeaderboardData);
@@ -30,7 +30,7 @@ export default function Leaderboard(): ReactElement {
 
   const renderLeaderboardContent = () => (
     <InfiniteScroll
-      className={s.content}
+      className={style.content}
       dataLength={data?.length}
       next={getLeaderboard}
       hasMore={hasMore}
@@ -49,7 +49,7 @@ export default function Leaderboard(): ReactElement {
   );
 
   return (
-    <div className={s.container}>
+    <div className={style.container}>
       <h2>Рейтинг игроков</h2>
       <h3>
         Лучшие игроки в
