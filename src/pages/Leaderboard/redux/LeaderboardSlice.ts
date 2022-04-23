@@ -16,7 +16,7 @@ export const fetchLeaderboard = createAsyncThunk<
   LeaderboardRequestParamsType,
   {state: RootState}
 >(
-  'leaderboard',
+  'leaderboard/fetchLeaderboard',
   async (parameters) => getLeaderboard(parameters),
   {
     condition: (_, {getState}) => {
