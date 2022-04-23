@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import {AnyAction} from 'redux';
 import {ROUTES} from '@/pages/consts';
 import {useDispatch} from 'react-redux';
-import {Link, useLocation, useNavigate} from 'react-router-dom';
+import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import {useAppSelector, useDidUpdateEffect} from '@/utils';
 import {logout} from '@/store/auth/actions';
 import Button from '../Button/Button';
-import s from './MainContainer.module.scss';
+import style from './MainContainer.module.scss';
 
 interface IMainContainer {
   children: ReactElement;
@@ -53,21 +53,24 @@ export default function MainContainer({children}: IMainContainer) {
 
   return (
     <>
-      <header className={s.header}>
-        <nav className={s.nav}>
-          <ul className={s.list}>
+      <header className={style.header}>
+        <nav className={style.nav}>
+          <ul className={style.list}>
             {Object.values(navItems)
               .filter((item) => (isAuth ? item : !item.private))
               .map(({label, link}) => (
-                <li key={label} className={classNames(s.list_item, link === location.pathname && s.list_item_active)}>
-                  <Link to={link} className={s.link}>
+                <li
+                  key={label}
+                  className={classNames(style.list_item, link === location.pathname && style.list_item_active)}
+                >
+                  <NavLink to={link} className={({isActive}) => classNames({[style.active]: isActive}, style.link)}>
                     {label}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             {isAuth && (
-              <li className={classNames(s.list_item, s.list_item_last)}>
-                <Button onClick={handleLogout} className={s.button_logout}>
+              <li className={classNames(style.list_item, style.list_item_last)}>
+                <Button onClick={handleLogout} className={style.button_logout}>
                   Выход
                 </Button>
               </li>
@@ -78,7 +81,7 @@ export default function MainContainer({children}: IMainContainer) {
           .filter(([, error]) => error !== '')
           .map(([key, error]) => (
             <div
-              className={s.error}
+              className={style.error}
               role="button"
               key={key}
               onClick={() => hideError(key)}
