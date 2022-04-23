@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, {useEffect, useState} from 'react';
 import Input from '../Input/Input';
-import s from './form.module.scss';
+import style from './form.module.scss';
 
 export type TField = {
   name: string;
@@ -52,7 +52,7 @@ export default function Form({
   }, [initialData]);
 
   return (
-    <form className={classNames(s.form, loading && s.form_loading)} onSubmit={handleSubmit}>
+    <form className={classNames(style.form, loading && style.form_loading)} onSubmit={handleSubmit}>
       {fields.map(({
         name, type, label, value,
       }) => (
@@ -65,7 +65,7 @@ export default function Form({
           onChange={(event) => handleInputChange(event, name)}
         />
       ))}
-      <div className={s.controls}>
+      <div className={style.controls}>
         {children}
       </div>
     </form>

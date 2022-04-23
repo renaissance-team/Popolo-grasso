@@ -61,7 +61,7 @@ export default function MainContainer({children}: IMainContainer) {
               .map(({label, link}) => (
                 <li
                   key={label}
-                  className={classNames(style.list_item, link === location.pathname && style.list_item_active)}
+                  className={style.list_item}
                 >
                   <NavLink to={link} className={({isActive}) => classNames({[style.active]: isActive}, style.link)}>
                     {label}

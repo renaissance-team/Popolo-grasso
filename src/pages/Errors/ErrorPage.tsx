@@ -1,7 +1,7 @@
 import React, {ReactElement} from 'react';
 import {NavLink} from 'react-router-dom';
 import popolo from '@/assets/images/motypest1-min.png';
-import s from './errorPages.module.scss';
+import style from './errorPages.module.scss';
 
 type ErrorPagePropsType = {
   code: number;
@@ -11,14 +11,14 @@ type ErrorPagePropsType = {
 
 function ErrorPage({code, message, onClick = undefined}: ErrorPagePropsType): ReactElement {
   return (
-    <div className={s.error}>
-      <div className={s.error_container}>
-        <div className={s.code}>
-          <img src={popolo} alt="error page" className={s.code_image} />
-          <div className={s.code_number}>{code}</div>
+    <div className={style.error}>
+      <div className={style.error_container}>
+        <div className={style.code}>
+          <img src={popolo} alt="error page" className={style.code_image} />
+          <div className={style.code_number}>{code}</div>
         </div>
-        <div className={s.error_message}>{message}</div>
-        <div className={s.error_golink}>
+        <div className={style.error_message}>{message}</div>
+        <div className={style.error_golink}>
           <NavLink
             to="/"
             onClick={() => {

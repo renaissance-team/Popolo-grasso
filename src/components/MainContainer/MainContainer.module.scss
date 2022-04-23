@@ -30,18 +30,6 @@
     &_last {
       margin-left: auto;
     }
-    &_active {
-      &::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        height: 2px;
-        background: $blue;
-        display: block;
-      }
-    }
   }
 }
 
