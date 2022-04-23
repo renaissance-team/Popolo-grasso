@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, {useEffect, useState} from 'react';
 import Input from '../Input/Input';
 import style from './form.module.scss';
@@ -15,13 +16,16 @@ export type TFormResponse = Record<string, string>;
 interface IFormProps {
   initialData: TField[];
   children: React.ReactElement | React.ReactElement[];
+  loading?: boolean;
   onSubmit: (data: TFormResponse) => void;
 }
 
 const prepareFieldsData = (fields: TField[]): TFormResponse => fields
   .reduce((obj, prop) => ({...obj, [prop.name]: prop.value}), {});
 
-export default function Form({initialData, children, onSubmit}: IFormProps) {
+export default function Form({
+  initialData, children, loading, onSubmit,
+}: IFormProps) {
   const [fields, setFields] = useState(initialData);
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>, name: TField['name']) => {
@@ -37,8 +41,10 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // todo: input validation
-    onSubmit(prepareFieldsData(fields));
+    if (!loading) {
+      // todo: input validation
+      onSubmit(prepareFieldsData(fields));
+    }
   };
 
   useEffect(() => {
@@ -46,7 +52,7 @@ export default function Form({initialData, children, onSubmit}: IFormProps) {
   }, [initialData]);
 
   return (
-    <form className={style.form} onSubmit={handleSubmit}>
+    <form className={classNames(style.form, loading && style.form_loading)} onSubmit={handleSubmit}>
       {fields.map(({
         name, type, label, value,
       }) => (

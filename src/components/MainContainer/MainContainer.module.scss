@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+@import '~styles/variables.scss';
 
 .header {
   height: 90px;
@@ -12,8 +12,7 @@
   justify-content: space-between;
   width: 100%;
   height: 90px;
-  background: $white;
-  border-bottom: 1px solid $border-color;
+  background-color: $darkPurple02;
 }
 
 .list {
@@ -27,6 +26,7 @@
     height: 100%;
     display: flex;
     align-items: center;
+    position: relative;
     &_last {
       margin-left: auto;
     }
@@ -39,9 +39,9 @@
   padding: 0 20px;
   height: 100%;
   text-decoration: none !important;
-  color: $blue;
+  color: $green;
   &:hover {
-    background: rgba($blue, 0.05);
+    background: rgba($pink, 0.05);
   }
 }
 
@@ -50,4 +50,21 @@
     margin: 0 20px;
     padding: 0 20px;
   }
+}
+
+.active {
+  color: $yellow;
+  border-bottom: 3px solid $yellow;
+  cursor: default;
+}
+
+.error {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 20px;
+  background: $red;
+  padding: 20px;
+  color: $white;
+  border-radius: 10px;
 }
