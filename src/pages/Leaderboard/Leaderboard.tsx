@@ -5,7 +5,7 @@ import {DEFAULT_SERVER_ERROR} from '@/api/consts';
 import LeaderboardItem from './components/LeaderboardItem/LeaderboardItem';
 import {getLeaderboard, LeaderResponseType} from './api/getLeaderboard';
 
-import s from './leaderboard.module.scss';
+import style from './leaderboard.module.scss';
 
 export default function Leaderboard(): ReactElement {
   const limit = 5;
@@ -41,7 +41,7 @@ export default function Leaderboard(): ReactElement {
 
   const renderLeaderboardContent = () => (
     <InfiniteScroll
-      className={s.content}
+      className={style.content}
       dataLength={data?.length}
       next={fetchLeaderboard}
       hasMore={hasMore}
@@ -60,7 +60,7 @@ export default function Leaderboard(): ReactElement {
   );
 
   return (
-    <div className={s.container}>
+    <div className={style.container}>
       <h2>Рейтинг игроков</h2>
       <h3>
         Лучшие игроки в

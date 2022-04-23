@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import s from './block.module.scss';
+import style from './block.module.scss';
 
 interface ILogin {
   title: string;
@@ -8,12 +8,12 @@ interface ILogin {
 
 export default function Login({title, children}: ILogin): ReactElement {
   return (
-    <div className={s.container}>
-      <div className={s.block}>
-        <div className={s.header}>
-          <h1 className={s.title}>{title}</h1>
+    <div className={style.container}>
+      <div className={style.block}>
+        <div className={style.header}>
+          <h1 className={style.title}>{title}</h1>
         </div>
-        <div className={s.inner}>{children}</div>
+        <div className={style.inner}>{children}</div>
       </div>
     </div>
   );

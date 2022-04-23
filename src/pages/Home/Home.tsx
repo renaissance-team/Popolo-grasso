@@ -8,17 +8,17 @@ import Button from '../../components/Button/Button';
 import Readme from '../../../README.md';
 import {ROUTES} from '../consts';
 
-import s from './home.module.scss';
+import style from './home.module.scss';
 
 function Home(): ReactElement {
   const {isAuth} = useAppSelector((state) => state.auth);
 
   return (
-    <div className={s.wrapper}>
-      <div className={s.content}>
+    <div className={style.wrapper}>
+      <div className={style.content}>
         <ReactMarkdown>{Readme}</ReactMarkdown>
       </div>
-      <div className={s.controls}>
+      <div className={style.controls}>
         {!isAuth ? (
           <Link to={ROUTES.AUTH}>
             <Button>Войти</Button>
