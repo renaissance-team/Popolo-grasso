@@ -5,6 +5,10 @@ import React, {
   useEffect,
 } from 'react';
 
+import {useNavigate} from 'react-router-dom';
+
+import {ROUTES} from '@/pages/consts';
+
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -23,6 +27,9 @@ import characterStandLeft from './sprites/character/characterStandLeft.png';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
+import {useIntersectionObserver} from './hooks/useIntersectionObserver/useIntersectionObserver';
+
+const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
 const CANVAS_HEIGHT = 500;
 const CANVAS_WIDTH = 500;
@@ -113,9 +120,17 @@ const initialGameState: IGameState = {
 };
 
 export default function Game(): React.ReactElement {
+  const navigate = useNavigate();
+
+  const navigateToHomePage = () => {
+    navigate(ROUTES.HOME);
+  };
+
   const gameStateRef = useRef<IGameState>(initialGameState);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const {isIntersecting} = useIntersectionObserver({containerRef: canvasRef});
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
 
@@ -518,6 +533,16 @@ export default function Game(): React.ReactElement {
         width: 0,
         height: 0,
       },
+      {
+        title: 'На главную страницу',
+        onClick: navigateToHomePage,
+        position: {
+          x: 0,
+          y: 0,
+        },
+        width: 0,
+        height: 0,
+      },
     ],
   });
 
@@ -606,7 +631,7 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    const DEFAULT_BUTTON_MARGIN = 10;
+    const DEFAULT_BUTTON_MARGIN = 20;
     const DEFAULT_BUTTON_FONT_SIZE = 24;
 
     canvasContext.fillStyle = 'red';
@@ -625,7 +650,7 @@ export default function Game(): React.ReactElement {
       const position: ICanvasButtonObject['position'] = {
         x: (CANVAS_WIDTH / 2) - (width / 2),
         y: index === 0
-          ? (CANVAS_HEIGHT / 2)
+          ? (CANVAS_HEIGHT / 2) + (height / 2)
           : (CANVAS_HEIGHT / 2) + (index * height) + DEFAULT_BUTTON_MARGIN,
       };
 
@@ -683,33 +708,69 @@ export default function Game(): React.ReactElement {
     }
   };
 
+  const drawMessage = (message: string) => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const DEFAULT_MESSAGE_FONT_SIZE = 14;
+
+    canvasContext.fillStyle = 'red';
+    canvasContext.font = `bold ${DEFAULT_MESSAGE_FONT_SIZE}px sans-serif`;
+
+    const messageTextMeasurements = canvasContext.measureText(message);
+
+    const {width} = messageTextMeasurements;
+    const height = Math.abs(
+      messageTextMeasurements.actualBoundingBoxAscent,
+    ) + Math.abs(
+      messageTextMeasurements.actualBoundingBoxDescent,
+    );
+
+    canvasContext.fillText(
+      message,
+      (CANVAS_WIDTH / 2) - (width / 2),
+      (CANVAS_HEIGHT / 2) + (height / 2),
+    );
+  };
+
   const animate = useCallback(() => {
     requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
 
     handleClearCanvas();
 
-    if (gameStateRef.current.started) {
-      drawBasePlatform();
+    if (isIntersecting) {
+      if (gameStateRef.current.started) {
+        drawBasePlatform();
 
-      drawPlatforms();
+        drawPlatforms();
 
-      updatePlayer();
+        updatePlayer();
 
-      handleChangePlayerVelocityX();
-      handleChangePlayerVelocityY();
+        handleChangePlayerVelocityX();
+        handleChangePlayerVelocityY();
 
-      increaseGameOffsetX();
+        increaseGameOffsetX();
 
-      handleChangeGameOffsetX();
+        handleChangeGameOffsetX();
 
-      playerCollisionDetectionWithPlatforms();
+        playerCollisionDetectionWithPlatforms();
 
-      drawPlayerScore();
-      drawPauseGameButton();
+        drawPlayerScore();
+        drawPauseGameButton();
+      } else {
+        drawMenu();
+      }
     } else {
-      drawMenu();
+      drawMessage(CANVAS_IS_NOT_INTERSECTING_MESSAGE);
     }
-  }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY]);
+  }, [updatePlayer, handleChangePlayerVelocityX, handleChangePlayerVelocityY, isIntersecting]);
 
   useLayoutEffect(() => {
     requestAnimationFrameIdRef.current = requestAnimationFrame(animate);
@@ -810,6 +871,7 @@ export default function Game(): React.ReactElement {
       rootElem.style.height = 'var(--app-height)';
       rootElem.style.display = 'flex';
       rootElem.style.backgroundColor = 'black';
+      rootElem.style.overflow = 'scroll';
     }
 
     return () => {
@@ -821,6 +883,7 @@ export default function Game(): React.ReactElement {
         rootElem.style.height = 'unset';
         rootElem.style.display = 'unset';
         rootElem.style.backgroundColor = 'unset';
+        rootElem.style.overflow = 'unset';
       }
     };
   }, []);
@@ -830,7 +893,9 @@ export default function Game(): React.ReactElement {
       ref={canvasRef}
       width={CANVAS_WIDTH}
       height={CANVAS_HEIGHT}
-      style={{margin: 'auto'}}
+      style={{
+        margin: 'auto',
+      }}
     />
   );
 }
