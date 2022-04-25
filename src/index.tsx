@@ -1,10 +1,10 @@
 import React, {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from '@/components/App/App';
-import {startServiceWorker} from './utils/startServiceWorker';
 
 import {Provider} from 'react-redux';
 import store from '@/store';
+import {startServiceWorker} from './utils/startServiceWorker';
 
 import './api/index';
 import './index.scss';
