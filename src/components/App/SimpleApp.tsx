@@ -1,20 +1,17 @@
 import React, {ReactElement, useEffect} from 'react';
-import {AnyAction} from 'redux';
 import {ErrorBoundary} from 'react-error-boundary';
+import {hot} from 'react-hot-loader/root';
 
 import Error500 from '@/pages/Errors/Error500';
-import {useDispatch} from 'react-redux';
-import {getUser, init} from '@/store/auth/actions';
+import Error404 from '@/pages/Errors/Error404';
+import {init, getUser} from '@/store/auth/actions';
 import {useAppSelector, useDidUpdateEffect} from '@/utils';
-import setAppHeightStyleProperty from '@/utils/setAppHeightStyleProperty';
-import Router from '../Router/Router';
+import {useDispatch} from 'react-redux';
+import {AnyAction} from 'redux';
+import {ROUTES} from '@/pages/consts';
+import Home from '@/pages/Home/Home';
+import {Routes, Route} from 'react-router-dom';
 import MainContainer from '../MainContainer/MainContainer';
-
-if (typeof window !== 'undefined') {
-  window.visualViewport.addEventListener('resize', setAppHeightStyleProperty);
-  window.visualViewport.addEventListener('scroll', setAppHeightStyleProperty);
-}
-setAppHeightStyleProperty();
 
 function App(): ReactElement {
   const dispatch = useDispatch();
@@ -32,10 +29,13 @@ function App(): ReactElement {
   return (
     <ErrorBoundary FallbackComponent={Error500}>
       <MainContainer>
-        <Router />
+        <Routes>
+          <Route path={ROUTES.HOME} element={<Home />} />
+          <Route path="*" element={<Error404 />} />
+        </Routes>
       </MainContainer>
     </ErrorBoundary>
   );
 }
 
-export default App;
+export default hot(App);

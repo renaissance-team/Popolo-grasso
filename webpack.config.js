@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
@@ -62,13 +61,16 @@ const PostCSSLoader = {
   },
 };
 
-const styleLoader = devMode ? 'style-loader' : MiniCssExtractPlugin.loader;
+const styleLoader = MiniCssExtractPlugin.loader;
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: './src/server/server.ts',
+  target: 'node',
+  node: {__dirname: false},
   output: {
     path: path.join(__dirname, '/dist'),
     filename: '[name].js',
+    libraryTarget: 'commonjs2',
   },
   resolve: {
     alias: {
@@ -121,12 +123,10 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-    }),
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
     }),
+    new MiniCssExtractPlugin()
   ],
   devServer: {
     compress: true,
@@ -137,4 +137,10 @@ module.exports = {
     historyApiFallback: true,
   },
   devtool: 'source-map',
+  stats: devMode && {
+    colors: true,
+    modules: true,
+    reasons: true,
+    errorDetails: true
+  },
 };
