@@ -3,7 +3,7 @@ import {renderToString} from 'react-dom/server';
 import {Request, Response} from 'express';
 import {StaticRouter} from 'react-router-dom/server';
 import {} from 'react-router';
-import {Provider as ReduxProvider} from 'react-redux';
+import {Provider} from 'react-redux';
 import store from '../store/index';
 import App from '../components/App/App';
 
@@ -33,11 +33,11 @@ function getHtml(reactHtml: string, reduxState = {}) {
 export default (req: Request, res: Response) => {
   const location = req.url;
   const jsx = (
-    <ReduxProvider store={store}>
+    <Provider store={store}>
       <StaticRouter location={location}>
         <App />
       </StaticRouter>
-    </ReduxProvider>
+    </Provider>
   );
   const reactHtml = renderToString(jsx);
   const reduxState = store.getState();
