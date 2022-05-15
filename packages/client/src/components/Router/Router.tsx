@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement} from 'react';
 import {Route, Routes} from 'react-router-dom';
 
 import {useAppSelector} from '@/utils';
@@ -10,18 +10,11 @@ import Auth from '@/pages/Login/Auth';
 import Leaderboard from '@/pages/Leaderboard/Leaderboard';
 import Profile from '@/pages/Profile/Profile';
 import Forum from '@/pages/Forum/Forum';
-import Game from '@/components/Game/Game';
+// import Game from '@/components/Game/Game';
 import Private from './Private';
 
 function Router(): ReactElement {
-  const {isAuth, loading} = useAppSelector((state) => state.auth);
-  const [initializing, setInitializing] = useState(true);
-
-  useEffect(() => {
-    if (!loading) setInitializing(false);
-  }, [loading]);
-
-  if (initializing) return <div>loading...</div>;
+  const {isAuth} = useAppSelector((state) => state.auth);
 
   return (
     <Routes>
@@ -34,7 +27,7 @@ function Router(): ReactElement {
       <Route path={ROUTES.LEADERBOARD} element={<Private Component={Leaderboard} allowed={isAuth} />} />
       <Route path={ROUTES.PROFILE} element={<Private Component={Profile} allowed={isAuth} />} />
       <Route path={ROUTES.FORUM} element={<Private Component={Forum} allowed={isAuth} />} />
-      <Route path={ROUTES.GAME} element={<Private Component={Game} allowed={isAuth} />} />
+      {/* <Route path={ROUTES.GAME} element={<Private Component={Game} allowed={isAuth} />} /> */}
       <Route path="*" element={<Error404 />} />
     </Routes>
   );

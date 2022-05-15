@@ -2,9 +2,13 @@ import React, {useState, useEffect} from 'react';
 
 interface IUseIntersectionObserver {
   containerRef: React.MutableRefObject<Element | null>,
+  // TODO убрать игнор
+  // eslint-disable-next-line no-undef
   options?: IntersectionObserverInit,
 }
 
+// TODO убрать игнор
+// eslint-disable-next-line no-undef
 const DEFAULT_INTERSECTION_OBSERVER_INIT: IntersectionObserverInit = {
   root: null,
   rootMargin: '0px',
