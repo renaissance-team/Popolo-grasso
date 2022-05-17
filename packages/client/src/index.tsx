@@ -9,7 +9,7 @@ import {startServiceWorker} from './utils/startServiceWorker';
 import './api/index';
 import './index.scss';
 
-hydrate(
+export default hydrate(
   <StrictMode>
     <Provider store={store}>
       <App />

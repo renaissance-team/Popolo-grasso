@@ -4,8 +4,8 @@ import {Request, Response} from 'express';
 import {StaticRouter} from 'react-router-dom/server';
 import {} from 'react-router';
 import {Provider} from 'react-redux';
-import store from '../client/src/store/index';
 import App from '../client/src/components/App/App';
+import store from '../client/src/store/index';
 
 function getHtml(reactHtml: string, reduxState = {}) {
   return `

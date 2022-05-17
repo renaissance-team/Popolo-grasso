@@ -5,8 +5,10 @@ import serverRenderMiddleware from './server-render-middleware';
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, '../dist')));
+// в production раздавать статику через Nginx или CDN
+app.use(express.static(path.resolve(__dirname, '../../dist/client')));
+// .use(express.static(path.resolve(__dirname, '../static')));
 
-app.get('*', serverRenderMiddleware);
+app.get('*', serverRenderMiddleware); // /*
 
 export {app};
