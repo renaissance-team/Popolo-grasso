@@ -62,7 +62,8 @@ const PostCSSLoader = {
   },
 };
 
-const styleLoader = devMode ? 'style-loader' : MiniCssExtractPlugin.loader;
+// const styleLoader = devMode ? 'style-loader' : MiniCssExtractPlugin.loader;
+const styleLoader = MiniCssExtractPlugin.loader;
 
 module.exports = {
   entry: './packages/client/src/index.tsx',
@@ -127,6 +128,7 @@ module.exports = {
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
     }),
+    new MiniCssExtractPlugin(),
   ],
   devServer: {
     compress: true,

@@ -17,14 +17,14 @@ function getHtml(reactHtml: string, reduxState = {}) {
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
               <title>Popolo grasso</title>
-              <link href="/main.css" rel="stylesheet">
+              <link href="./main.css" rel="stylesheet">
           </head>
           <body>
               <div id="root">${reactHtml}</div>
               <script>
                   window.__INITIAL_STATE__ = ${JSON.stringify(reduxState)}
               </script>
-              <script src="/main.js"></script>
+              <script src="./main.js"></script>
           </body>
           </html>
       `;

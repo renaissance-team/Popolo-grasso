@@ -132,14 +132,14 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   devtool: 'source-map',
-  performance: {
-    hints: devMode ? false : 'warning',
-  },
-  optimization: {nodeEnv: false},
-  stats: devMode && {
-    colors: true,
-    modules: true,
-    reasons: true,
-    errorDetails: true,
-  },
+  // performance: {
+  //   hints: devMode ? false : 'warning',
+  // },
+  // optimization: {nodeEnv: false},
+  // stats: devMode && {
+  //   colors: true,
+  //   modules: true,
+  //   reasons: true,
+  //   errorDetails: true,
+  // },
 };
