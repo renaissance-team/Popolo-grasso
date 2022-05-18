@@ -102,7 +102,7 @@ module.exports = {
       },
       {
         test: /\.module\.(sa|sc|c)ss$/,
-        use: [styleLoader, CSSModuleLoader, PostCSSLoader, 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, styleLoader, CSSModuleLoader, PostCSSLoader, 'sass-loader'],
       },
       {
         test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,

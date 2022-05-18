@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderToString} from 'react-dom/server';
+import {renderToStaticMarkup} from 'react-dom/server';
 import {Request, Response} from 'express';
 import {StaticRouter} from 'react-router-dom/server';
 import {} from 'react-router';
@@ -39,7 +39,7 @@ export default (req: Request, res: Response) => {
       </StaticRouter>
     </Provider>
   );
-  const reactHtml = renderToString(jsx);
+  const reactHtml = renderToStaticMarkup(jsx);
   const reduxState = store.getState();
 
   res.send(getHtml(reactHtml, reduxState));
