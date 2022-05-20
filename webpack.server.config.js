@@ -62,7 +62,7 @@ const PostCSSLoader = {
   },
 };
 
-const styleLoader = MiniCssExtractPlugin.loader;
+const styleLoader = MiniCssExtractPlugin.loader;//'style-loader';//возможно не нужен совсем
 
 module.exports = {
   name: 'server',
@@ -97,12 +97,12 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         // exclude: /\.module\.(sa|sc|c)ss$/,
-        // use: [styleLoader, CSSLoader, PostCSSLoader, 'sass-loader'],
+        //use: [CSSLoader, PostCSSLoader, 'sass-loader'],
         use: 'null-loader',
       },
       {
         test: /\.module\.(sa|sc|c)ss$/,
-        use: [MiniCssExtractPlugin.loader, styleLoader, CSSModuleLoader, PostCSSLoader, 'sass-loader'],
+        use: [styleLoader, CSSModuleLoader, PostCSSLoader, 'sass-loader'],
       },
       {
         test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,

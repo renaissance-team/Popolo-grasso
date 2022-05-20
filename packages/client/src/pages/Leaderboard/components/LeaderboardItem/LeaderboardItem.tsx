@@ -15,10 +15,10 @@ export default function LeaderboardItem({
   const leaderClass = cn(style.leaderboard_row, {[style.leaderboard_row_win]: rating === 1});
   return (
     <div className={leaderClass}>
-      <div className={cn(style.rating, style.leaderboard_cell)}>{rating}</div>
+      <div className={style.leaderboard_cell}>{rating}</div>
       <img src={popolo_grasso_avatar} className={cn(style.avatar, style.leaderboard_cell)} alt="avatar" />
-      <div className={cn(style.display_name, style.leaderboard_cell)}>{popolo_grasso_display_name}</div>
-      <div className={cn(style.points, style.leaderboard_cell)}>{popolo_grasso_points}</div>
+      <div className={style.leaderboard_cell}>{popolo_grasso_display_name}</div>
+      <div className={style.leaderboard_cell}>{popolo_grasso_points}</div>
     </div>
   );
 }

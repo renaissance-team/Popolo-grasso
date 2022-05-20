@@ -92,7 +92,18 @@ module.exports = {
       },
       {
         test: /\.module\.(sa|sc|c)ss$/,
-        use: [styleLoader, CSSModuleLoader, PostCSSLoader, 'sass-loader'],
+        use: [
+          styleLoader,
+          {
+            loader: 'css-modules-typescript-loader?modules',
+            options: {
+              mode: process.env.CI ? 'verify' : 'emit',
+            },
+          },
+          CSSModuleLoader,
+          PostCSSLoader,
+          'sass-loader',
+        ],
       },
       {
         test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,

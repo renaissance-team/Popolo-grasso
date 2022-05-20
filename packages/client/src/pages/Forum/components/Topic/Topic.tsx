@@ -16,7 +16,7 @@ export default function Topic({
       {response_count > 0 && (
         <>
           <div className={style.pb_5}>
-            <b className={style.topic_user}>{`${user}: `}</b>
+            <b>{`${user}: `}</b>
             <span className={style.sub}>{last_message}</span>
           </div>
           <div className={style.pb_5}>

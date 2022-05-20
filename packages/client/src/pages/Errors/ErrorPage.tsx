@@ -18,18 +18,16 @@ function ErrorPage({code, message, onClick = undefined}: ErrorPagePropsType): Re
           <div className={style.code_number}>{code}</div>
         </div>
         <div className={style.error_message}>{message}</div>
-        <div className={style.error_golink}>
-          <NavLink
-            to="/"
-            onClick={() => {
-              if (onClick) {
-                onClick();
-              }
-            }}
-          >
-            На главную
-          </NavLink>
-        </div>
+        <NavLink
+          to="/"
+          onClick={() => {
+            if (onClick) {
+              onClick();
+            }
+          }}
+        >
+          На главную
+        </NavLink>
       </div>
     </div>
   );
