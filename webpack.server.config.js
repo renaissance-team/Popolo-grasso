@@ -32,6 +32,7 @@ const CSSModuleLoader = {
     modules: {
       mode: 'local',
       getLocalIdent: getCSSModuleLocalIdent,
+      auto: /\.module\.\w+$/i,
     },
     importLoaders: 2,
     sourceMap: false,
@@ -62,16 +63,13 @@ const PostCSSLoader = {
   },
 };
 
-const styleLoader = MiniCssExtractPlugin.loader;//'style-loader';//возможно не нужен совсем
+const styleLoader = MiniCssExtractPlugin.loader;
 
 module.exports = {
   name: 'server',
   entry: path.resolve(__dirname, './packages/server/server.ts'),
   target: 'node',
-  externals: nodeExternals(),
-  //   externals: [
-  //     nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })
-  // ],
+  externals: nodeExternals(), //nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })
   node: {__dirname: false},
   output: {
     path: path.join(__dirname, '/dist/server'),
@@ -96,8 +94,7 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        // exclude: /\.module\.(sa|sc|c)ss$/,
-        //use: [CSSLoader, PostCSSLoader, 'sass-loader'],
+        exclude: /\.module\.(sa|sc|c)ss$/,
         use: 'null-loader',
       },
       {
@@ -106,22 +103,15 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
-        loader: 'null-loader',
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[hash][ext][query]',
+        },
       },
-      {
-        test: /\.(woff|woff2|eot|ttf)(\?[a-z0-9=.]+)?$/,
-        loader: 'null-loader',
-      },
-      // {
-      //   test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
-      //   type: 'asset/resource',
-      //   generator: {
-      //     filename: 'assets/images/[hash][ext][query]',
-      //   },
-      // },
       {
         test: /\.md$/,
-        loader: 'null-loader',
+        //use: 'null-loader',
+        type: 'asset/source',
       },
     ],
   },
@@ -132,14 +122,14 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   devtool: 'source-map',
-  // performance: {
-  //   hints: devMode ? false : 'warning',
-  // },
-  // optimization: {nodeEnv: false},
-  // stats: devMode && {
-  //   colors: true,
-  //   modules: true,
-  //   reasons: true,
-  //   errorDetails: true,
-  // },
+  performance: {
+    hints: devMode ? false : 'warning',
+  },
+  optimization: {nodeEnv: false},
+  stats: devMode && {
+    colors: true,
+    modules: true,
+    reasons: true,
+    errorDetails: true,
+  },
 };

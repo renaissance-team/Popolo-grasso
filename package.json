@@ -86,7 +86,6 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "ssr": "webpack --mode development && node ./packages/server/index.js",
     "start:webpack": "webpack --mode development --watch",
     "start:server": "nodemon ./packages/server/index.js --watch dist/server/main.js",
     "start": "NODE_ENV=development npm-run-all --print-label --parallel start:*",
