@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-
 import leaderboardReducer from '@/pages/Leaderboard/redux/LeaderboardSlice';
+// import thunkMiddleware from 'redux-thunk';
 import authReducer from './auth/reducer';
 import userReducer from './user/reducer';
 
@@ -19,9 +19,7 @@ delete _window.__INITIAL_STATE__;
 
 const store = configureStore({
   reducer: rootReducer,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  state
+  preloadedState: state,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

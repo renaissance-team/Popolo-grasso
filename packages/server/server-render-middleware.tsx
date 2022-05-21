@@ -19,7 +19,7 @@ function getHtml(reactHtml: string, reduxState = {}) {
               <link href="./main.css" rel="stylesheet">
           </head>
           <body>
-              <div id="root">${reactHtml}</div>
+              <div id="root"></div>
               <script>
                   window.__INITIAL_STATE__ = ${JSON.stringify(reduxState)}
               </script>
