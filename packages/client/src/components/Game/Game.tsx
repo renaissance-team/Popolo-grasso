@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {ROUTES} from '@/pages/consts';
 
+import isServer from '@/utils/isServerCheker';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -103,7 +104,7 @@ const initialKeyboardState: IKeyboardInteractionState = {
 };
 
 const createImg = (src: string): HTMLImageElement => {
-  if (typeof document === 'undefined') {
+  if (isServer) {
     return null as unknown as HTMLImageElement;
   }
 
