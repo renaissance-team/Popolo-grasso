@@ -102,17 +102,24 @@ const initialKeyboardState: IKeyboardInteractionState = {
   },
 };
 
-const CHARACTER_WALK_RIGHT_IMAGE = new Image();
-CHARACTER_WALK_RIGHT_IMAGE.src = characterWalkRight;
+const createImg = (src: string): HTMLImageElement => {
+  if (typeof document === 'undefined') {
+    return null as unknown as HTMLImageElement;
+  }
 
-const CHARACTER_WALK_LEFT_IMAGE = new Image();
-CHARACTER_WALK_LEFT_IMAGE.src = characterWalkLeft;
+  const img = new Image();
+  img.src = src;
 
-const CHARACTER_STAND_RIGHT_IMAGE = new Image();
-CHARACTER_STAND_RIGHT_IMAGE.src = characterStandRight;
+  return img;
+};
 
-const CHARACTER_STAND_LEFT_IMAGE = new Image();
-CHARACTER_STAND_LEFT_IMAGE.src = characterStandLeft;
+const CHARACTER_WALK_RIGHT_IMAGE = createImg(characterWalkRight);
+
+const CHARACTER_WALK_LEFT_IMAGE = createImg(characterWalkLeft);
+
+const CHARACTER_STAND_RIGHT_IMAGE = createImg(characterStandRight);
+
+const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
 const initialGameState: IGameState = {
   started: false,

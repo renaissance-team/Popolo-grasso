@@ -1,10 +1,10 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, /* useEffect, */ useState} from 'react';
 import classNames from 'classnames';
 import {AnyAction} from 'redux';
 import {ROUTES} from '@/pages/consts';
 import {useDispatch} from 'react-redux';
-import {NavLink, useLocation, useNavigate} from 'react-router-dom';
-import {useAppSelector, useDidUpdateEffect} from '@/utils';
+import {NavLink, /* useLocation, */ useNavigate} from 'react-router-dom';
+import {useAppSelector /* ,  useDidUpdateEffect */} from '@/utils';
 import {logout} from '@/store/auth/actions';
 import Button from '../Button/Button';
 import style from './MainContainer.module.scss';
@@ -24,7 +24,7 @@ const navItems: Record<string, TNavItem> = {
 
 export default function MainContainer({children}: IMainContainer) {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const {isAuth, error: authError} = useAppSelector((state) => state.auth);
   const {error: userError} = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -32,13 +32,14 @@ export default function MainContainer({children}: IMainContainer) {
   const errorsStore = {authError, userError};
 
   const [errorsLocal, setErrorsLocal] = useState<Record<string, string>>({...errorsStore});
-  useEffect(() => {
-    setErrorsLocal({...errorsStore});
-  }, [errorsStore]);
+  // TODO тут возникает бесконечный ре-рендер - надо будет разобраться!
+  // useEffect(() => {
+  //   setErrorsLocal({...errorsStore});
+  // }, [errorsStore]);
 
-  useDidUpdateEffect(() => {
-    setErrorsLocal({});
-  }, [location.pathname]);
+  // useDidUpdateEffect(() => {
+  //   setErrorsLocal({});
+  // }, [location.pathname]);
 
   const handleLogout = () => {
     dispatch(logout(() => navigate(ROUTES.AUTH)) as unknown as AnyAction);
@@ -59,10 +60,7 @@ export default function MainContainer({children}: IMainContainer) {
             {Object.values(navItems)
               .filter((item) => (isAuth ? item : !item.private))
               .map(({label, link}) => (
-                <li
-                  key={label}
-                  className={style.list_item}
-                >
+                <li key={label} className={style.list_item}>
                   <NavLink to={link} className={({isActive}) => classNames({[style.active]: isActive}, style.link)}>
                     {label}
                   </NavLink>

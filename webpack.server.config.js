@@ -69,7 +69,7 @@ module.exports = {
   name: 'server',
   entry: path.resolve(__dirname, './packages/server/server.ts'),
   target: 'node',
-  externals: nodeExternals(), //nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })
+  externals: nodeExternals(), //nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] }) - возможно надо так?
   node: {__dirname: false},
   output: {
     path: path.join(__dirname, '/dist/server'),
@@ -110,7 +110,6 @@ module.exports = {
       },
       {
         test: /\.md$/,
-        //use: 'null-loader',
         type: 'asset/source',
       },
     ],

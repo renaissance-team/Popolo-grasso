@@ -15,6 +15,7 @@ function Home(): ReactElement {
 
   return (
     <div className={style.wrapper}>
+      {/* TODO сделать нормальную главную, тк react-markdown не поддерживается на стороне сервера */}
       {/* <div className={style.content}><ReactMarkdown>{Readme}</ReactMarkdown></div> */}
       <div className={style.controls}>
         {!isAuth ? (

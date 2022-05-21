@@ -1,5 +1,4 @@
 const path = require('path');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
@@ -62,7 +61,6 @@ const PostCSSLoader = {
   },
 };
 
-// const styleLoader = devMode ? 'style-loader' : MiniCssExtractPlugin.loader;
 const styleLoader = MiniCssExtractPlugin.loader;
 
 module.exports = {
@@ -133,21 +131,10 @@ module.exports = {
     ],
   },
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   template: './index.html',
-    // }),
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
     }),
     new MiniCssExtractPlugin(),
   ],
-  devServer: {
-    compress: true,
-    port: PORT,
-    open: true,
-    hot: true,
-    allowedHosts: 'all',
-    historyApiFallback: true,
-  },
   devtool: 'source-map',
 };
