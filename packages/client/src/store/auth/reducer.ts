@@ -12,7 +12,7 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  loading: true,
+  loading: false,
   error: '',
   isAuth: false,
 };

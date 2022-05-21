@@ -18,4 +18,4 @@ yarn-error.log*
 # Jest
 /coverage
 
-*.d.ts
+*.module.*.d.ts

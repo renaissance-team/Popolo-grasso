@@ -95,7 +95,7 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         exclude: /\.module\.(sa|sc|c)ss$/,
-        use: 'null-loader',
+        use: [styleLoader, CSSLoader, PostCSSLoader, 'sass-loader'],
       },
       {
         test: /\.module\.(sa|sc|c)ss$/,

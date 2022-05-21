@@ -10,8 +10,18 @@ const rootReducer = combineReducers({
   leaderboard: leaderboardReducer,
 });
 
+// eslint-disable-next-line no-underscore-dangle
+const _window = global.window || {};
+// eslint-disable-next-line no-underscore-dangle
+const state = _window.__INITIAL_STATE__; // Здесь будет объект с данными с сервера
+// eslint-disable-next-line no-underscore-dangle
+delete _window.__INITIAL_STATE__;
+
 const store = configureStore({
   reducer: rootReducer,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  state
 });
 
 export type RootState = ReturnType<typeof store.getState>;

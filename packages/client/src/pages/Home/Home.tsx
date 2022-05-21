@@ -15,7 +15,7 @@ function Home(): ReactElement {
 
   return (
     <div className={style.wrapper}>
-      <div className={style.content}>{/* <ReactMarkdown>{Readme}</ReactMarkdown> */}</div>
+      {/* <div className={style.content}><ReactMarkdown>{Readme}</ReactMarkdown></div> */}
       <div className={style.controls}>
         {!isAuth ? (
           <Link to={ROUTES.AUTH}>

@@ -1,6 +1,6 @@
-import React, {StrictMode, FC} from 'react';
-import {hydrate} from 'react-dom';
-import {hot} from 'react-hot-loader';
+import React, {StrictMode} from 'react';
+import {hydrateRoot} from 'react-dom/client';
+// import {hot} from 'react-hot-loader';
 import App from '@/components/App/App';
 
 import {Provider} from 'react-redux';
@@ -10,14 +10,15 @@ import {startServiceWorker} from './utils/startServiceWorker';
 import './api/index';
 import './index.scss';
 
-const Client: FC<any> = hot(() => (
+const container = document.getElementById('root') as Element;
+
+export default hydrateRoot(
+  container,
   <StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
   </StrictMode>
-));
-
-export default hydrate(<Client />, document.getElementById('root'));
+);
 
 startServiceWorker();
