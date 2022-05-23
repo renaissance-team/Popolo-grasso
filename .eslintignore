@@ -1,2 +1,4 @@
 /dist/*
 /node_modules/*
+webpack.client.config.js
+webpack.server.config.js
