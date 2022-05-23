@@ -4,12 +4,11 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from 'react';
-
 import {useNavigate} from 'react-router-dom';
 
 import {ROUTES} from '@/pages/consts';
+import isServer from '@/utils/isServerChecker';
 
-import isServer from '@/utils/isServerCheker';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,

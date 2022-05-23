@@ -8,6 +8,6 @@ const app = express();
 // в production раздавать статику через Nginx или CDN
 app.use(express.static(path.resolve(__dirname, '../client')));
 
-app.get('*', serverRenderMiddleware); // /*
+app.get('*', serverRenderMiddleware);
 
 export {app};
