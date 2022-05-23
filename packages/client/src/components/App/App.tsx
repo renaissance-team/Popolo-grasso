@@ -4,9 +4,11 @@ import {ErrorBoundary} from 'react-error-boundary';
 
 import Error500 from '@/pages/Errors/Error500';
 import {useDispatch} from 'react-redux';
-import {getUser, init} from '@/store/auth/actions';
+import {getUser, init, oAuthSignIn} from '@/store/auth/actions';
 import {useAppSelector, useDidUpdateEffect} from '@/utils';
 import setAppHeightStyleProperty from '@/utils/setAppHeightStyleProperty';
+
+import {useLocation} from 'react-router-dom';
 import Router from '../Router/Router';
 import MainContainer from '../MainContainer/MainContainer';
 
@@ -18,16 +20,38 @@ setAppHeightStyleProperty();
 
 function App(): ReactElement {
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const {isAuth} = useAppSelector((state) => state.auth);
   const {data: userData} = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(init() as unknown as AnyAction);
+    const urlParams = new URLSearchParams(location.search);
+    const oAuthCode = urlParams.get('code');
+    if (oAuthCode) {
+      dispatch(oAuthSignIn({
+        code: oAuthCode,
+        redirect_uri: window.location.host,
+      }) as unknown as AnyAction);
+    } else {
+      dispatch(init() as unknown as AnyAction);
+    }
   }, []);
 
   useDidUpdateEffect(() => {
     if (isAuth && !userData) dispatch(getUser() as unknown as AnyAction);
   }, [isAuth, userData]);
+
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(location.search);
+  //   const oAuthCode = urlParams.get('code');
+  //   if (oAuthCode) {
+  //     dispatch(oAuthSignIn({
+  //       code: oAuthCode,
+  //       redirect_uri: window.location.host,
+  //     }) as unknown as AnyAction);
+  //   }
+  // }, [location.search]);
 
   return (
     <ErrorBoundary FallbackComponent={Error500}>

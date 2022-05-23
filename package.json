@@ -39,6 +39,8 @@
     "lint-staged": "^12.1.7",
     "mini-css-extract-plugin": "^2.6.0",
     "nodemon": "^2.0.16",
+    "openssl-self-signed-certificate": "^1.1.6",
+    "https": "^1.0.0",
     "postcss-loader": "^6.2.1",
     "postcss-scss": "^4.0.3",
     "prettier": "^2.6.1",
@@ -85,7 +87,8 @@
   "scripts": {
     "start:webpack": "webpack --mode development --watch",
     "start:server": "nodemon ./packages/server/index.js --watch dist/server/main.js",
-    "start": "NODE_ENV=development npm-run-all --print-label --parallel start:*",
+    "hosts:aliases": "node ./makeAliases.js",
+    "start": "npm run hosts:aliases && NODE_ENV=development npm-run-all --print-label --parallel start:*",
     "devserv": "webpack serve --mode development",
     "build": "webpack --mode production",
     "lint:style": "yarn stylelint './packages/client/src/**/*.{scss,sass}'",
