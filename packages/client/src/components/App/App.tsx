@@ -42,17 +42,6 @@ function App(): ReactElement {
     if (isAuth && !userData) dispatch(getUser() as unknown as AnyAction);
   }, [isAuth, userData]);
 
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(location.search);
-  //   const oAuthCode = urlParams.get('code');
-  //   if (oAuthCode) {
-  //     dispatch(oAuthSignIn({
-  //       code: oAuthCode,
-  //       redirect_uri: window.location.host,
-  //     }) as unknown as AnyAction);
-  //   }
-  // }, [location.search]);
-
   return (
     <ErrorBoundary FallbackComponent={Error500}>
       <MainContainer>
