@@ -5,17 +5,30 @@ import Block from '@/components/Block/Block';
 import {useDispatch} from 'react-redux';
 import {signUp} from '@/store/auth/actions';
 import {useAppSelector} from '@/utils';
+import {VALIDATION_PATTERNS} from '@/components/Form/consts';
 import Form, {TFormResponse} from '../../components/Form/Form';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
 
 const initialFormData = [
-  {name: 'email', label: 'Почта', type: 'email'},
-  {name: 'login', label: 'Логин'},
-  {name: 'first_name', label: 'Имя'},
-  {name: 'second_name', label: 'Фамилия'},
-  {name: 'phone', label: 'Телефон', type: 'tel'},
-  {name: 'password', label: 'Пароль', type: 'password'},
+  {
+    name: 'email', label: 'Почта', type: 'email', pattern: VALIDATION_PATTERNS.email, required: true
+  },
+  {
+    name: 'login', label: 'Логин', pattern: VALIDATION_PATTERNS.login, required: true
+  },
+  {
+    name: 'first_name', label: 'Имя', pattern: VALIDATION_PATTERNS.name, required: true
+  },
+  {
+    name: 'second_name', label: 'Фамилия', pattern: VALIDATION_PATTERNS.name, required: true
+  },
+  {
+    name: 'phone', label: 'Телефон', type: 'tel', pattern: VALIDATION_PATTERNS.phone, required: true
+  },
+  {
+    name: 'password', label: 'Пароль', type: 'password', pattern: VALIDATION_PATTERNS.password, required: true
+  },
 ];
 
 export default function Register() {

@@ -5,14 +5,24 @@ import Block from '@/components/Block/Block';
 import {useDispatch} from 'react-redux';
 import {signIn} from '@/store/auth/actions';
 import {useAppSelector} from '@/utils';
+import {VALIDATION_PATTERNS} from '@/components/Form/consts';
 import Button, {EButtonView} from '../../components/Button/Button';
 import {ROUTES} from '../consts';
 import Form, {TFormResponse} from '../../components/Form/Form';
 
 const initialFormData = [
-  {name: 'login', label: 'Логин'},
   {
-    name: 'password', label: 'Пароль', type: 'password',
+    name: 'login',
+    label: 'Логин',
+    pattern: VALIDATION_PATTERNS.login,
+    required: true,
+  },
+  {
+    name: 'password',
+    label: 'Пароль',
+    type: 'password',
+    pattern: VALIDATION_PATTERNS.password,
+    required: true,
   },
 ];
 

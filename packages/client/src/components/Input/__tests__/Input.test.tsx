@@ -5,7 +5,7 @@ import Input, {IInputProps} from '../Input';
 
 describe('Input', () => {
   function renderInput(props: IInputProps = {}): RenderResult {
-    return render(<Input {...props} />);
+    return render(<Input {...props} ref={null} />);
   }
 
   it('should render default input', () => {
@@ -20,7 +20,7 @@ describe('Input', () => {
   it('should render input with error', () => {
     const {container} = renderInput({errorText: 'error'});
     expect(screen.queryByText('error')).toBeInTheDocument();
-    expect(container.firstChild?.firstChild).toHaveClass('inputHasError');
+    expect(container.firstChild?.firstChild).toHaveClass('input inputHasError');
     expect(container.firstChild?.lastChild).toHaveClass('errorText');
   });
 
