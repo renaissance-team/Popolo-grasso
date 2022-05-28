@@ -92,6 +92,8 @@
     "lint": "yarn eslint ./packages/client/src --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
     "test": "jest --watch",
-    "test:upd": "jest --updateSnapshot"
+    "test:upd": "jest --updateSnapshot",
+    "docker:start": "docker-compose -f docker-compose.yml up --build -d",
+    "docker:stop": "docker-compose -f docker-compose.yml down --rmi all"
   }
 }
