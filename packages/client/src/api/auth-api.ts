@@ -1,7 +1,9 @@
-import {TFormResponse} from '@/components/Form/Form';
 import axios from 'axios';
+import {TFormResponse} from '@/components/Form/Form';
 import {ENDPOINTS} from './consts';
-import {TUserResponse} from './types';
+import {
+  TUserResponse, TOAuthServiceIdResponse, TOAuthSignInRequest
+} from './types';
 
 const baseURL = ENDPOINTS.AUTH.PATH;
 
@@ -13,9 +15,16 @@ const getUser = () => axios.get<TUserResponse>(baseURL + ENDPOINTS.AUTH.USER);
 
 const logout = () => axios.post<string>(baseURL + ENDPOINTS.AUTH.LOGOUT);
 
+const getOAuthServiceId = (redirectUri: string) => axios
+  .get<TOAuthServiceIdResponse>(`${ENDPOINTS.OAUTH.PATH + ENDPOINTS.OAUTH.SERVICE_ID}?redirect_uri=${redirectUri}`);
+
+const oAuthSignIn = (data: TOAuthSignInRequest) => axios.post<string>(ENDPOINTS.OAUTH.PATH, data);
+
 export default {
   signUp,
   signIn,
   getUser,
   logout,
+  getOAuthServiceId,
+  oAuthSignIn,
 };

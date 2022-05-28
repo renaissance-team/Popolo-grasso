@@ -1,4 +1,5 @@
 export const ENDPOINTS = {
+  APP_URL: 'https://popollo-grasso.herokuapp.com',
   ROOT: 'https://ya-praktikum.tech/api/v2',
   FILES_ROOT: 'https://ya-praktikum.tech',
   SOCKET: 'wss://ya-praktikum.tech/ws',
@@ -9,6 +10,11 @@ export const ENDPOINTS = {
     USER: '/user',
     LOGOUT: '/logout',
     RESOURCES: '/resources',
+  },
+  OAUTH: {
+    YANDEX_API: 'https://oauth.yandex.ru/authorize?response_type=code&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI',
+    PATH: '/oauth/yandex',
+    SERVICE_ID: '/service-id'
   },
   USER: {
     PATH: '/user',

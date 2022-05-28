@@ -2,6 +2,8 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import authAPI from '@/api/auth-api';
 import {createErrorString} from '@/utils';
 import {TFormResponse} from '@/components/Form/Form';
+import {TOAuthSignInRequest} from '@/api/types';
+import {ENDPOINTS} from '@/api/consts';
 
 type TSignProps = {
   data: TFormResponse;
@@ -51,3 +53,31 @@ export const signUp = createAsyncThunk('auth/signUp', async ({data, redirectFn}:
     return thunkAPI.rejectWithValue(createErrorString(error));
   }
 });
+
+export const getOAuthServiceId = createAsyncThunk('auth/getOAuthServiceId', async (redirectUri: string, thunkAPI) => {
+  try {
+    const response = await authAPI.getOAuthServiceId(redirectUri);
+    const {service_id} = response.data;
+    if (service_id) {
+      window.location.assign(ENDPOINTS.OAUTH.YANDEX_API
+        .replace('CLIENT_ID', service_id)
+        .replace('REDIRECT_URI', `${window.location.origin}`));
+    }
+    return service_id;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(createErrorString(error));
+  }
+});
+
+export const oAuthSignIn = createAsyncThunk(
+  'auth/oAuthSignIn',
+  async (data: TOAuthSignInRequest, thunkAPI) => {
+    try {
+      const response = await authAPI.oAuthSignIn(data);
+      window.location.replace(window.location.origin);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(createErrorString(error));
+    }
+  }
+);
