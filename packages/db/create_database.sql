@@ -11,6 +11,16 @@ CREATE TABLE popolo."message" (
   "date" timestamp NOT NULL,
   "user" TEXT
 );
+CREATE TABLE popolo."theme" (
+  theme_id SERIAL PRIMARY KEY,
+  "name" TEXT NOT NULL
+);
+CREATE TABLE popolo."user_theme" (
+  user_theme_id SERIAL PRIMARY KEY,
+  theme_id INT NOT NULL REFERENCES popolo."theme",
+  "device" TEXT,
+  "user_id" INT
+);
 create view popolo.forum_topics as 
 select t.name, t.created_date, m.*
 	from popolo.topic as t
