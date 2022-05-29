@@ -9,14 +9,12 @@ export type TopicListStateType = {
   error: string;
 };
 
-export const fetchTopicList = createAsyncThunk<ForumTopicResponseType[], {state: RootState}>(
+export const fetchTopicList = createAsyncThunk<ForumTopicResponseType[], unknown, {state: RootState}>(
   'forum/topicList/fetchTopicList',
   async () => getTopicList(),
   {
     condition: (_, {getState}) => {
       const {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         forum: {topicList},
       } = getState();
 

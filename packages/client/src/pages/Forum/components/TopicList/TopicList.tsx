@@ -2,6 +2,8 @@ import {Button, Input} from '@/components';
 import React, {ReactElement, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useForm, Controller} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import {
   fetchTopicList,
   selectTopicListData,
@@ -16,19 +18,30 @@ export type NewTopicForm = {
   topic: string;
 }
 
+const schema = yup.object().shape({
+  topic: yup
+    .string()
+    .required('Название темы необходимо заполнить')
+});
+
 export default function TopicList(): ReactElement {
   const topics = useSelector(selectTopicListData);
   const error = useSelector(selectTopicListError);
   const loading = useSelector(selectTopicListIsLoading);
   const dispatch = useDispatch();
-  const {handleSubmit, reset, control} = useForm<NewTopicForm>({defaultValues: undefined});
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: {errors},
+  } = useForm<NewTopicForm>({resolver: yupResolver(schema), defaultValues: {topic: ''}});
 
   const handleLocalSubmit = handleSubmit(async (values) => {
     await createTopic({name: values.topic});
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     dispatch(fetchTopicList());
-    reset({topic: undefined});
+    reset({topic: ''});
   });
 
   useEffect(() => {
@@ -60,7 +73,9 @@ export default function TopicList(): ReactElement {
         <Controller
           control={control}
           name="topic"
-          render={({field}) => <Input {...field} label="Тема для обсуждения" className={style.input} />}
+          render={({field}) => (
+            <Input {...field} label="Тема для обсуждения" className={style.input} errorText={errors?.topic?.message} />
+          )}
         />
         <Button type="submit">
           <span>+ Создать</span>

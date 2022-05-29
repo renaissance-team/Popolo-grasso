@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import leaderboardReducer from '@/pages/Leaderboard/redux/LeaderboardSlice';
 // import thunkMiddleware from 'redux-thunk';
 import topicListReducer from '@/pages/Forum/redux/topicsSlice';
+import messagesReducer from '@/pages/Forum/redux/messagesSlice';
 import authReducer from './auth/reducer';
 import userReducer from './user/reducer';
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   leaderboard: leaderboardReducer,
   forum: combineReducers({
     topicList: topicListReducer,
+    messages: messagesReducer,
   }),
 });
 

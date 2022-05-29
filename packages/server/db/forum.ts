@@ -47,14 +47,15 @@ export const createTopic = (host: string, port: number, name: string) => new Pro
   );
 });
 
-export const createMessage = (host: string, port: number, message: MessageType) => new Promise((resolve, reject) => {
+// eslint-disable-next-line max-len
+export const createMessage = (host: string, port: number, message: MessageType) => new Promise<MessageResponseType[]>((resolve, reject) => {
   const {topic_id, text, user} = message;
   connect(host, port).query(
     `INSERT INTO popolo.message (topic_id, text, date, "user")
     VALUES ($1, $2, $3, $4)
     RETURNING *`,
     [topic_id, text, new Date(), user],
-    (error: any, results: { rows: unknown; }) => {
+    (error: any, results: { rows: MessageResponseType[]; }) => {
       if (error) {
         reject(error);
       }

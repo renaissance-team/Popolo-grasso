@@ -2,6 +2,7 @@ import {TUserResponse} from '@/api/types';
 import {
   AnyAction, createSlice, isFulfilled, isPending, isRejectedWithValue, PayloadAction,
 } from '@reduxjs/toolkit';
+import {RootState} from '@/store';
 import {getUser, logout, init} from '../auth/actions';
 import {changeAvatar, changeUser} from './actions';
 
@@ -43,3 +44,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+
+export const selectUserData = (state: RootState): TUserResponse => state.user.data as TUserResponse;
