@@ -9,11 +9,8 @@ export type MessageType = {
   date: string;
 };
 
-export type MessageListPropsType = {
-  messages: MessageType[];
-};
-
-export default function MessageList({messages}: MessageListPropsType): ReactElement<MessageListPropsType> {
+export default function MessageList(): ReactElement {
+  const messages: any[] = [];
   return (
     <div className={style.messages}>
       {messages?.length ? (
@@ -29,7 +26,7 @@ export default function MessageList({messages}: MessageListPropsType): ReactElem
         <div className={style.empty}>Здесь еще никто ничего не писал</div>
       )}
       <form className={style.messages_footer}>
-        <Input label="Оставьте сообщение" />
+        <Input label="Оставьте сообщение" className={style.input} />
         <Button>Отправить</Button>
       </form>
     </div>

@@ -3,6 +3,7 @@ export const ENDPOINTS = {
   ROOT: 'https://ya-praktikum.tech/api/v2',
   FILES_ROOT: 'https://ya-praktikum.tech',
   SOCKET: 'wss://ya-praktikum.tech/ws',
+  SERVER_HOST: 'https://localhost:443',
   AUTH: {
     PATH: '/auth',
     SIGNUP: '/signup',

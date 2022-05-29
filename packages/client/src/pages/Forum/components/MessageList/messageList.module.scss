@@ -25,3 +25,11 @@
     padding: 20px;
   }
 }
+
+.input {
+  input {
+    opacity: 0.1;
+    border-radius: 5px;
+    color: $white;
+  }
+}

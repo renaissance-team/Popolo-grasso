@@ -21,3 +21,11 @@
   text-align: center;
   padding: 24px 16px 16px 16px;
 }
+
+.input {
+  input {
+    opacity: 0.1;
+    border-radius: 5px;
+    color: $white;
+  }
+}
