@@ -1,7 +1,7 @@
 import {createAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {RootState} from '@/store';
 import {DEFAULT_SERVER_ERROR} from '@/api/consts';
-import {getMessages, MessagesResponseType, MessagesRequestParamsType} from '../components/api/getMessages';
+import {getMessages, MessagesResponseType, MessagesRequestParamsType} from '../api/getMessages';
 
 export type SelectedTopicType = {
   topicId?: number,

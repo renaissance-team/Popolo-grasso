@@ -4,7 +4,7 @@ import React, {ReactElement} from 'react';
 import cn from 'classnames';
 import {useDispatch} from 'react-redux';
 import style from './topic.module.scss';
-import {ForumTopicResponseType} from '../api/getTopicList';
+import {ForumTopicResponseType} from '../../api/getTopicList';
 import {setSelectedTopic, fetchMessages} from '../../redux/messagesSlice';
 
 export default function Topic({

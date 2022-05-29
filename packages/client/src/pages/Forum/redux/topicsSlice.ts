@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {RootState} from '@/store';
 import {DEFAULT_SERVER_ERROR} from '@/api/consts';
-import {ForumTopicResponseType, getTopicList} from '../components/api/getTopicList';
+import {ForumTopicResponseType, getTopicList} from '../api/getTopicList';
 
 export type TopicListStateType = {
   isLoading: boolean;

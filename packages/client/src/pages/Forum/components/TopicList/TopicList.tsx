@@ -12,7 +12,7 @@ import {
 } from '../../redux/topicsSlice';
 import Topic from '../Topic/Topic';
 import style from './topicList.module.scss';
-import {createTopic} from '../api/createTopic';
+import {createTopic} from '../../api/createTopic';
 
 export type NewTopicForm = {
   topic: string;

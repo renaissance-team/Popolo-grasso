@@ -14,7 +14,7 @@ import {
   selectSelectedTopic,
   fetchMessages
 } from '../../redux/messagesSlice';
-import {createMessage} from '../api/createMessage';
+import {createMessage} from '../../api/createMessage';
 
 export type NewMessageForm = {
   text: string;

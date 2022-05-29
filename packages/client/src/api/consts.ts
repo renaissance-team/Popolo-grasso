@@ -3,7 +3,7 @@ export const ENDPOINTS = {
   ROOT: 'https://ya-praktikum.tech/api/v2',
   FILES_ROOT: 'https://ya-praktikum.tech',
   SOCKET: 'wss://ya-praktikum.tech/ws',
-  SERVER_HOST: 'https://localhost:443',
+  SERVER_HOST: 'https://localhost:443', // TODO пора создавать env файл. При деплое дб хост, где размешен сервер
   AUTH: {
     PATH: '/auth',
     SIGNUP: '/signup',
@@ -15,7 +15,7 @@ export const ENDPOINTS = {
   OAUTH: {
     YANDEX_API: 'https://oauth.yandex.ru/authorize?response_type=code&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI',
     PATH: '/oauth/yandex',
-    SERVICE_ID: '/service-id'
+    SERVICE_ID: '/service-id',
   },
   USER: {
     PATH: '/user',
