@@ -14,6 +14,8 @@ $pink: #f8ecf2;
 
 // fonts
 $inter: 'Inter', serif;
+$comic: 'Comic Sans Ms', sans-serif;
+$vibes: 'Great Vibes', cursive;
 
 // animations
 $ease: all 0.4s;
@@ -23,6 +25,20 @@ $text-color: lighten($black, 20%);
 $text-color-grey: lighten($black, 50%);
 $border-color: lighten($black, 80%);
 $light-grey: lighten($black, 95%);
+
+
+// media queries
+$min-width: 320px;
+$breakpoint-mobile: 1024px;
+
+@mixin media($point) {
+  @if $point==mobile {
+      @media screen and (max-width: $breakpoint-mobile) {
+          @content;
+      }
+  }
+}
+
 
 // components
 @mixin block {
@@ -93,6 +109,7 @@ $light-grey: lighten($black, 95%);
     }
   }
 }
+
 @mixin centered {
   display: flex;
   align-items: center;

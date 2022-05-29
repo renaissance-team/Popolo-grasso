@@ -1,23 +1,56 @@
 @import '../../styles/variables.scss';
+
 $container-width: 860px;
+
 .wrapper {
   margin: auto;
-  max-width: $container-width;
+  width: $container-width;
+  max-width: 100%;
+  min-height: 100%;
   padding: 50px 0;
+  @include centered;
 }
+
 .content {
+  text-align: center;
   width: 100%;
+  color: $darkPurple02;
   img {
     max-width: 100%;
   }
 }
+
 .controls {
-  background: $white;
-  text-align: center;
-  position: fixed;
-  margin: auto;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: $container-width;
+  margin-top: 40px;
+  a{
+    text-decoration: none !important;
+  }
+}
+
+h2 {
+  font-family: $comic;
+  font-size: 25px;
+  line-height: 20px;
+  font-weight: lighter;
+  span {
+    font-family: $vibes;
+  }
+}
+
+h4 {
+  font-family: $comic;
+  font-size: 18px;
+}
+
+.arrowKeys {
+  margin-top: 20px;
+  img {
+    // margin: 10px 10px -18px;
+    display: inline-block;
+    margin: 10px 0 -20px;
+  }
+  span {
+    width: 80px;
+    display: inline-block;
+  }
 }

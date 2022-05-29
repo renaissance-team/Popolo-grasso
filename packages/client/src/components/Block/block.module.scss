@@ -2,9 +2,8 @@
 
 .container {
   @include centered;
-  width: 100vw;
-  height: 100vh;
   background: linear-gradient(to top, $darkPurple02, $purple);
+  min-height: 100%;
 }
 
 .header {

@@ -46,6 +46,7 @@ export default function MainContainer({children}: IMainContainer) {
 
   useDidUpdateEffect(() => {
     setErrorsLocal({});
+    setSidebarOpen(false);
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -80,7 +81,7 @@ export default function MainContainer({children}: IMainContainer) {
           <h4>
             привет,
             {' '}
-            {userData.display_name}
+            {userData.display_name || userData.login}
             !
           </h4>
         </div>

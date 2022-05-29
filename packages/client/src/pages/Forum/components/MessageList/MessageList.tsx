@@ -29,7 +29,7 @@ export default function MessageList({messages}: MessageListPropsType): ReactElem
         <div className={style.empty}>Здесь еще никто ничего не писал</div>
       )}
       <form className={style.messages_footer}>
-        <Input label="Оставьте сообщение" />
+        <Input label="Оставьте сообщение" className={style.input} />
         <Button>Отправить</Button>
       </form>
     </div>

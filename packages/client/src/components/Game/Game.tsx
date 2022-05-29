@@ -884,7 +884,7 @@ export default function Game(): React.ReactElement {
     return () => {
       window.document.body.style.overflowX = 'auto';
       window.document.body.style.overflowY = 'auto';
-      window.document.body.style.height = 'unset';
+      // window.document.body.style.height = 'unset';
 
       if (rootElem) {
         rootElem.style.height = 'unset';
