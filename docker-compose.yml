@@ -14,11 +14,11 @@ services:
       - ./packages/db/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
     ports:
       - 5432:5432
-  # server:
-  #   restart: always
-  #   ports:
-  #     - 3009:3008
-  #   build:
-  #     context: ./
-  #   depends_on: 
-  #    - postgres
+  server:
+    restart: always
+    ports:
+      - 444:443
+    build:
+      context: ./
+    depends_on: 
+     - postgres
