@@ -1,13 +1,17 @@
-import React, {ReactElement, /* useEffect, */ useState} from 'react';
+import React, {ReactElement, useRef, /* useEffect, */ useState} from 'react';
 import classNames from 'classnames';
 import {AnyAction} from 'redux';
 import {ROUTES} from '@/pages/consts';
 import {useDispatch} from 'react-redux';
 import {NavLink, /* useLocation, */ useNavigate} from 'react-router-dom';
-import {useAppSelector /* ,  useDidUpdateEffect */} from '@/utils';
+import {
+  useAppSelector, /* ,  useDidUpdateEffect */
+  useOnClickOutside
+} from '@/utils';
 import {logout} from '@/store/auth/actions';
 import Button from '../Button/Button';
 import style from './MainContainer.module.scss';
+import Avatar from '../Avatar/Avatar';
 
 interface IMainContainer {
   children: ReactElement;
@@ -23,11 +27,13 @@ const navItems: Record<string, TNavItem> = {
 };
 
 export default function MainContainer({children}: IMainContainer) {
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   // const location = useLocation();
   const {isAuth, error: authError} = useAppSelector((state) => state.auth);
-  const {error: userError} = useAppSelector((state) => state.user);
+  const {error: userError, data: userData} = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const errorsStore = {authError, userError};
 
@@ -52,9 +58,32 @@ export default function MainContainer({children}: IMainContainer) {
     });
   };
 
+  useOnClickOutside(sidebarRef, (event) => {
+    if (!sidebarRef.current?.contains(event.target as Node)) {
+      setSidebarOpen(false);
+    }
+  });
   return (
     <>
-      <header className={style.header}>
+      <div className={classNames([style.sidebar, sidebarOpen && style.active])} ref={sidebarRef}>
+        <button
+          type="button"
+          className={style.trigger}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label={`${!sidebarOpen ? 'Открыть' : 'Закрыть'} меню`}
+        />
+
+        {userData && (
+        <div className={style.profile}>
+          <Avatar value={userData.avatar} />
+          <h4>
+            привет,
+            {' '}
+            {userData.display_name}
+            !
+          </h4>
+        </div>
+        )}
         <nav className={style.nav}>
           <ul className={style.list}>
             {Object.values(navItems)
@@ -67,30 +96,30 @@ export default function MainContainer({children}: IMainContainer) {
                 </li>
               ))}
             {isAuth && (
-              <li className={classNames(style.list_item, style.list_item_last)}>
-                <Button onClick={handleLogout} className={style.button_logout}>
-                  Выход
-                </Button>
-              </li>
+            <li className={classNames(style.list_item, style.list_item_last)}>
+              <Button onClick={handleLogout} className={style.button_logout}>
+                Выход
+              </Button>
+            </li>
             )}
           </ul>
         </nav>
-        {Object.entries(errorsLocal)
-          .filter(([, error]) => error !== '')
-          .map(([key, error]) => (
-            <div
-              className={style.error}
-              role="button"
-              key={key}
-              onClick={() => hideError(key)}
-              tabIndex={0}
-              aria-hidden="true"
-            >
-              {error}
-            </div>
-          ))}
-      </header>
+      </div>
       {children}
+      {Object.entries(errorsLocal)
+        .filter(([, error]) => error !== '')
+        .map(([key, error]) => (
+          <div
+            className={style.error}
+            role="button"
+            key={key}
+            onClick={() => hideError(key)}
+            tabIndex={0}
+            aria-hidden="true"
+          >
+            {error}
+          </div>
+        ))}
     </>
   );
 }
