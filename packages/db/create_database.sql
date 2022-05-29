@@ -24,7 +24,7 @@ CREATE TABLE popolo."user_theme" (
 create view popolo.forum_topics as 
 select t.name, t.created_date, m.*
 	from popolo.topic as t
-	join (select * 
+	left join (select * 
 			from popolo.message 
 			order by date 
 			desc limit 1) as m on m.topic_id = t.topic_id;
