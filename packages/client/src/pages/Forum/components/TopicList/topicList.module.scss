@@ -4,7 +4,8 @@
   display: flex;
   flex-direction: column;
   background-color: $darkPurple01;
-  height: calc(100vh - 90px);
+  height: 100vh;
+  padding-top: 50px;
   &_content {
     overflow: auto;
   }
@@ -28,4 +29,7 @@
     border-radius: 5px;
     color: $white;
   }
+  height: 40px;
+  border-radius: 5px;
+  overflow: hidden;
 }
