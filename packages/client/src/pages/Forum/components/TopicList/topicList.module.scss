@@ -5,6 +5,7 @@
   flex-direction: column;
   background-color: $darkPurple01;
   height: 100vh;
+  padding-top: 50px;
   &_content {
     overflow: auto;
   }
@@ -23,6 +24,11 @@
 }
 
 .input {
+  input {
+    background-color: #3b3144;
+    border-radius: 5px;
+    color: $white;
+  }
   height: 40px;
   border-radius: 5px;
   overflow: hidden;

@@ -1,31 +1,43 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, {ReactElement} from 'react';
 import cn from 'classnames';
-import {TopicType} from '../TopicList/TopicList';
+import {useDispatch} from 'react-redux';
 import style from './topic.module.scss';
+import {ForumTopicResponseType} from '../../api/getTopicList';
+import {setSelectedTopic, fetchMessages} from '../../redux/messagesSlice';
 
 export default function Topic({
-  topic_name,
+  name,
   user,
-  last_message,
-  response_count,
-  last_date,
-}: TopicType): ReactElement<TopicType> {
+  text,
+  date,
+  created_date,
+  topic_id,
+}: ForumTopicResponseType): ReactElement<ForumTopicResponseType> {
+  const dispatch = useDispatch();
+  const onKeyPressHandler = () => {
+    dispatch(setSelectedTopic({topicId: topic_id, topicName: name}));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(fetchMessages({topic_id}));
+  };
   return (
-    <div className={style.topic}>
-      <div className={cn(style.topic_name, style.pb_5)}>{topic_name}</div>
-      {response_count > 0 && (
+    <div className={style.topic} onClick={onKeyPressHandler}>
+      <div className={cn(style.topic_name, style.pb_5)}>{name}</div>
+      {text && (
         <>
           <div className={style.pb_5}>
-            <b>{`${user}: `}</b>
-            <span className={style.sub}>{last_message}</span>
+            <span>Создана: </span>
+            <span className={style.topic_count}>{created_date.toString().substring(10, 0)}</span>
           </div>
           <div className={style.pb_5}>
-            <span>Ответов: </span>
-            <span className={style.topic_count}>{response_count}</span>
+            <span>Последний: </span>
+            <span className={style.sub}>{date.toString().substring(10, 0)}</span>
           </div>
           <div>
-            <span>Последний: </span>
-            <span className={style.sub}>{last_date}</span>
+            <b>{`${user}: `}</b>
+            <span className={style.sub}>{text}</span>
           </div>
         </>
       )}

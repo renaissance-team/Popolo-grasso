@@ -21,10 +21,24 @@ CREATE TABLE popolo."user_theme" (
   "device" TEXT,
   "user_id" INT
 );
-create view popolo.forum_topics as 
-select t.name, t.created_date, m.*
-	from popolo.topic as t
-	join (select * 
-			from popolo.message 
-			order by date 
-			desc limit 1) as m on m.topic_id = t.topic_id;
+CREATE VIEW popolo.forum_topics as 
+SELECT  t.name,
+    	  t.created_date,
+        t.topic_id, 
+        res.message_id,
+        res.date,
+        res.text,
+        res."user"
+FROM popolo.topic as t
+LEFT JOIN
+  (SELECT m.message_id,
+          m.topic_id,
+          m.date,
+          m.text,
+          m."user"
+  FROM popolo.message as m 
+  JOIN 
+    (SELECT max(message.message_id) as last_msg_id
+    FROM popolo.message
+    GROUP BY topic_id) lm ON m.message_id = lm.last_msg_id) res ON res.topic_id = t.topic_id
+ORDER BY topic_id desc

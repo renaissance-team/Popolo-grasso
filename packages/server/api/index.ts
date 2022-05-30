@@ -16,16 +16,16 @@ export const addApi = (app: Express) => {
     const data = await getTopics(host, port);
     res.json(data);
   });
+  // Создает новую тему
+  app.post('/api/v1/topic', async (req, res) => {
+    const {name} = req.body;
+    const data = await createTopic(host, port, name);
+    res.json(data[0]);
+  });
   // Возвращает сообщения, относящиеся к выбранной теме
   app.get('/api/v1/topic/:topic_id/message', async (req, res) => {
     const {topic_id} = req.params;
     const data = await getMessages(host, port, +topic_id);
-    res.json(data);
-  });
-  // Создает новую тему
-  app.post('api/v1/topic', async (req, res) => {
-    const {name} = req.body;
-    const data = await createTopic(host, port, name);
     res.json(data);
   });
   // Добавляет новое сообщение в выбранной теме
