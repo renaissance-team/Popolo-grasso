@@ -3,8 +3,8 @@ import {renderToString} from 'react-dom/server';
 import {Request, Response} from 'express';
 import {StaticRouter} from 'react-router-dom/server';
 import {Provider} from 'react-redux';
-import App from '../client/src/components/App/App';
-import store from '../client/src/store/index';
+import App from '../../client/src/components/App/App';
+import store from '../../client/src/store/index';
 
 function getHtml(reactHtml: string, reduxState = {}) {
   return `
