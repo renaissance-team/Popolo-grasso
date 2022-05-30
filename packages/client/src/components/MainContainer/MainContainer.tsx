@@ -79,10 +79,7 @@ export default function MainContainer({children}: IMainContainer) {
         <div className={style.profile}>
           <Avatar value={userData.avatar} />
           <h4>
-            привет,
-            {' '}
-            {userData.display_name || userData.login}
-            !
+            {`привет,${userData.display_name || userData.login}!`}
           </h4>
         </div>
         )}
