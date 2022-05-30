@@ -20,7 +20,7 @@ export default function TopicList({topics}: TopicListPropsType): ReactElement<To
   return (
     <div className={style.topics}>
       <form className={style.create}>
-        <Input label="Тема для обсуждения" />
+        <Input label="Тема для обсуждения" className={style.input} />
         <Button>
           <span>+ Создать</span>
         </Button>

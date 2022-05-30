@@ -14,7 +14,7 @@
   flex-direction: column;
   color: $green;
   h2 {
-    font-family: 'Comic Sans Ms', sans-serif;
+    font-family: $comic;
     font-size: 65px;
     line-height: 60px;
     font-weight: normal;
@@ -24,12 +24,12 @@
     text-shadow: 0 1px 1px $pink;
   }
   h3 {
-    font-family: 'Comic Sans Ms', sans-serif;
+    font-family: $comic;
     font-size: 25px;
     line-height: 20px;
     font-weight: lighter;
     span {
-      font-family: 'Great Vibes', cursive;
+      font-family: $vibes;
     }
   }
 }

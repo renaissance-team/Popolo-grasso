@@ -5,7 +5,13 @@
   color: $white;
   justify-content: center;
   height: 100vh;
+  @include media(mobile) {
+    display: block;
+  }
   &_item {
-    width: 50vw;
+    width: 50%;
+    @include media(mobile) {
+      width: 100%;
+    }
   }
 }
