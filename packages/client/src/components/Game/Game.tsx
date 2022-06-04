@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '@/pages/consts';
 import isServer from '@/utils/isServerChecker';
 
+import word from '@/assets/images/motypest3-min.png';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -283,6 +284,29 @@ export default function Game(): React.ReactElement {
     handlePlayerGravity();
   }, []);
 
+  const handleClearCanvas = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const img = createImg(word);
+    img.onload = function () {
+      const pattern = canvasContext.createPattern(img, 'repeat');
+      canvasContext.fillStyle = pattern as CanvasPattern;
+      if (!canvasRef.current) {
+        return;
+      }
+      canvasContext.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      canvasContext.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    };
+  };
+
   const handleChangePlayerPositionX = useCallback(() => {
     playerStateRef.current.position.x += playerStateRef.current.velocity.x;
   }, []);
@@ -311,6 +335,21 @@ export default function Game(): React.ReactElement {
     );
   };
 
+  const drawWord = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const img = createImg(word);
+    canvasContext.drawImage(img, playerStateRef.current.position.x - playerStateRef.current.width * 2, -200);
+  };
+
   const updatePlayerFrame = () => {
     playerStateRef.current.frame += 1;
 
@@ -321,6 +360,8 @@ export default function Game(): React.ReactElement {
 
   const updatePlayer = useCallback(
     () => {
+      drawWord();
+
       updatePlayerFrame();
 
       drawPlayer();
@@ -427,27 +468,6 @@ export default function Game(): React.ReactElement {
       handlePlayerMoveToUpStart();
     }
   }, []);
-
-  const handleClearCanvas = () => {
-    if (!canvasRef.current) {
-      return;
-    }
-
-    const canvasContext = canvasRef.current.getContext('2d');
-
-    if (!canvasContext) {
-      return;
-    }
-
-    canvasContext.fillStyle = 'white';
-
-    canvasContext.fillRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height,
-    );
-  };
 
   const handlePlayerOnThePlatform = (platformIndex: number) => {
     const currPlatform = platformsStateRef.current[platformIndex];
@@ -754,11 +774,11 @@ export default function Game(): React.ReactElement {
 
     if (isIntersecting) {
       if (gameStateRef.current.started) {
+        updatePlayer();
+
         drawBasePlatform();
 
         drawPlatforms();
-
-        updatePlayer();
 
         handleChangePlayerVelocityX();
         handleChangePlayerVelocityY();
