@@ -4,9 +4,7 @@ import React, {
 import classNames from 'classnames';
 import {AnyAction} from 'redux';
 import {useDispatch} from 'react-redux';
-import {
-  NavLink, useLocation, useNavigate
-} from 'react-router-dom';
+import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import {ROUTES} from '@/pages/consts';
 import {useAppSelector, useDidUpdateEffect, useOnClickOutside} from '@/utils';
 import {logout} from '@/store/auth/actions';
@@ -27,7 +25,13 @@ const navItems: Record<string, TNavItem> = {
   profile: {label: 'Профиль', link: ROUTES.PROFILE, private: true},
 };
 
+const THEMES = {
+  LIGHT: 'LIGHT',
+  DARK: 'DARK'
+};
+
 export default function MainContainer({children}: IMainContainer) {
+  const [theme, setTheme] = useState(THEMES.LIGHT);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,23 +69,27 @@ export default function MainContainer({children}: IMainContainer) {
       setSidebarOpen(false);
     }
   });
+
   return (
-    <>
+    <div className={classNames([style.container, theme])}>
+      <button
+        type="button"
+        className={style.trigerTheme}
+        onClick={() => setTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT)}
+        aria-label="Изменить тему"
+      />
       <div className={classNames([style.sidebar, sidebarOpen && style.active])} ref={sidebarRef}>
         <button
           type="button"
-          className={style.trigger}
+          className={style.triggerSidebar}
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label={`${!sidebarOpen ? 'Открыть' : 'Закрыть'} меню`}
         />
-
         {userData && (
-        <div className={style.profile}>
-          <Avatar value={userData.avatar} />
-          <h4>
-            {`привет,${userData.display_name || userData.login}!`}
-          </h4>
-        </div>
+          <div className={style.profile}>
+            <Avatar value={userData.avatar} />
+            <h4>{`привет,${userData.display_name || userData.login}!`}</h4>
+          </div>
         )}
         <nav className={style.nav}>
           <ul className={style.list}>
@@ -95,11 +103,11 @@ export default function MainContainer({children}: IMainContainer) {
                 </li>
               ))}
             {isAuth && (
-            <li className={classNames(style.list_item, style.list_item_last)}>
-              <Button onClick={handleLogout} className={style.button_logout}>
-                Выход
-              </Button>
-            </li>
+              <li className={classNames(style.list_item, style.list_item_last)}>
+                <Button onClick={handleLogout} className={style.button_logout}>
+                  Выход
+                </Button>
+              </li>
             )}
           </ul>
         </nav>
@@ -119,6 +127,6 @@ export default function MainContainer({children}: IMainContainer) {
             {error}
           </div>
         ))}
-    </>
+    </div>
   );
 }
