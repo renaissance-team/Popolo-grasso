@@ -170,6 +170,7 @@ export default function Game(): React.ReactElement {
 
   const WORD_STATE = {
     background: WORD,
+    offset: 0,
   };
 
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
@@ -354,9 +355,18 @@ export default function Game(): React.ReactElement {
       return;
     }
 
+    let offset;
+    if (wordRef.current.offset > 0) {
+      offset = 0;
+    } else if (wordRef.current.offset < -(wordRef.current.background.width - CANVAS_WIDTH)) {
+      offset = -(wordRef.current.background.width - 500);
+    } else {
+      offset = wordRef.current.offset;
+    }
+
     canvasContext.drawImage(
       wordRef.current.background,
-      playerStateRef.current.position.x - playerStateRef.current.width * 2,
+      offset,
       -200
     );
   };
@@ -831,6 +841,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkLeftSprite
           : playerStateRef.current.sprites.standLeftSprite;
+        wordRef.current.offset += 20;
         break;
       case 38:
         keyboardInteractionStateRef.current.arrowUp.pressed = pressed;
@@ -841,6 +852,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkRightSprite
           : playerStateRef.current.sprites.standRightSprite;
+        wordRef.current.offset -= 20;
         break;
 
       case 40:
