@@ -27,6 +27,11 @@
 }
 
 .input {
+  input {
+    background-color: #4a3b56;
+    border-radius: 5px;
+    color: $white;
+  }
   height: 40px;
   border-radius: 5px;
   overflow: hidden;

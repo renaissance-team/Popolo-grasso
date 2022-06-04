@@ -1,13 +1,13 @@
 import React, {ReactElement} from 'react';
+import {MessagesResponseType} from '../../api/getMessages';
 import style from './message.module.scss';
-import {MessageType} from '../MessageList/MessageList';
 
-export default function TopicList({user, message, date}: MessageType): ReactElement<MessageType> {
+export default function TopicList({user, text, date}: MessagesResponseType): ReactElement<MessagesResponseType> {
   return (
     <div className={style.massage}>
       <div>{user}</div>
-      <div>{message}</div>
-      <div>{date}</div>
+      <div>{text}</div>
+      <div>{date.toString().substring(10, 0)}</div>
     </div>
   );
 }

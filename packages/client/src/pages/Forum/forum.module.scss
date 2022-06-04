@@ -4,7 +4,6 @@
   display: flex;
   color: $white;
   justify-content: center;
-  height: 100vh;
   @include media(mobile) {
     display: block;
   }
