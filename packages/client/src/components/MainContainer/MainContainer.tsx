@@ -11,7 +11,6 @@ import {
 } from '@/utils';
 import {logout} from '@/store/auth/actions';
 import {setTheme, getTheme} from '@/store/theme/actions';
-// import {getUserTheme, setUserTheme} from '@/api/theme-api';
 import {EThemes} from '@/store/theme/reducer';
 import moonIcon from '@/assets/images/moon.svg';
 import sunIcon from '@/assets/images/sun.svg';
@@ -33,7 +32,6 @@ const navItems: Record<string, TNavItem> = {
 };
 
 export default function MainContainer({children}: IMainContainer) {
-  // const [theme, setTheme] = useState(THEMES.LIGHT);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();

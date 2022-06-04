@@ -19,7 +19,7 @@ export const setTheme = createAsyncThunk('theme/setTheme', async (themeId: EThem
     const userId = reduxStore.user.data?.id;
 
     if (userId) {
-    //   await themeAPI.setUserTheme({theme_id: themeId, user_id: userId});
+      await themeAPI.setUserTheme({theme_id: themeId, user_id: userId});
     }
     return themeId;
   } catch (error) {
