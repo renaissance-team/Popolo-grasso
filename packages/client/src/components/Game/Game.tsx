@@ -122,6 +122,8 @@ const CHARACTER_STAND_RIGHT_IMAGE = createImg(characterStandRight);
 
 const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
+const WORD = createImg(word);
+
 const initialGameState: IGameState = {
   started: false,
   offsetX: 0,
@@ -166,7 +168,13 @@ export default function Game(): React.ReactElement {
     frame: 0,
   };
 
+  const WORD_STATE = {
+    background: WORD,
+  };
+
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
+
+  const wordRef = useRef(WORD_STATE);
 
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
@@ -346,8 +354,11 @@ export default function Game(): React.ReactElement {
       return;
     }
 
-    const img = createImg(word);
-    canvasContext.drawImage(img, playerStateRef.current.position.x - playerStateRef.current.width * 2, -200);
+    canvasContext.drawImage(
+      wordRef.current.background,
+      playerStateRef.current.position.x - playerStateRef.current.width * 2,
+      -200
+    );
   };
 
   const updatePlayerFrame = () => {
