@@ -1,5 +1,9 @@
 @import '~styles/variables.scss';
 
+.container {
+  height: 100%;
+}
+
 .header {
   height: 90px;
   display: block;
@@ -79,7 +83,7 @@
   }
 }
 
-.trigger {
+.triggerSidebar {
   position: absolute;
   left: 100%;
   top: 0;
@@ -115,6 +119,16 @@
       transform: rotate(-45deg);
     }
   }
+}
+
+.trigerTheme {
+  position: fixed;
+  right: 0;
+  top: 0;
+  margin: 20px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
 }
 
 .profile {
