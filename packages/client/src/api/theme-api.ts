@@ -1,7 +1,7 @@
 import {ENDPOINTS} from '@/api/consts';
 import {http} from '@/utils';
 
-const baseURL = `${ENDPOINTS.SERVER_HOST}/api/v1/theme`;
+const baseURL = `${ENDPOINTS.SERVER_HOST}/api/v1/theme/`;
 
 export type UserThemeType = {
   theme_id: number;
@@ -16,7 +16,7 @@ export const getThemesList = async (): Promise<string> => {
 };
 
 export const getUserTheme = async (user_id: number): Promise<string> => {
-  const result = await http.get<string, string>(`${baseURL}/${user_id}`);
+  const result = await http.get<string, string>(baseURL + user_id);
   console.info(result);
   return result;
 };
