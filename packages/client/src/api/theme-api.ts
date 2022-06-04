@@ -1,23 +1,33 @@
 import {ENDPOINTS} from '@/api/consts';
 import {http} from '@/utils';
 
-export type ThemeRequestBodyType = {
-  user_id: number,
-}
-export type ThemeResponseType = {
-    theme_id: number,
-    device?: string,
-    user_id: number,
-    user_theme_id: number,
-}
+const baseURL = `${ENDPOINTS.SERVER_HOST}/api/v1/theme/`;
 
-export const getUserTheme = async (params: ThemeRequestBodyType): Promise<ThemeResponseType> => {
-  const {user_id} = params;
-  const result = await http.get<ThemeRequestBodyType, ThemeResponseType>(
-    `/api/v1/theme${user_id}`,
-    {
-      baseURL: ENDPOINTS.SERVER_HOST,
-    }
-  );
+export type UserThemeType = {
+  theme_id: number;
+  device?: string;
+  user_id: number;
+};
+
+export const getThemesList = async (): Promise<string> => {
+  const result = await http.get<string, string>(baseURL);
+  console.info(result);
   return result;
+};
+
+export const getUserTheme = async (user_id: number): Promise<string> => {
+  const result = await http.get<string, string>(baseURL + user_id);
+  console.info(result);
+  return result;
+};
+
+export const setUserTheme = async (params: UserThemeType): Promise<string> => {
+  const result = await http.post<UserThemeType, string>(baseURL, params);
+  return result;
+};
+
+export default {
+  getThemesList,
+  getUserTheme,
+  setUserTheme
 };

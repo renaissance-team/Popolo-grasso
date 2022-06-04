@@ -1,7 +1,7 @@
 import React, {ReactElement} from 'react';
 
 import {Link} from 'react-router-dom';
-import {useAppSelector} from '@/utils';
+import {useAppSelector, useTheme} from '@/utils';
 import arrowKeys from '@/assets/images/arrow-keys.png';
 import Button from '../../components/Button/Button';
 import {ROUTES} from '../consts';
@@ -12,7 +12,7 @@ function Home(): ReactElement {
   const {isAuth} = useAppSelector((state) => state.auth);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={useTheme(styles, 'wrapper')}>
       <div>
         <div className={styles.content}>
           <h2>

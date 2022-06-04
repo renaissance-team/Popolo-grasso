@@ -2,16 +2,13 @@
 
 .container {
   height: 100%;
-}
-
-.header {
-  height: 90px;
-  display: block;
-  flex-shrink: 0;
+  margin: auto;
+  &.dark {
+    background: $darkPurple01;
+  }
 }
 
 .nav {
-  position: absolute;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -78,8 +75,15 @@
   width: 300px;
   z-index: 99;
   transition: $ease;
+  display: flex;
+  flex-direction: column;
   &.active {
     transform: translateX(100%);
+  }
+  .footer {
+    margin-top: auto;
+    display: flex;
+    padding: 10px 20px;
   }
 }
 
@@ -106,7 +110,7 @@
     display: block;
     position: absolute;
     transition: $ease;
-    border: 2px solid $white;
+    // border: 2px solid $white;
   }
   &::after {
     transform: translateY(10px);
@@ -122,13 +126,11 @@
 }
 
 .trigerTheme {
-  position: fixed;
-  right: 0;
-  top: 0;
-  margin: 20px;
-  width: 20px;
-  height: 20px;
-  border: 1px solid #000;
+  border: none;
+  background: none;
+  font-size: 40px;
+  color: $white;
+  width: 30px;
 }
 
 .profile {

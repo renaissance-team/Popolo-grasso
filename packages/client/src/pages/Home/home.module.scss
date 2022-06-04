@@ -15,6 +15,9 @@ $container-width: 860px;
   text-align: center;
   width: 100%;
   color: $darkPurple02;
+  .dark & {
+    color: $pink;
+  }
   img {
     max-width: 100%;
   }
@@ -22,7 +25,7 @@ $container-width: 860px;
 
 .controls {
   margin-top: 40px;
-  a{
+  a {
     text-decoration: none !important;
   }
 }

@@ -2,6 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import userAPI from '@/api/user-api';
 import {createErrorString} from '@/utils';
 import {TFormResponse} from '@/components/Form/Form';
+import themeAPI from '@/api/theme-api';
 
 export const changeUser = createAsyncThunk(
   'user/changeUser',
@@ -32,4 +33,16 @@ export const changeAvatar = createAsyncThunk(
       return thunkAPI.rejectWithValue(createErrorString(error));
     }
   },
+);
+
+export const getTheme = createAsyncThunk(
+  'theme/getTheme',
+  async (user_id: number, thunkAPI) => {
+    try {
+      const response = await themeAPI.getUserTheme(user_id);
+      return response === '' ? 0 : +response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(createErrorString(error));
+    }
+  }
 );

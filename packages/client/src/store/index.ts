@@ -5,11 +5,13 @@ import topicListReducer from '@/pages/Forum/redux/topicsSlice';
 import messagesReducer from '@/pages/Forum/redux/messagesSlice';
 import authReducer from './auth/reducer';
 import userReducer from './user/reducer';
+import themeReducer from './theme/reducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   leaderboard: leaderboardReducer,
+  theme: themeReducer,
   forum: combineReducers({
     topicList: topicListReducer,
     messages: messagesReducer,

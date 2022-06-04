@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import {useTheme} from '@/utils';
 import style from './input.module.scss';
 
 export interface IInputProps extends React.HTMLProps<HTMLInputElement> {
@@ -12,7 +13,7 @@ const Input = React.forwardRef(
   ({
     type = 'text', value, label, errorText, className, id, ...props
   }: IInputProps, ref?: React.ForwardedRef<HTMLInputElement>) => (
-    <div className={cn(style.wrapper, className)}>
+    <div className={cn(useTheme(style, 'wrapper'), className)}>
       <input
         ref={ref}
         id={id}

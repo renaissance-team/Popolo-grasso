@@ -6,8 +6,15 @@ import {AnyAction} from 'redux';
 import {useDispatch} from 'react-redux';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import {ROUTES} from '@/pages/consts';
-import {useAppSelector, useDidUpdateEffect, useOnClickOutside} from '@/utils';
+import {
+  useAppSelector, useDidUpdateEffect, useOnClickOutside, useTheme
+} from '@/utils';
 import {logout} from '@/store/auth/actions';
+import {setTheme, getTheme} from '@/store/theme/actions';
+// import {getUserTheme, setUserTheme} from '@/api/theme-api';
+import {EThemes} from '@/store/theme/reducer';
+import moonIcon from '@/assets/images/moon.svg';
+import sunIcon from '@/assets/images/sun.svg';
 import Button from '../Button/Button';
 import style from './MainContainer.module.scss';
 import Avatar from '../Avatar/Avatar';
@@ -25,24 +32,21 @@ const navItems: Record<string, TNavItem> = {
   profile: {label: 'Профиль', link: ROUTES.PROFILE, private: true},
 };
 
-const THEMES = {
-  LIGHT: 'LIGHT',
-  DARK: 'DARK'
-};
-
 export default function MainContainer({children}: IMainContainer) {
-  const [theme, setTheme] = useState(THEMES.LIGHT);
+  // const [theme, setTheme] = useState(THEMES.LIGHT);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const {isAuth, error: authError} = useAppSelector((state) => state.auth);
   const {error: userError, data: userData} = useAppSelector((state) => state.user);
+  const {error: themeError, theme} = useAppSelector((state) => state.theme);
   const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const errorsStore = {authError, userError};
-
+  const errorsStore = {authError, userError, themeError};
   const [errorsLocal, setErrorsLocal] = useState<Record<string, string>>({...errorsStore});
+
+  const isLightTheme = EThemes.light === theme;
 
   useEffect(() => {
     setErrorsLocal(errorsStore);
@@ -64,20 +68,24 @@ export default function MainContainer({children}: IMainContainer) {
     });
   };
 
+  const handleChangeTheme = () => dispatch(
+    setTheme(theme !== EThemes.light ? EThemes.light : EThemes.dark) as unknown as AnyAction
+  );
+
   useOnClickOutside(sidebarRef, (event) => {
     if (!sidebarRef.current?.contains(event.target as Node)) {
       setSidebarOpen(false);
     }
   });
 
+  useEffect(() => {
+    if (isAuth && userData) {
+      dispatch(getTheme(userData.id) as unknown as AnyAction);
+    }
+  }, [isAuth]);
+
   return (
-    <div className={classNames([style.container, theme])}>
-      <button
-        type="button"
-        className={style.trigerTheme}
-        onClick={() => setTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT)}
-        aria-label="Изменить тему"
-      />
+    <div className={useTheme(style, 'container')}>
       <div className={classNames([style.sidebar, sidebarOpen && style.active])} ref={sidebarRef}>
         <button
           type="button"
@@ -111,6 +119,11 @@ export default function MainContainer({children}: IMainContainer) {
             )}
           </ul>
         </nav>
+        <div className={style.footer}>
+          <button type="button" className={style.trigerTheme} onClick={handleChangeTheme} aria-label="Изменить тему">
+            {isLightTheme ? <img src={moonIcon} alt="moon" /> : <img src={sunIcon} alt="sun" />}
+          </button>
+        </div>
       </div>
       {children}
       {Object.entries(errorsLocal)
