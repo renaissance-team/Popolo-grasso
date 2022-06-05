@@ -23,6 +23,8 @@
   }
   &_footer {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -34,5 +36,8 @@
   }
   height: 40px;
   border-radius: 5px;
-  overflow: hidden;
+}
+
+.button {
+  margin-top: 10px;
 }

@@ -24,7 +24,7 @@ const schema = yup.object().shape({
   text: yup
     .string()
     .required('Текст сообщения необходимо заполнить')
-    .max(500, 'Максимальная длина сообщения 500 символов'),
+    .max(200, 'Максимальная длина сообщения 200 символов'),
 });
 
 export default function MessageList(): ReactElement {
@@ -87,7 +87,7 @@ export default function MessageList(): ReactElement {
             <Input {...field} label="Оставьте сообщение" className={style.input} errorText={errors?.text?.message} />
           )}
         />
-        <Button type="submit">Отправить</Button>
+        <Button type="submit" className={style.button}>Отправить</Button>
       </form>
     </div>
   );
