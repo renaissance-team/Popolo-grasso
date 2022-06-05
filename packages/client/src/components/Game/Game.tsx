@@ -2,7 +2,6 @@ import React, {
   useRef,
   useCallback,
   useLayoutEffect,
-  useEffect,
 } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
@@ -12,6 +11,7 @@ import isServer from '@/utils/isServerChecker';
 
 import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
+import word from '@/assets/images/motypest3-min.png';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -33,6 +33,7 @@ import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 import {useIntersectionObserver} from './hooks/useIntersectionObserver/useIntersectionObserver';
 import {createLeaderboardResult, LeaderType} from './api/createLeaderboardResult';
 import {selectUserData} from '../../store/user/reducer';
+import styles from './index.module.scss';
 
 const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
@@ -126,6 +127,8 @@ const CHARACTER_STAND_RIGHT_IMAGE = createImg(characterStandRight);
 
 const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
+const WORD = createImg(word);
+
 const initialGameState: IGameState = {
   started: false,
   offsetX: 0,
@@ -168,6 +171,11 @@ export default function Game(): React.ReactElement {
     frame: 0,
   };
 
+  const WORD_STATE = {
+    background: WORD,
+    offset: 0,
+  };
+
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
 
   const navigateToHomePage = async () => {
@@ -186,6 +194,7 @@ export default function Game(): React.ReactElement {
     }
     navigate(ROUTES.HOME);
   };
+  const wordRef = useRef(WORD_STATE);
 
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
@@ -303,6 +312,29 @@ export default function Game(): React.ReactElement {
     handlePlayerGravity();
   }, []);
 
+  const handleClearCanvas = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    const img = createImg(word);
+    img.onload = function () {
+      const pattern = canvasContext.createPattern(img, 'repeat');
+      canvasContext.fillStyle = pattern as CanvasPattern;
+      if (!canvasRef.current) {
+        return;
+      }
+      canvasContext.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      canvasContext.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    };
+  };
+
   const handleChangePlayerPositionX = useCallback(() => {
     playerStateRef.current.position.x += playerStateRef.current.velocity.x;
   }, []);
@@ -331,6 +363,33 @@ export default function Game(): React.ReactElement {
     );
   };
 
+  const drawWord = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvasContext = canvasRef.current.getContext('2d');
+
+    if (!canvasContext) {
+      return;
+    }
+
+    let offset;
+    if (wordRef.current.offset > 0) {
+      offset = 0;
+    } else if (wordRef.current.offset < -(wordRef.current.background.width - CANVAS_WIDTH)) {
+      offset = -(wordRef.current.background.width - 500);
+    } else {
+      offset = wordRef.current.offset;
+    }
+
+    canvasContext.drawImage(
+      wordRef.current.background,
+      offset,
+      -200
+    );
+  };
+
   const updatePlayerFrame = () => {
     playerStateRef.current.frame += 1;
 
@@ -341,6 +400,8 @@ export default function Game(): React.ReactElement {
 
   const updatePlayer = useCallback(
     () => {
+      drawWord();
+
       updatePlayerFrame();
 
       drawPlayer();
@@ -447,27 +508,6 @@ export default function Game(): React.ReactElement {
       handlePlayerMoveToUpStart();
     }
   }, []);
-
-  const handleClearCanvas = () => {
-    if (!canvasRef.current) {
-      return;
-    }
-
-    const canvasContext = canvasRef.current.getContext('2d');
-
-    if (!canvasContext) {
-      return;
-    }
-
-    canvasContext.fillStyle = 'white';
-
-    canvasContext.fillRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height,
-    );
-  };
 
   const handlePlayerOnThePlatform = (platformIndex: number) => {
     const currPlatform = platformsStateRef.current[platformIndex];
@@ -774,11 +814,11 @@ export default function Game(): React.ReactElement {
 
     if (isIntersecting) {
       if (gameStateRef.current.started) {
+        updatePlayer();
+
         drawBasePlatform();
 
         drawPlatforms();
-
-        updatePlayer();
 
         handleChangePlayerVelocityX();
         handleChangePlayerVelocityY();
@@ -820,6 +860,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkLeftSprite
           : playerStateRef.current.sprites.standLeftSprite;
+        wordRef.current.offset += 20;
         break;
       case 38:
         keyboardInteractionStateRef.current.arrowUp.pressed = pressed;
@@ -830,6 +871,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkRightSprite
           : playerStateRef.current.sprites.standRightSprite;
+        wordRef.current.offset -= 20;
         break;
 
       case 40:
@@ -887,42 +929,13 @@ export default function Game(): React.ReactElement {
     };
   }, []);
 
-  useEffect(() => {
-    window.document.body.style.overflowX = 'hidden';
-    window.document.body.style.overflowY = 'hidden';
-    window.document.body.style.margin = '0';
-
-    const rootElem = window.document.querySelector<HTMLElement>('#root');
-
-    if (rootElem) {
-      rootElem.style.height = 'var(--app-height)';
-      rootElem.style.display = 'flex';
-      rootElem.style.backgroundColor = 'black';
-      rootElem.style.overflow = 'scroll';
-    }
-
-    return () => {
-      window.document.body.style.overflowX = 'auto';
-      window.document.body.style.overflowY = 'auto';
-      // window.document.body.style.height = 'unset';
-
-      if (rootElem) {
-        rootElem.style.height = 'unset';
-        rootElem.style.display = 'unset';
-        rootElem.style.backgroundColor = 'unset';
-        rootElem.style.overflow = 'unset';
-      }
-    };
-  }, []);
-
   return (
-    <canvas
-      ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
-      style={{
-        margin: 'auto',
-      }}
-    />
+    <div className={styles.container}>
+      <canvas
+        ref={canvasRef}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+      />
+    </div>
   );
 }

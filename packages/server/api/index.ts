@@ -59,7 +59,7 @@ export const addApi = (app: Express) => {
     res.json(data[0]);
   });
   // Изменить/установить тему юзера
-  app.post('api/v1/theme', async (req, res) => {
+  app.post('/api/v1/theme', async (req, res) => {
     const theme: UserThemeType = {...req.body};
     const data = await setTheme(host, port, theme);
     res.json(data[0]);

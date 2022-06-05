@@ -2,8 +2,11 @@
 
 .container {
   @include centered;
-  background: linear-gradient(to top, $darkPurple02, $purple);
+  // background: linear-gradient(to top, $darkPurple02, $purple);
   min-height: 100%;
+  &.dark {
+    background: $darkPurple01;
+  }
 }
 
 .header {
@@ -30,6 +33,12 @@
   background: $white;
   box-shadow: 0 0 28px rgba($black, 0.5);
   border-radius: 12px;
+  .dark & {
+    background: $darkPurple02;
+    button {
+      color: $white;
+    }
+  }
 }
 
 .title {
