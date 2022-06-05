@@ -2,7 +2,6 @@ import React, {
   useRef,
   useCallback,
   useLayoutEffect,
-  useEffect,
 } from 'react';
 import {useNavigate} from 'react-router-dom';
 
@@ -28,6 +27,7 @@ import characterStandLeft from './sprites/character/characterStandLeft.png';
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 import {useIntersectionObserver} from './hooks/useIntersectionObserver/useIntersectionObserver';
+import styles from './index.module.scss';
 
 const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
@@ -867,42 +867,13 @@ export default function Game(): React.ReactElement {
     };
   }, []);
 
-  useEffect(() => {
-    window.document.body.style.overflowX = 'hidden';
-    window.document.body.style.overflowY = 'hidden';
-    window.document.body.style.margin = '0';
-
-    const rootElem = window.document.querySelector<HTMLElement>('#root');
-
-    if (rootElem) {
-      rootElem.style.height = 'var(--app-height)';
-      rootElem.style.display = 'flex';
-      rootElem.style.backgroundColor = 'black';
-      rootElem.style.overflow = 'scroll';
-    }
-
-    return () => {
-      window.document.body.style.overflowX = 'auto';
-      window.document.body.style.overflowY = 'auto';
-      // window.document.body.style.height = 'unset';
-
-      if (rootElem) {
-        rootElem.style.height = 'unset';
-        rootElem.style.display = 'unset';
-        rootElem.style.backgroundColor = 'unset';
-        rootElem.style.overflow = 'unset';
-      }
-    };
-  }, []);
-
   return (
-    <canvas
-      ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
-      style={{
-        margin: 'auto',
-      }}
-    />
+    <div className={styles.container}>
+      <canvas
+        ref={canvasRef}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+      />
+    </div>
   );
 }

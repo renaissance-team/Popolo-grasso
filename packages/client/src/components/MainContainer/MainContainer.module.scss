@@ -1,13 +1,14 @@
 @import '~styles/variables.scss';
 
-.header {
-  height: 90px;
-  display: block;
-  flex-shrink: 0;
+.container {
+  height: 100%;
+  margin: auto;
+  &.dark {
+    background: $darkPurple01;
+  }
 }
 
 .nav {
-  position: absolute;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -74,12 +75,19 @@
   width: 300px;
   z-index: 99;
   transition: $ease;
+  display: flex;
+  flex-direction: column;
   &.active {
     transform: translateX(100%);
   }
+  .footer {
+    margin-top: auto;
+    display: flex;
+    padding: 10px 20px;
+  }
 }
 
-.trigger {
+.triggerSidebar {
   position: absolute;
   left: 100%;
   top: 0;
@@ -102,7 +110,7 @@
     display: block;
     position: absolute;
     transition: $ease;
-    border: 2px solid $white;
+    // border: 2px solid $white;
   }
   &::after {
     transform: translateY(10px);
@@ -115,6 +123,14 @@
       transform: rotate(-45deg);
     }
   }
+}
+
+.trigerTheme {
+  border: none;
+  background: none;
+  font-size: 40px;
+  color: $white;
+  width: 30px;
 }
 
 .profile {

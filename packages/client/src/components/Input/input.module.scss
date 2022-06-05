@@ -15,7 +15,7 @@
   transition: $ease;
   font-size: 13px;
   line-height: 13px;
-
+  background: transparent;
   &::placeholder {
     color: transparent;
   }
@@ -32,6 +32,9 @@
   &HasError {
     border-bottom-color: $red;
     color: $red;
+  }
+  .dark & {
+    color: $white;
   }
 }
 
