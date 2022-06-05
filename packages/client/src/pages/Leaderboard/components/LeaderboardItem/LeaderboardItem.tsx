@@ -16,7 +16,9 @@ export default function LeaderboardItem({
   return (
     <div className={leaderClass}>
       <div className={style.leaderboard_cell}>{rating}</div>
-      <img src={popolo_grasso_avatar} className={cn(style.avatar, style.leaderboard_cell)} alt="avatar" />
+      <div className={style.leaderboard_cell}>
+        <img src={popolo_grasso_avatar} className={style.avatar} alt="avatar" />
+      </div>
       <div className={style.leaderboard_cell}>{popolo_grasso_display_name}</div>
       <div className={style.leaderboard_cell}>{popolo_grasso_points}</div>
     </div>

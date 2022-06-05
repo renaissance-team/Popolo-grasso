@@ -1,4 +1,6 @@
-import {createAsyncThunk, createSlice, Dispatch} from '@reduxjs/toolkit';
+import {
+  createAction, createAsyncThunk, createSlice, Dispatch
+} from '@reduxjs/toolkit';
 import {RootState, GetState} from '@/store';
 import {DEFAULT_SERVER_ERROR} from '@/api/consts';
 import {getLeaderboard, LeaderResponseType, LeaderboardRequestParamsType} from '../api/getLeaderboard';
@@ -50,6 +52,8 @@ export const setRequestParams = () => (dispatch: Dispatch, getState: GetState): 
   );
 };
 
+export const resetCursor = createAction('leaderboard/resetCursor');
+
 const LeaderboardSlice = createSlice({
   name: 'leaderboard',
   initialState,
@@ -77,6 +81,11 @@ const LeaderboardSlice = createSlice({
       state.isLoading = false;
       state.data = state.data || [];
       state.error = DEFAULT_SERVER_ERROR;
+    });
+
+    builder.addCase(resetCursor, (state) => {
+      state.requestParams.cursor = 0;
+      state.data = [];
     });
   },
 });

@@ -4,11 +4,14 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 
 import {ROUTES} from '@/pages/consts';
 import isServer from '@/utils/isServerChecker';
 
+import {ENDPOINTS} from '@/api/consts';
+import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -28,6 +31,8 @@ import characterStandLeft from './sprites/character/characterStandLeft.png';
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
 import {useIntersectionObserver} from './hooks/useIntersectionObserver/useIntersectionObserver';
+import {createLeaderboardResult, LeaderType} from './api/createLeaderboardResult';
+import {selectUserData} from '../../store/user/reducer';
 
 const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
@@ -128,10 +133,8 @@ const initialGameState: IGameState = {
 
 export default function Game(): React.ReactElement {
   const navigate = useNavigate();
-
-  const navigateToHomePage = () => {
-    navigate(ROUTES.HOME);
-  };
+  const user = useSelector(selectUserData);
+  const dispatch = useDispatch();
 
   const gameStateRef = useRef<IGameState>(initialGameState);
 
@@ -166,6 +169,23 @@ export default function Game(): React.ReactElement {
   };
 
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
+
+  const navigateToHomePage = async () => {
+    if (playerStateRef.current.score > 0) {
+      const leader: LeaderType = {
+        popolo_grasso_display_name: user.display_name,
+        popolo_grasso_user_id: user.id,
+        popolo_grasso_avatar: `${ENDPOINTS.ROOT}/resources${user.avatar}`,
+        popolo_grasso_points: playerStateRef.current.score,
+      };
+      try {
+        await createLeaderboardResult(leader);
+        dispatch(resetLeaderboardCursor());
+      // eslint-disable-next-line no-empty
+      } catch {}
+    }
+    navigate(ROUTES.HOME);
+  };
 
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
@@ -541,7 +561,7 @@ export default function Game(): React.ReactElement {
         height: 0,
       },
       {
-        title: 'На главную страницу',
+        title: 'Завершить',
         onClick: navigateToHomePage,
         position: {
           x: 0,
