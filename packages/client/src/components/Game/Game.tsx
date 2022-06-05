@@ -601,7 +601,7 @@ export default function Game(): React.ReactElement {
         height: 0,
       },
       {
-        title: 'Завершить',
+        title: 'Завершить и вернуться на главную',
         onClick: navigateToHomePage,
         position: {
           x: 0,
