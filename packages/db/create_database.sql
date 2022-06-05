@@ -41,4 +41,6 @@ LEFT JOIN
     (SELECT max(message.message_id) as last_msg_id
     FROM popolo.message
     GROUP BY topic_id) lm ON m.message_id = lm.last_msg_id) res ON res.topic_id = t.topic_id
-ORDER BY topic_id desc
+ORDER BY topic_id desc;
+INSERT INTO popolo.theme (name) 
+VALUES ('light'), ('dark');

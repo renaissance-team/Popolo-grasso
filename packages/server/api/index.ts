@@ -2,7 +2,9 @@ import {Express} from 'express';
 import {
   getTopics, getMessages, createTopic, createMessage, deleteMessage
 } from '../db';
-import {getTheme, setTheme, getUserTheme} from '../db/theme';
+import {
+  getTheme, setTheme, getUserTheme, createUserTheme
+} from '../db/theme';
 import {MessageType, UserThemeType} from '../db/types';
 
 // TODO тут надо пробросить норм порт и хост бд, наверно надо файл env создать с конфигами
@@ -50,7 +52,10 @@ export const addApi = (app: Express) => {
   // Возвращает установленную тему юзера по его id
   app.get('/api/v1/theme/:user_id', async (req, res) => {
     const {user_id} = req.params;
-    const data = await getUserTheme(host, port, +user_id);
+    let data = await getUserTheme(host, port, +user_id);
+    if (!data.length) {
+      data = await createUserTheme(host, port, +user_id);
+    }
     res.json(data[0]);
   });
   // Изменить/установить тему юзера
