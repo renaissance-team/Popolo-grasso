@@ -4,6 +4,7 @@ import {
 import {getTheme, setTheme} from './actions';
 
 export enum EThemes {
+  none,
   light,
   dark,
 }

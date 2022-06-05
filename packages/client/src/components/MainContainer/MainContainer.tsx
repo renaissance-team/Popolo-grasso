@@ -48,7 +48,7 @@ export default function MainContainer({children}: IMainContainer) {
 
   useEffect(() => {
     setErrorsLocal(errorsStore);
-  }, [authError, userError]);
+  }, [authError, userError, themeError]);
 
   useDidUpdateEffect(() => {
     setErrorsLocal({});
