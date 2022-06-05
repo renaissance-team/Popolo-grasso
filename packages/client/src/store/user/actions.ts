@@ -40,7 +40,7 @@ export const getTheme = createAsyncThunk(
   async (user_id: number, thunkAPI) => {
     try {
       const response = await themeAPI.getUserTheme(user_id);
-      return response === '' ? 0 : +response;
+      return response.theme_id;
     } catch (error) {
       return thunkAPI.rejectWithValue(createErrorString(error));
     }

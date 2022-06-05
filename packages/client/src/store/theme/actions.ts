@@ -7,7 +7,7 @@ import {EThemes} from './reducer';
 export const getTheme = createAsyncThunk('theme/getTheme', async (user_id: number, thunkAPI) => {
   try {
     const response = await themeAPI.getUserTheme(user_id);
-    return response;
+    return response.theme_id;
   } catch (error) {
     return thunkAPI.rejectWithValue(createErrorString(error));
   }
