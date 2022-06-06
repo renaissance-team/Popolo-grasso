@@ -179,11 +179,12 @@ export default function Game(): React.ReactElement {
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
 
   const navigateToHomePage = async () => {
+    const avatar = user.avatar ? `${ENDPOINTS.ROOT}/resources${user.avatar}` : '';
     if (playerStateRef.current.score > 0) {
       const leader: LeaderType = {
         popolo_grasso_display_name: user.display_name,
         popolo_grasso_user_id: user.id,
-        popolo_grasso_avatar: `${ENDPOINTS.ROOT}/resources${user.avatar}`,
+        popolo_grasso_avatar: avatar,
         popolo_grasso_points: playerStateRef.current.score,
       };
       try {

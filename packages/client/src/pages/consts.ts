@@ -9,3 +9,5 @@ export enum ROUTES {
   ERROR500 = '500',
   LEADERBOARD = '/leaderboard',
 }
+
+export const DEFAULT_PLAYER_NAME = 'Гость';

@@ -5,6 +5,7 @@ import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {selectUserData} from '@/store/user/reducer';
+import {DEFAULT_PLAYER_NAME} from '@/pages/consts';
 import Message from '../Message/Message';
 import style from './messageList.module.scss';
 import {
@@ -47,7 +48,11 @@ export default function MessageList(): ReactElement {
   });
 
   const handleLocalSubmit = handleSubmit(async (values) => {
-    await createMessage({text: values.text, user: user.display_name || 'Anonim', topic_id: topicId as number});
+    await createMessage({
+      text: values.text,
+      user: user.display_name || DEFAULT_PLAYER_NAME,
+      topic_id: topicId as number,
+    });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     dispatch(fetchMessages({topic_id: topicId}));
