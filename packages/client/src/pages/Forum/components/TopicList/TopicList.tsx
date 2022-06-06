@@ -22,6 +22,7 @@ const schema = yup.object().shape({
   topic: yup
     .string()
     .required('Название темы необходимо заполнить')
+    .max(100, 'Название темы не должно превышать 100 символов'),
 });
 
 export default function TopicList(): ReactElement {
@@ -77,7 +78,7 @@ export default function TopicList(): ReactElement {
             <Input {...field} label="Тема для обсуждения" className={style.input} errorText={errors?.topic?.message} />
           )}
         />
-        <Button type="submit">
+        <Button type="submit" className={style.button}>
           <span>+ Создать</span>
         </Button>
       </form>
