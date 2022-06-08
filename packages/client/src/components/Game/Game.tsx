@@ -12,6 +12,7 @@ import isServer from '@/utils/isServerChecker';
 import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
 import word from '@/assets/images/motypest3-min.png';
+import {useTheme} from '@/utils';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -51,6 +52,7 @@ const MOVE_TO_LEFT_VELOCITY = 10;
 const MOVE_TO_UP_VELOCITY = 15;
 const MOVE_TO_RIGHT_VELOCITY = 10;
 const SCORE_TERM = 1;
+const TEXT_COLOR = '#FFF';
 
 const PLATFORM_COLOR = 'blue';
 const PLATFORM_HEIGHT = 25;
@@ -146,6 +148,10 @@ export default function Game(): React.ReactElement {
   const {isIntersecting} = useIntersectionObserver({containerRef: canvasRef});
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
+
+  const triggerFullscreen = () => {
+    document.body.requestFullscreen();
+  };
 
   const DEFAULT_PLAYER_STATE: IPlayerState = {
     position: {
@@ -572,10 +578,12 @@ export default function Game(): React.ReactElement {
 
   const handleMenuStartButtonClick = () => {
     gameStateRef.current.started = true;
+    document.body.requestPointerLock();
   };
 
   const handlePauseButtonClick = () => {
     gameStateRef.current.started = false;
+    document.exitPointerLock();
   };
 
   const pauseButtonRef = useRef<ICanvasButtonObject>({
@@ -629,7 +637,7 @@ export default function Game(): React.ReactElement {
     const DEFAULT_SCORE_TEXT_MARGIN_LEFT = 10;
     const DEFAULT_SCORE_FONT_SIZE = 16;
 
-    canvasContext.fillStyle = 'red';
+    canvasContext.fillStyle = TEXT_COLOR;
     canvasContext.font = `bold ${DEFAULT_SCORE_FONT_SIZE}px sans-serif`;
 
     const scoreText = `Счёт: ${playerStateRef.current.score}`;
@@ -664,7 +672,7 @@ export default function Game(): React.ReactElement {
     const DEFAULT_PAUSE_GAME_BUTTON_TITLE_MARGIN_RIGHT = 10;
     const DEFAULT_PAUSE_GAME_BUTTON_TITLE_FONT_SIZE = 16;
 
-    canvasContext.fillStyle = 'red';
+    canvasContext.fillStyle = TEXT_COLOR;
     canvasContext.font = `bold ${DEFAULT_PAUSE_GAME_BUTTON_TITLE_FONT_SIZE}px sans-serif`;
 
     const pauseGameButtonTitleTextMeasuremnts = canvasContext.measureText(pauseButtonRef.current.title);
@@ -702,7 +710,7 @@ export default function Game(): React.ReactElement {
     const DEFAULT_BUTTON_MARGIN = 20;
     const DEFAULT_BUTTON_FONT_SIZE = 24;
 
-    canvasContext.fillStyle = 'red';
+    canvasContext.fillStyle = TEXT_COLOR;
     canvasContext.font = `bold ${DEFAULT_BUTTON_FONT_SIZE}px sans-serif`;
 
     menuStateRef.current.buttons = menuStateRef.current.buttons.map((buttonState, index) => {
@@ -789,7 +797,7 @@ export default function Game(): React.ReactElement {
 
     const DEFAULT_MESSAGE_FONT_SIZE = 14;
 
-    canvasContext.fillStyle = 'red';
+    canvasContext.fillStyle = TEXT_COLOR;
     canvasContext.font = `bold ${DEFAULT_MESSAGE_FONT_SIZE}px sans-serif`;
 
     const messageTextMeasurements = canvasContext.measureText(message);
@@ -931,7 +939,14 @@ export default function Game(): React.ReactElement {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={useTheme(styles, 'container')}>
+      <div className={styles.background} />
+      <button
+        aria-label="toggle fullscreen"
+        type="button"
+        className={styles.triggerFullscreen}
+        onClick={triggerFullscreen}
+      />
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
