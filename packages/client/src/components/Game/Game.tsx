@@ -578,10 +578,12 @@ export default function Game(): React.ReactElement {
 
   const handleMenuStartButtonClick = () => {
     gameStateRef.current.started = true;
+    document.body.requestPointerLock();
   };
 
   const handlePauseButtonClick = () => {
     gameStateRef.current.started = false;
+    document.exitPointerLock();
   };
 
   const pauseButtonRef = useRef<ICanvasButtonObject>({
