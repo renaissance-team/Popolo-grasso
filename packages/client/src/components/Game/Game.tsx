@@ -148,6 +148,10 @@ export default function Game(): React.ReactElement {
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
 
+  const triggerFullscreen = () => {
+    document.body.requestFullscreen();
+  };
+
   const DEFAULT_PLAYER_STATE: IPlayerState = {
     position: {
       x: CANVAS_WIDTH / PLAYER_INITIAL_POSITION_X_DEVIDER,
@@ -934,6 +938,12 @@ export default function Game(): React.ReactElement {
   return (
     <div className={styles.container}>
       <div className={styles.background} />
+      <button
+        aria-label="toggle fullscreen"
+        type="button"
+        className={styles.triggerFullscreen}
+        onClick={triggerFullscreen}
+      />
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}

@@ -17,7 +17,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  filter: blur(10px);  
+  filter: blur(10px);
   &:before {
     content: '';
     position: absolute;
@@ -33,4 +33,17 @@
 canvas {
   position: relative;
   z-index: 1;
+}
+
+.triggerFullscreen {
+  position: absolute;
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: none;
+  right: 0;
+  top: 0;
+  margin: 20px;
+  background: url(../../assets/images/fullscreen.svg);
+  background-size: 100%;
 }
