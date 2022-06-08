@@ -1,6 +1,36 @@
+@import '~styles/variables.scss';
+
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+  position: relative;
+}
+
+.background {
+  background: url(../../assets/images/motypest2-min.png);
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  filter: blur(10px);  
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: $darkPurple;
+    opacity: 0.6;
+  }
+}
+
+canvas {
+  position: relative;
+  z-index: 1;
 }
