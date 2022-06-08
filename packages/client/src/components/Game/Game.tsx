@@ -12,6 +12,7 @@ import isServer from '@/utils/isServerChecker';
 import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
 import word from '@/assets/images/motypest3-min.png';
+import {useTheme} from '@/utils';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -936,7 +937,7 @@ export default function Game(): React.ReactElement {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={useTheme(styles, 'container')}>
       <div className={styles.background} />
       <button
         aria-label="toggle fullscreen"

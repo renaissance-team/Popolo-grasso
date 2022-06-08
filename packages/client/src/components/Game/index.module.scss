@@ -25,8 +25,12 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background: $darkPurple;
-    opacity: 0.6;
+    background: $purple;
+    opacity: 0.5;
+    .dark & {
+      background: $darkPurple;
+      opacity: 0.8;
+    }
   }
 }
 
