@@ -18,6 +18,7 @@ export const createLeaderboardResult = async (leader: LeaderType): Promise<unkno
     ratingFieldName: 'popolo_grasso_points',
     teamName: 'renaissance'
   };
+  // const coords = await getGeolocation(); todo: maybe we should save player's coords
   const result = await http.post<LeaderboardRequestType, unknown>('/leaderboard', params);
   return result;
 };
