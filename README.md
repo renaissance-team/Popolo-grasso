@@ -30,3 +30,8 @@
 ### Цвета
 
 ![alt text](https://github.com/12-team-05/game/blob/92f3f2e38efc62bba55159f05521d95e32d773a5/colors.jpg?raw=true)
+
+### Copyright
+
+Автор дизайна - Шкода Мария Юрьевна
+
