@@ -11,7 +11,7 @@ import isServer from '@/utils/isServerChecker';
 
 import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
-import word from '@/assets/images/motypest3-min.png';
+import word from '@/assets/images/motypest3-min.jpg';
 import {useTheme} from '@/utils';
 import {
   ICanvasButtonObject,
