@@ -11,7 +11,7 @@ import isServer from '@/utils/isServerChecker';
 
 import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
-import word from '@/assets/images/motypest3-min.jpg';
+import world from '@/assets/images/motypest3-min.jpg';
 import {useTheme} from '@/utils';
 import {
   ICanvasButtonObject,
@@ -129,7 +129,7 @@ const CHARACTER_STAND_RIGHT_IMAGE = createImg(characterStandRight);
 
 const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
-const WORD = createImg(word);
+const WORLD = createImg(world);
 
 const initialGameState: IGameState = {
   started: false,
@@ -177,8 +177,8 @@ export default function Game(): React.ReactElement {
     frame: 0,
   };
 
-  const WORD_STATE = {
-    background: WORD,
+  const WORLD_STATE = {
+    background: WORLD,
     offset: 0,
   };
 
@@ -201,7 +201,7 @@ export default function Game(): React.ReactElement {
     }
     navigate(ROUTES.HOME);
   };
-  const wordRef = useRef(WORD_STATE);
+  const worldRef = useRef(WORLD_STATE);
 
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
@@ -326,20 +326,15 @@ export default function Game(): React.ReactElement {
 
     const canvasContext = canvasRef.current.getContext('2d');
 
-    if (!canvasContext) {
-      return;
-    }
-
-    const img = createImg(word);
-    img.onload = function () {
-      const pattern = canvasContext.createPattern(img, 'repeat');
+    if (canvasContext) {
+      const pattern = canvasContext.createPattern(WORLD, 'repeat');
       canvasContext.fillStyle = pattern as CanvasPattern;
       if (!canvasRef.current) {
         return;
       }
       canvasContext.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       canvasContext.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    };
+    }
   };
 
   const handleChangePlayerPositionX = useCallback(() => {
@@ -382,16 +377,16 @@ export default function Game(): React.ReactElement {
     }
 
     let offset;
-    if (wordRef.current.offset > 0) {
+    if (worldRef.current.offset > 0) {
       offset = 0;
-    } else if (wordRef.current.offset < -(wordRef.current.background.width - CANVAS_WIDTH)) {
-      offset = -(wordRef.current.background.width - 500);
+    } else if (worldRef.current.offset < -(worldRef.current.background.width - CANVAS_WIDTH)) {
+      offset = -(worldRef.current.background.width - 500);
     } else {
-      offset = wordRef.current.offset;
+      offset = worldRef.current.offset;
     }
 
     canvasContext.drawImage(
-      wordRef.current.background,
+      worldRef.current.background,
       offset,
       -200
     );
@@ -869,7 +864,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkLeftSprite
           : playerStateRef.current.sprites.standLeftSprite;
-        wordRef.current.offset += 20;
+        worldRef.current.offset += 20;
         break;
       case 38:
         keyboardInteractionStateRef.current.arrowUp.pressed = pressed;
@@ -880,7 +875,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkRightSprite
           : playerStateRef.current.sprites.standRightSprite;
-        wordRef.current.offset -= 20;
+        worldRef.current.offset -= 20;
         break;
 
       case 40:
