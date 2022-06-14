@@ -9,4 +9,5 @@ export interface ICanvasRectangleObject {
   },
   width: number,
   height: number,
+  crystall?: boolean
 }

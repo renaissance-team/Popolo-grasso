@@ -28,6 +28,7 @@ import characterWalkRight from './sprites/character/characterWalkRight.png';
 import characterWalkLeft from './sprites/character/characterWalkLeft.png';
 import characterStandRight from './sprites/character/characterStandRight.png';
 import characterStandLeft from './sprites/character/characterStandLeft.png';
+import crystall from './sprites/crystall.png';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
@@ -53,6 +54,7 @@ const MOVE_TO_UP_VELOCITY = 15;
 const MOVE_TO_RIGHT_VELOCITY = 10;
 const SCORE_TERM = 1;
 const TEXT_COLOR = '#FFF';
+const CRYSTAL_SIZE = 50;
 
 const PLATFORM_COLOR = 'blue';
 const PLATFORM_HEIGHT = 25;
@@ -130,6 +132,8 @@ const CHARACTER_STAND_RIGHT_IMAGE = createImg(characterStandRight);
 const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
 const WORLD = createImg(world);
+
+const CRYSTALL = createImg(crystall);
 
 const initialGameState: IGameState = {
   started: false,
@@ -255,6 +259,15 @@ export default function Game(): React.ReactElement {
         platformState.width,
         platformState.height,
       );
+      if (platformState.crystall) {
+        canvasContext.drawImage(
+          CRYSTALL,
+          platformState.position.x + platformState.width / 2 - CRYSTAL_SIZE / 2,
+          platformState.position.y - CRYSTAL_SIZE * 1.5,
+          CRYSTAL_SIZE,
+          CRYSTAL_SIZE
+        );
+      }
     });
   };
 
@@ -445,6 +458,7 @@ export default function Game(): React.ReactElement {
         x: 0,
         y: 0,
       },
+      crystall: randomBooleanForPlatformLevel
     });
   };
 
