@@ -1,0 +1,53 @@
+@import '~styles/variables.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.background {
+  background: url(../../assets/images/motypest2-min.png);
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  filter: blur(10px);
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: $purple;
+    opacity: 0.5;
+    .dark & {
+      background: $darkPurple;
+      opacity: 0.8;
+    }
+  }
+}
+
+canvas {
+  position: relative;
+  z-index: 1;
+}
+
+.triggerFullscreen {
+  position: absolute;
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: none;
+  right: 0;
+  top: 0;
+  margin: 20px;
+  background: url(../../assets/images/fullscreen.svg);
+  background-size: 100%;
+}

@@ -1,0 +1,117 @@
+// colors
+$white: #fff;
+$black: #000;
+$blue: #1a4fe9;
+$green: #bab74b;
+$yellow: #fee74b;
+$purple: #b575bc;
+$darkPurple01: #261b30;
+$darkPurple02: #452960;
+$darkPurple: #362644;
+$darkPurpleOpacity: rgba($darkPurple, 0.7);
+$red: #ec5435;
+$pink: #f8ecf2;
+
+// fonts
+$inter: 'Inter', serif;
+$comic: 'Comic Sans Ms', sans-serif;
+$vibes: 'Great Vibes', cursive;
+
+// animations
+$ease: all 0.4s;
+
+// integrations
+$text-color: lighten($black, 20%);
+$text-color-grey: lighten($black, 50%);
+$border-color: lighten($black, 80%);
+$light-grey: lighten($black, 95%);
+
+
+// media queries
+$min-width: 320px;
+$breakpoint-mobile: 1024px;
+
+@mixin media($point) {
+  @if $point==mobile {
+      @media screen and (max-width: $breakpoint-mobile) {
+          @content;
+      }
+  }
+}
+
+
+// components
+@mixin block {
+  .block {
+    margin: auto;
+    width: 100%;
+    max-width: 340px;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    box-shadow: 0 0 6px lighten($black, 70%);
+    border-radius: 12px;
+    padding: 50px 30px 30px;
+  }
+
+  .title {
+    display: block;
+    font-size: 20px;
+    margin: 0 auto 40px;
+  }
+
+  .controls {
+    padding-top: 50px;
+    margin-top: auto;
+  }
+}
+
+@mixin busy {
+  pointer-events: none;
+  display: block;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($white, 0.8);
+    z-index: 98;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: -15px;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 4px solid $blue;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    color: $black;
+    background-color: transparent;
+    animation: loader 0.9s linear infinite;
+    z-index: 99;
+
+    @keyframes loader {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}
+
+@mixin centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

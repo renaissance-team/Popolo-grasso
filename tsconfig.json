@@ -17,13 +17,13 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./packages/client/src/*"]
     },
     "types": ["jest", "node"],
     "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
   "include": [
-    "src",
+    "packages",
   ],
   "exclude": ["**/node_modules"]
 }

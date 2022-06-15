@@ -3,5 +3,5 @@ WORKDIR /game
 
 COPY . .
 RUN npm i
-EXPOSE 3002
+EXPOSE 3008
 CMD npm run start  

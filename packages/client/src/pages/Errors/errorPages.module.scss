@@ -1,0 +1,66 @@
+@import '~styles/variables.scss';
+
+.error {
+  min-height: 100vh;
+  background-image: linear-gradient(to top, rgba(95, 95, 95, 0.6), rgba(0, 12, 119, 0.7)), url(https://images.hdqwalls.com/download/mountains-clouds-illustration-minimalism-eo-3840x2400.jpg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: $comic;
+
+  &_container {
+    margin: 0 auto;
+    padding: 48px 16px;
+  }
+
+  @media (max-width: 768px) {
+    background-position: 100% 50%;
+
+    &__container {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+
+  &_message {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin-bottom: 69px;
+    color: rgb(22, 18, 59);
+  }
+}
+
+.code {
+  display: flex;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  &_number {
+    font-weight: 900;
+    font-size: 400px;
+    line-height: 400px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: $yellow;
+
+    @media (max-width: 768px) {
+      font-weight: 700;
+      font-size: 150px;
+      line-height: 150px;
+    }
+  }
+
+  &_image {
+    height: 350px;
+    object-fit: scale-down;
+
+    @media (max-width: 768px) {
+      height: 170px;
+    }
+  }
+}

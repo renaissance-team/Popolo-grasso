@@ -1,0 +1,51 @@
+@import '../../styles/variables.scss';
+
+.container {
+  @include centered;
+  // background: linear-gradient(to top, $darkPurple02, $purple);
+  min-height: 100%;
+  &.dark {
+    background: $darkPurple01;
+  }
+}
+
+.header {
+  @include centered;
+  background-color: $darkPurple02;
+  color: $white;
+  border-radius: 12px 12px 0 0;
+}
+
+.inner {
+  padding: 50px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.block {
+  margin: 30px;
+  width: 100%;
+  max-width: 340px;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  background: $white;
+  box-shadow: 0 0 28px rgba($black, 0.5);
+  border-radius: 12px;
+  .dark & {
+    background: $darkPurple02;
+    button {
+      color: $white;
+    }
+  }
+}
+
+.title {
+  font-size: 20px;
+}
+
+.controls {
+  padding-top: 50px;
+  margin-top: auto;
+}
