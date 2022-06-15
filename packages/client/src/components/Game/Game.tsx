@@ -28,7 +28,8 @@ import characterWalkRight from './sprites/character/characterWalkRight.png';
 import characterWalkLeft from './sprites/character/characterWalkLeft.png';
 import characterStandRight from './sprites/character/characterStandRight.png';
 import characterStandLeft from './sprites/character/characterStandLeft.png';
-import crystall from './sprites/crystall.png';
+import blueCrystall from './sprites/crystall-blue.png';
+import pinkCrystall from './sprites/crystall-pink.png';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
@@ -36,6 +37,7 @@ import {useIntersectionObserver} from './hooks/useIntersectionObserver/useInters
 import {createLeaderboardResult, LeaderType} from './api/createLeaderboardResult';
 import {selectUserData} from '../../store/user/reducer';
 import styles from './index.module.scss';
+import {ICrystallObject} from './types/IPlatformState';
 
 const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
@@ -54,7 +56,6 @@ const MOVE_TO_UP_VELOCITY = 15;
 const MOVE_TO_RIGHT_VELOCITY = 10;
 const SCORE_TERM = 1;
 const TEXT_COLOR = '#FFF';
-const CRYSTAL_SIZE = 50;
 
 const PLATFORM_COLOR = 'blue';
 const PLATFORM_HEIGHT = 25;
@@ -133,7 +134,20 @@ const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
 const WORLD = createImg(world);
 
-const CRYSTALL = createImg(crystall);
+const CRYSTALS: Record<string, ICrystallObject> = {
+  blue: {
+    image: createImg(blueCrystall),
+    width: 50,
+    height: 50,
+    score: 25,
+  },
+  pink: {
+    image: createImg(pinkCrystall),
+    width: 50,
+    height: 60,
+    score: 50,
+  }
+};
 
 const initialGameState: IGameState = {
   started: false,
@@ -261,7 +275,7 @@ export default function Game(): React.ReactElement {
       );
       if (platformState.crystall) {
         canvasContext.drawImage(
-          CRYSTALL,
+          platformState.crystall.image,
           platformState.position.x + platformState.crystall.offset.x,
           platformState.position.y + platformState.crystall.offset.y,
           platformState.crystall.width,
@@ -437,11 +451,13 @@ export default function Game(): React.ReactElement {
 
   const handleAddPlatformInPlatformsState = () => {
     const randomBooleanForPlatformLevel = getRandomBoolean();
+    const randomBooleanForCrystal = getRandomBoolean();
     const randomBooleanForPlatformWidth = getRandomBoolean();
     const randomBooleanForDistanceBetweenPlatforms = getRandomBoolean();
 
     const lastPlatformInState = platformsStateRef.current[platformsStateRef.current.length - 1];
     const width = randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH;
+    const randomCrystall = randomBooleanForCrystal ? CRYSTALS.blue : CRYSTALS.pink;
 
     platformsStateRef.current.push({
       position: {
@@ -460,12 +476,11 @@ export default function Game(): React.ReactElement {
         y: 0,
       },
       crystall: {
+        ...randomCrystall,
         offset: {
           x: Math.random() * width,
-          y: -CRYSTAL_SIZE * 1.5
+          y: -randomCrystall.height * 1.5
         },
-        width: CRYSTAL_SIZE,
-        height: CRYSTAL_SIZE,
       }
     });
   };
@@ -552,6 +567,7 @@ export default function Game(): React.ReactElement {
   };
 
   const handlePlayerGetCrystall = (index: number) => {
+    playerStateRef.current.score += platformsStateRef.current[index].crystall?.score || 0;
     platformsStateRef.current[index].crystall = undefined;
   };
 
