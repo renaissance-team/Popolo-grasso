@@ -587,7 +587,6 @@ export default function Game(): React.ReactElement {
 
   const handleMenuStartButtonClick = () => {
     gameStateRef.current.started = true;
-    document.body.requestPointerLock();
   };
 
   const handlePauseButtonClick = () => {
@@ -871,6 +870,7 @@ export default function Game(): React.ReactElement {
     const {keyCode, type} = event;
 
     const pressed = type === 'keydown';
+    document.body.requestPointerLock();
 
     switch (keyCode) {
       case 37:
@@ -921,6 +921,7 @@ export default function Game(): React.ReactElement {
     userInteractionDetectionWithPauseButton();
 
     resetMouseInteractionState();
+    document.exitPointerLock();
   };
 
   useLayoutEffect(() => {
