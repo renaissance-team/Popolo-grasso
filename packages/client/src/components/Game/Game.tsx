@@ -551,6 +551,10 @@ export default function Game(): React.ReactElement {
     }
   };
 
+  const handlePlayerGetCrystall = (index: number) => {
+    platformsStateRef.current[index].crystall = undefined;
+  };
+
   const playerCollisionDetectionWithPlatforms = () => {
     platformsStateRef.current.forEach((platformState, index) => {
       const isPlayerCollisionWithPlatformOnXDetected = rectangleCollisionDetectionX(
@@ -591,6 +595,23 @@ export default function Game(): React.ReactElement {
     } else {
       handlePlayerNotOnTheBasePlatform();
     }
+  };
+
+  const playerCollisionDetectionWithCrystalls = () => {
+    platformsStateRef.current.forEach((platformState, index) => {
+      if (platformState.crystall) {
+        const isPlayerCollisionWithCrystallOnXDetected = playerStateRef.current.position.x
+         + playerStateRef.current.width / 2 >= platformState.position.x + platformState.crystall.offset.x
+         && playerStateRef.current.position.x
+         <= platformState.position.x + platformState.crystall.offset.x + platformState.crystall.width;
+        const isPlayerCollisionWithCrystallOnYDetected = playerStateRef.current.position.y
+        <= platformState.position.y + platformState.crystall.offset.y;
+
+        if (isPlayerCollisionWithCrystallOnXDetected && isPlayerCollisionWithCrystallOnYDetected) {
+          handlePlayerGetCrystall(index);
+        }
+      }
+    });
   };
 
   const handleMenuStartButtonClick = () => {
@@ -853,7 +874,7 @@ export default function Game(): React.ReactElement {
         handleChangeGameOffsetX();
 
         playerCollisionDetectionWithPlatforms();
-
+        playerCollisionDetectionWithCrystalls();
         drawPlayerScore();
         drawPauseGameButton();
       } else {
