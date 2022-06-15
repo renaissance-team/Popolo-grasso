@@ -1018,11 +1018,13 @@ export default function Game(): React.ReactElement {
         className={styles.triggerFullscreen}
         onClick={triggerFullscreen}
       />
-      <canvas
-        ref={canvasRef}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
-      />
+      <div className={styles.frame}>
+        <canvas
+          ref={canvasRef}
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}
+        />
+      </div>
     </div>
   );
 }

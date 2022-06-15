@@ -51,3 +51,20 @@ canvas {
   background: url(../../assets/images/fullscreen.svg);
   background-size: 100%;
 }
+
+.frame {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    z-index: 3;
+    background: url(../../assets/images/frame.png);
+    background-size: 100% 100%;
+    pointer-events: none;
+    margin: -60px -70px -30px;
+  }
+}
