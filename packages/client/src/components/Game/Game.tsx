@@ -30,6 +30,7 @@ import characterStandRight from './sprites/character/characterStandRight.png';
 import characterStandLeft from './sprites/character/characterStandLeft.png';
 import blueCrystall from './sprites/crystall-blue.png';
 import pinkCrystall from './sprites/crystall-pink.png';
+import dingEffect from './audio/ding.mp3';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
@@ -166,6 +167,8 @@ export default function Game(): React.ReactElement {
   const {isIntersecting} = useIntersectionObserver({containerRef: canvasRef});
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
+
+  const audioDingRef = useRef<HTMLAudioElement | null>(null);
 
   const triggerFullscreen = () => {
     document.body.requestFullscreen();
@@ -452,12 +455,13 @@ export default function Game(): React.ReactElement {
   const handleAddPlatformInPlatformsState = () => {
     const randomBooleanForPlatformLevel = getRandomBoolean();
     const randomBooleanForCrystal = getRandomBoolean();
+    const randomBooleanForCrystalType = getRandomBoolean();
     const randomBooleanForPlatformWidth = getRandomBoolean();
     const randomBooleanForDistanceBetweenPlatforms = getRandomBoolean();
 
     const lastPlatformInState = platformsStateRef.current[platformsStateRef.current.length - 1];
     const width = randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH;
-    const randomCrystall = randomBooleanForCrystal ? CRYSTALS.blue : CRYSTALS.pink;
+    const randomCrystall = randomBooleanForCrystalType ? CRYSTALS.blue : CRYSTALS.pink;
 
     platformsStateRef.current.push({
       position: {
@@ -475,13 +479,15 @@ export default function Game(): React.ReactElement {
         x: 0,
         y: 0,
       },
-      crystall: {
-        ...randomCrystall,
-        offset: {
-          x: Math.random() * width,
-          y: -randomCrystall.height * 1.5
-        },
-      }
+      ...(randomBooleanForCrystal && {
+        crystall: {
+          ...randomCrystall,
+          offset: {
+            x: Math.random() * width,
+            y: -randomCrystall.height * 1.5
+          },
+        }
+      })
     });
   };
 
@@ -569,6 +575,11 @@ export default function Game(): React.ReactElement {
   const handlePlayerGetCrystall = (index: number) => {
     playerStateRef.current.score += platformsStateRef.current[index].crystall?.score || 0;
     platformsStateRef.current[index].crystall = undefined;
+
+    if (audioDingRef.current) {
+      audioDingRef.current.currentTime = 0;
+      audioDingRef.current?.play();
+    }
   };
 
   const playerCollisionDetectionWithPlatforms = () => {
@@ -991,6 +1002,11 @@ export default function Game(): React.ReactElement {
     return () => {
       window.removeEventListener('keyup', handleKeyboardInteraction);
     };
+  }, []);
+
+  useLayoutEffect(() => {
+    audioDingRef.current = new Audio(dingEffect);
+    audioDingRef.current.load();
   }, []);
 
   return (

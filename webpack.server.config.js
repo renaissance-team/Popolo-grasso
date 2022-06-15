@@ -102,7 +102,7 @@ module.exports = {
         use: [styleLoader, CSSModuleLoader, PostCSSLoader, 'sass-loader'],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
+        test: /\.(jpe?g|png|gif|mp3|svg)(\?[a-z0-9=.]+)?$/,
         type: 'asset/resource',
         generator: {
           filename: 'assets/images/[hash][ext][query]',
