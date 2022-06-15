@@ -118,7 +118,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
+        test: /\.(jpe?g|png|mp3|gif|svg)(\?[a-z0-9=.]+)?$/,
         type: 'asset/resource',
         generator: {
           filename: 'assets/images/[hash][ext][query]',

@@ -11,7 +11,7 @@ import isServer from '@/utils/isServerChecker';
 
 import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
-import word from '@/assets/images/motypest3-min.png';
+import world from '@/assets/images/motypest3-min.jpg';
 import {useTheme} from '@/utils';
 import {
   ICanvasButtonObject,
@@ -28,6 +28,9 @@ import characterWalkRight from './sprites/character/characterWalkRight.png';
 import characterWalkLeft from './sprites/character/characterWalkLeft.png';
 import characterStandRight from './sprites/character/characterStandRight.png';
 import characterStandLeft from './sprites/character/characterStandLeft.png';
+import blueCrystall from './sprites/crystall-blue.png';
+import pinkCrystall from './sprites/crystall-pink.png';
+import dingEffect from './audio/ding.mp3';
 
 import rectangleCollisionDetectionX from './utils/rectangleCollisionDetectionX';
 import rectangleCollisionDetectionY from './utils/rectangleCollisionDetectionY';
@@ -35,6 +38,7 @@ import {useIntersectionObserver} from './hooks/useIntersectionObserver/useInters
 import {createLeaderboardResult, LeaderType} from './api/createLeaderboardResult';
 import {selectUserData} from '../../store/user/reducer';
 import styles from './index.module.scss';
+import {ICrystallObject} from './types/IPlatformState';
 
 const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
@@ -129,7 +133,22 @@ const CHARACTER_STAND_RIGHT_IMAGE = createImg(characterStandRight);
 
 const CHARACTER_STAND_LEFT_IMAGE = createImg(characterStandLeft);
 
-const WORD = createImg(word);
+const WORLD = createImg(world);
+
+const CRYSTALS: Record<string, ICrystallObject> = {
+  blue: {
+    image: createImg(blueCrystall),
+    width: 50,
+    height: 50,
+    score: 25,
+  },
+  pink: {
+    image: createImg(pinkCrystall),
+    width: 50,
+    height: 60,
+    score: 50,
+  }
+};
 
 const initialGameState: IGameState = {
   started: false,
@@ -148,6 +167,8 @@ export default function Game(): React.ReactElement {
   const {isIntersecting} = useIntersectionObserver({containerRef: canvasRef});
 
   const requestAnimationFrameIdRef = useRef<number | null>(null);
+
+  const audioDingRef = useRef<HTMLAudioElement | null>(null);
 
   const triggerFullscreen = () => {
     document.body.requestFullscreen();
@@ -177,8 +198,8 @@ export default function Game(): React.ReactElement {
     frame: 0,
   };
 
-  const WORD_STATE = {
-    background: WORD,
+  const WORLD_STATE = {
+    background: WORLD,
     offset: 0,
   };
 
@@ -201,7 +222,7 @@ export default function Game(): React.ReactElement {
     }
     navigate(ROUTES.HOME);
   };
-  const wordRef = useRef(WORD_STATE);
+  const worldRef = useRef(WORLD_STATE);
 
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
 
@@ -255,6 +276,15 @@ export default function Game(): React.ReactElement {
         platformState.width,
         platformState.height,
       );
+      if (platformState.crystall) {
+        canvasContext.drawImage(
+          platformState.crystall.image,
+          platformState.position.x + platformState.crystall.offset.x,
+          platformState.position.y + platformState.crystall.offset.y,
+          platformState.crystall.width,
+          platformState.crystall.height,
+        );
+      }
     });
   };
 
@@ -326,20 +356,15 @@ export default function Game(): React.ReactElement {
 
     const canvasContext = canvasRef.current.getContext('2d');
 
-    if (!canvasContext) {
-      return;
-    }
-
-    const img = createImg(word);
-    img.onload = function () {
-      const pattern = canvasContext.createPattern(img, 'repeat');
+    if (canvasContext) {
+      const pattern = canvasContext.createPattern(WORLD, 'repeat');
       canvasContext.fillStyle = pattern as CanvasPattern;
       if (!canvasRef.current) {
         return;
       }
       canvasContext.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       canvasContext.strokeRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    };
+    }
   };
 
   const handleChangePlayerPositionX = useCallback(() => {
@@ -382,16 +407,16 @@ export default function Game(): React.ReactElement {
     }
 
     let offset;
-    if (wordRef.current.offset > 0) {
+    if (worldRef.current.offset > 0) {
       offset = 0;
-    } else if (wordRef.current.offset < -(wordRef.current.background.width - CANVAS_WIDTH)) {
-      offset = -(wordRef.current.background.width - 500);
+    } else if (worldRef.current.offset < -(worldRef.current.background.width - CANVAS_WIDTH)) {
+      offset = -(worldRef.current.background.width - 500);
     } else {
-      offset = wordRef.current.offset;
+      offset = worldRef.current.offset;
     }
 
     canvasContext.drawImage(
-      wordRef.current.background,
+      worldRef.current.background,
       offset,
       -200
     );
@@ -429,10 +454,14 @@ export default function Game(): React.ReactElement {
 
   const handleAddPlatformInPlatformsState = () => {
     const randomBooleanForPlatformLevel = getRandomBoolean();
+    const randomBooleanForCrystal = getRandomBoolean();
+    const randomBooleanForCrystalType = getRandomBoolean();
     const randomBooleanForPlatformWidth = getRandomBoolean();
     const randomBooleanForDistanceBetweenPlatforms = getRandomBoolean();
 
     const lastPlatformInState = platformsStateRef.current[platformsStateRef.current.length - 1];
+    const width = randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH;
+    const randomCrystall = randomBooleanForCrystalType ? CRYSTALS.blue : CRYSTALS.pink;
 
     platformsStateRef.current.push({
       position: {
@@ -443,13 +472,22 @@ export default function Game(): React.ReactElement {
           ? FIRST_LEVEL_PLATFORM_HEIGHT
           : SECOND_LEVEL_PLATFORM_HEIGHT,
       },
-      width: randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH,
+      width,
       height: PLATFORM_HEIGHT,
       playerOnThePlatform: false,
       velocity: {
         x: 0,
         y: 0,
       },
+      ...(randomBooleanForCrystal && {
+        crystall: {
+          ...randomCrystall,
+          offset: {
+            x: Math.random() * width,
+            y: -randomCrystall.height * 1.5
+          },
+        }
+      })
     });
   };
 
@@ -534,6 +572,16 @@ export default function Game(): React.ReactElement {
     }
   };
 
+  const handlePlayerGetCrystall = (index: number) => {
+    playerStateRef.current.score += platformsStateRef.current[index].crystall?.score || 0;
+    platformsStateRef.current[index].crystall = undefined;
+
+    if (audioDingRef.current) {
+      audioDingRef.current.currentTime = 0;
+      audioDingRef.current?.play();
+    }
+  };
+
   const playerCollisionDetectionWithPlatforms = () => {
     platformsStateRef.current.forEach((platformState, index) => {
       const isPlayerCollisionWithPlatformOnXDetected = rectangleCollisionDetectionX(
@@ -576,9 +624,25 @@ export default function Game(): React.ReactElement {
     }
   };
 
+  const playerCollisionDetectionWithCrystalls = () => {
+    platformsStateRef.current.forEach((platformState, index) => {
+      if (platformState.crystall) {
+        const isPlayerCollisionWithCrystallOnXDetected = playerStateRef.current.position.x
+         + playerStateRef.current.width / 2 >= platformState.position.x + platformState.crystall.offset.x
+         && playerStateRef.current.position.x
+         <= platformState.position.x + platformState.crystall.offset.x + platformState.crystall.width;
+        const isPlayerCollisionWithCrystallOnYDetected = playerStateRef.current.position.y
+        <= platformState.position.y + platformState.crystall.offset.y;
+
+        if (isPlayerCollisionWithCrystallOnXDetected && isPlayerCollisionWithCrystallOnYDetected) {
+          handlePlayerGetCrystall(index);
+        }
+      }
+    });
+  };
+
   const handleMenuStartButtonClick = () => {
     gameStateRef.current.started = true;
-    document.body.requestPointerLock();
   };
 
   const handlePauseButtonClick = () => {
@@ -837,7 +901,7 @@ export default function Game(): React.ReactElement {
         handleChangeGameOffsetX();
 
         playerCollisionDetectionWithPlatforms();
-
+        playerCollisionDetectionWithCrystalls();
         drawPlayerScore();
         drawPauseGameButton();
       } else {
@@ -862,6 +926,7 @@ export default function Game(): React.ReactElement {
     const {keyCode, type} = event;
 
     const pressed = type === 'keydown';
+    document.body.requestPointerLock();
 
     switch (keyCode) {
       case 37:
@@ -869,7 +934,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkLeftSprite
           : playerStateRef.current.sprites.standLeftSprite;
-        wordRef.current.offset += 20;
+        worldRef.current.offset += 20;
         break;
       case 38:
         keyboardInteractionStateRef.current.arrowUp.pressed = pressed;
@@ -880,7 +945,7 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkRightSprite
           : playerStateRef.current.sprites.standRightSprite;
-        wordRef.current.offset -= 20;
+        worldRef.current.offset -= 20;
         break;
 
       case 40:
@@ -912,6 +977,7 @@ export default function Game(): React.ReactElement {
     userInteractionDetectionWithPauseButton();
 
     resetMouseInteractionState();
+    document.exitPointerLock();
   };
 
   useLayoutEffect(() => {
@@ -938,6 +1004,11 @@ export default function Game(): React.ReactElement {
     };
   }, []);
 
+  useLayoutEffect(() => {
+    audioDingRef.current = new Audio(dingEffect);
+    audioDingRef.current.load();
+  }, []);
+
   return (
     <div className={useTheme(styles, 'container')}>
       <div className={styles.background} />
@@ -947,11 +1018,13 @@ export default function Game(): React.ReactElement {
         className={styles.triggerFullscreen}
         onClick={triggerFullscreen}
       />
-      <canvas
-        ref={canvasRef}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
-      />
+      <div className={styles.frame}>
+        <canvas
+          ref={canvasRef}
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}
+        />
+      </div>
     </div>
   );
 }
