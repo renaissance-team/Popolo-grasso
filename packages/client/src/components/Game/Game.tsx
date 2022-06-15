@@ -262,10 +262,10 @@ export default function Game(): React.ReactElement {
       if (platformState.crystall) {
         canvasContext.drawImage(
           CRYSTALL,
-          platformState.position.x + platformState.width / 2 - CRYSTAL_SIZE / 2,
-          platformState.position.y - CRYSTAL_SIZE * 1.5,
-          CRYSTAL_SIZE,
-          CRYSTAL_SIZE
+          platformState.position.x + platformState.crystall.offset.x,
+          platformState.position.y + platformState.crystall.offset.y,
+          platformState.crystall.width,
+          platformState.crystall.height,
         );
       }
     });
@@ -441,6 +441,7 @@ export default function Game(): React.ReactElement {
     const randomBooleanForDistanceBetweenPlatforms = getRandomBoolean();
 
     const lastPlatformInState = platformsStateRef.current[platformsStateRef.current.length - 1];
+    const width = randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH;
 
     platformsStateRef.current.push({
       position: {
@@ -451,14 +452,21 @@ export default function Game(): React.ReactElement {
           ? FIRST_LEVEL_PLATFORM_HEIGHT
           : SECOND_LEVEL_PLATFORM_HEIGHT,
       },
-      width: randomBooleanForPlatformWidth ? MEDIUM_PLATFORM_WIDTH : LARGE_PLATFORM_WIDTH,
+      width,
       height: PLATFORM_HEIGHT,
       playerOnThePlatform: false,
       velocity: {
         x: 0,
         y: 0,
       },
-      crystall: randomBooleanForPlatformLevel
+      crystall: {
+        offset: {
+          x: Math.random() * width,
+          y: -CRYSTAL_SIZE * 1.5
+        },
+        width: CRYSTAL_SIZE,
+        height: CRYSTAL_SIZE,
+      }
     });
   };
 
