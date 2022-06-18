@@ -18,8 +18,6 @@ const cookieToString = (cookies: Record<string, string>): string => {
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   enum protectedRoutes {
     '/forum' = 1,
-    '/profile' = 1,
-    '/leaderboard' = 1,
   }
 
   const {cookies, url} = req;
