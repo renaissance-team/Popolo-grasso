@@ -1,9 +1,13 @@
 import path from 'path';
 import express from 'express';
+import compression from 'compression';
+import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import {expressCspHeader, NONCE, SELF} from 'express-csp-header';
+import cookieParser from 'cookie-parser';
 import {addApi} from './api';
 import serverRenderMiddleware from './render/server-render-middleware';
+import {authMiddleware} from './middlewares/auth-middleware';
 
 const jsonParser = bodyParser.json();
 const urlParser = bodyParser.urlencoded({extended: false});
@@ -11,7 +15,9 @@ const app = express();
 
 app.use(jsonParser);
 app.use(urlParser);
+app.use(cookieParser());
 
+// CSP
 app.use(
   expressCspHeader({
     directives: {
@@ -24,11 +30,21 @@ app.use(
   })
 );
 
+// Sets "X-Content-Type-Options: nosniff"
+app.use(helmet.noSniff());
+
+// XSS
+app.use(helmet.xssFilter());
+
+// compression
+app.use(compression({level: 5}));
+
 // в production раздавать статику через Nginx или CDN
 app.use(express.static(path.resolve(__dirname, '../client')));
 
 addApi(app);
 
-app.get('*', serverRenderMiddleware);
+app.use(authMiddleware);
+app.use(serverRenderMiddleware);
 
 export {app};
