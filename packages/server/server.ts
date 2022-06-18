@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import {expressCspHeader, NONCE, SELF} from 'express-csp-header';
 import cookieParser from 'cookie-parser';
 import {addApi} from './api';
-import serverRenderMiddleware from './render/server-render-middleware';
+import serverRenderMiddleware from './middlewares/server-render-middleware';
 import {authMiddleware} from './middlewares/auth-middleware';
 
 const jsonParser = bodyParser.json();
