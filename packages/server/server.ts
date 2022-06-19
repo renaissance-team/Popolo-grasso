@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(
   expressCspHeader({
     directives: {
-      'default-src': [SELF, 'ya-praktikum.tech'],
+      'default-src': [SELF, 'ya-praktikum.tech', 'nominatim.openstreetmap.org'],
       'script-src': [NONCE],
       'style-src': [NONCE, 'fonts.googleapis.com'],
       'font-src': ['fonts.googleapis.com', 'fonts.gstatic.com'],
