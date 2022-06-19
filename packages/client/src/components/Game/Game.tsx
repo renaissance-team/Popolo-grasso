@@ -13,6 +13,7 @@ import {ENDPOINTS} from '@/api/consts';
 import {resetCursor as resetLeaderboardCursor} from '@/pages/Leaderboard/redux/LeaderboardSlice';
 import world from '@/assets/images/motypest3-min.jpg';
 import {useTheme} from '@/utils';
+import getGeolocation from '@/utils/getGeolocation';
 import {
   ICanvasButtonObject,
   ICanvasRectangleObject,
@@ -39,6 +40,7 @@ import {createLeaderboardResult, LeaderType} from './api/createLeaderboardResult
 import {selectUserData} from '../../store/user/reducer';
 import styles from './index.module.scss';
 import {ICrystallObject} from './types/IPlatformState';
+import {getLocationName} from './api/getLocationName';
 
 const CANVAS_IS_NOT_INTERSECTING_MESSAGE = 'Для старта игры необходим экран 500Х500 px';
 
@@ -196,6 +198,8 @@ export default function Game(): React.ReactElement {
       standLeftSprite: CHARACTER_STAND_LEFT_IMAGE,
     },
     frame: 0,
+    isMoveRight: false,
+    isMoveLeft: false,
   };
 
   const WORLD_STATE = {
@@ -206,22 +210,40 @@ export default function Game(): React.ReactElement {
   const playerStateRef = useRef<IPlayerState>(DEFAULT_PLAYER_STATE);
 
   const navigateToHomePage = async () => {
-    const avatar = user.avatar ? `${ENDPOINTS.ROOT}/resources${user.avatar}` : '';
     if (playerStateRef.current.score > 0) {
+      const avatar = user.avatar ? `${ENDPOINTS.ROOT}/resources${user.avatar}` : '';
+
+      let coords;
+      try {
+        coords = await getGeolocation();
+      // eslint-disable-next-line no-empty
+      } catch {}
+      let coordsName;
+      if (coords) {
+        const params = {lat: coords.latitude, lon: coords.longitude, format: 'json'};
+        try {
+          coordsName = await getLocationName(params);
+          // eslint-disable-next-line no-empty
+        } catch {}
+      }
+
       const leader: LeaderType = {
         popolo_grasso_display_name: user.display_name,
         popolo_grasso_user_id: user.id,
         popolo_grasso_avatar: avatar,
         popolo_grasso_points: playerStateRef.current.score,
+        popolo_grasso_geo: coordsName || null,
+        popolo_grasso_date: new Date()
       };
       try {
         await createLeaderboardResult(leader);
         dispatch(resetLeaderboardCursor());
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch {}
     }
     navigate(ROUTES.HOME);
   };
+
   const worldRef = useRef(WORLD_STATE);
 
   const basePlatformStateRef = useRef<ICanvasRectangleObject>(DEFAULT_BASE_PLATFORM_STATE);
@@ -934,9 +956,17 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkLeftSprite
           : playerStateRef.current.sprites.standLeftSprite;
+        playerStateRef.current.isMoveLeft = true;
+        playerStateRef.current.isMoveRight = false;
         worldRef.current.offset += 20;
         break;
       case 38:
+        if (playerStateRef.current.isMoveRight) {
+          worldRef.current.offset -= 30;
+        }
+        if (playerStateRef.current.isMoveLeft) {
+          worldRef.current.offset += 30;
+        }
         keyboardInteractionStateRef.current.arrowUp.pressed = pressed;
         break;
 
@@ -945,6 +975,8 @@ export default function Game(): React.ReactElement {
         playerStateRef.current.sprites.currentSprite = pressed
           ? playerStateRef.current.sprites.walkRightSprite
           : playerStateRef.current.sprites.standRightSprite;
+        playerStateRef.current.isMoveLeft = false;
+        playerStateRef.current.isMoveRight = true;
         worldRef.current.offset -= 20;
         break;
 
