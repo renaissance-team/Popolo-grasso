@@ -2,6 +2,7 @@ import React, {
   useRef,
   useCallback,
   useLayoutEffect,
+  useState,
 } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
@@ -161,6 +162,7 @@ export default function Game(): React.ReactElement {
   const navigate = useNavigate();
   const user = useSelector(selectUserData);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const gameStateRef = useRef<IGameState>(initialGameState);
 
@@ -211,6 +213,7 @@ export default function Game(): React.ReactElement {
 
   const navigateToHomePage = async () => {
     if (playerStateRef.current.score > 0) {
+      setLoading(true);
       const avatar = user.avatar ? `${ENDPOINTS.ROOT}/resources${user.avatar}` : '';
 
       let coords;
@@ -240,6 +243,7 @@ export default function Game(): React.ReactElement {
         dispatch(resetLeaderboardCursor());
         // eslint-disable-next-line no-empty
       } catch {}
+      setLoading(false);
     }
     navigate(ROUTES.HOME);
   };
@@ -1051,11 +1055,14 @@ export default function Game(): React.ReactElement {
         onClick={triggerFullscreen}
       />
       <div className={styles.frame}>
-        <canvas
-          ref={canvasRef}
-          width={CANVAS_WIDTH}
-          height={CANVAS_HEIGHT}
-        />
+        {loading ? (
+          <div style={{width: CANVAS_WIDTH, height: CANVAS_HEIGHT}} className={styles.loader}>
+            <div className={styles['fs-24']}>Сохраненяем результат.</div>
+            <div>Пожалуйста, подождите...</div>
+          </div>
+        ) : (
+          <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
+        )}
       </div>
     </div>
   );
