@@ -1,9 +1,9 @@
 name: CI-CD-to-Yandex-cloud
 env: 
   REGISTRY_ID: "crpm1djccivqbcnoahla"
-  APP_IMAGE_TAG: "cr.yandex/${{ env.REGISTRY_ID }}/popolo-grasso_server:latest"
-  POSTGRESS_IMAGE_TAG: "cr.yandex/${{ env.REGISTRY_ID }}/postgres:12"
-  
+  APP_IMAGE_TAG: "popolo-grasso_server"
+  POSTGRESS_IMAGE_TAG: "postgres:12"
+
 on:
   push:
     branches: [ "#90/ci" ]
@@ -27,8 +27,9 @@ jobs:
         
       - name: Tag and pull to registry
         run: |
-          docker tag popolo-grasso_server ${{ APP_IMAGE_TAG }}
-          docker tag postgres:12 ${{ POSTGRESS_IMAGE_TAG }}
-          docker push ${{ APP_IMAGE_TAG }}
-          docker push ${{ POSTGRESS_IMAGE_TAG }}
+          docker tag ${{ APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ APP_IMAGE_TAG }}
+          docker tag ${{ POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ POSTGRESS_IMAGE_TAG }}
+          
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ APP_IMAGE_TAG }}
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ POSTGRESS_IMAGE_TAG }}
  
