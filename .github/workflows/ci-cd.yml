@@ -1,6 +1,8 @@
 name: CI-CD-to-Yandex-cloud
 env: 
   REGISTRY_ID: "crpm1djccivqbcnoahla"
+  APP_IMAGE_TAG: "cr.yandex/${{ env.REGISTRY_ID }}/popolo-grasso_server:latest"
+  POSTGRESS_IMAGE_TAG: "cr.yandex/${{ env.REGISTRY_ID }}/postgres:12"
   
 on:
   push:
@@ -11,24 +13,22 @@ jobs:
     runs-on: ubuntu-latest
     
     steps: 
-      - name: Print hello
-        run: echo "Hello ${{ secrets.SA_TOKEN }}"    
       - name: Login to Yandex Cloud Container Registry
         id: login-cr
         uses: yc-actions/yc-cr-login@v1
         with:
           yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
 
-      # - name: Git clone repo
-      #   uses: actions/checkout@v1
+      - name: Git clone repo
+        uses: actions/checkout@v1
         
-      # - name: Build with docker-compose  
-      #   run: docker-compose -f docker-compose.yml up --build -d
+      - name: Build with docker-compose  
+        run: docker-compose -f docker-compose.yml up --build -d
         
-      # - name: Tag and pull to registry
-      #   run: |
-      #     docker tag popolo-grasso_server cr.yandex/${{ env.REGISTRY_ID }}/popolo-grasso_server:latest
-      #     docker tag postgres:12 cr.yandex/${{ env.REGISTRY_ID }}/postgres:12
-      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/popolo-grasso_server:latest
-      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/postgres:12        
+      - name: Tag and pull to registry
+        run: |
+          docker tag popolo-grasso_server ${{ APP_IMAGE_TAG }}
+          docker tag postgres:12 ${{ POSTGRESS_IMAGE_TAG }}
+          docker push ${{ APP_IMAGE_TAG }}
+          docker push ${{ POSTGRESS_IMAGE_TAG }}
  
