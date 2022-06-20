@@ -1,5 +1,7 @@
 name: CI-CD-to-Yandex-cloud
-
+env: 
+  REGISTRY_ID: "crpm1djccivqbcnoahla"
+  
 on:
   push:
     branches: [ "#90/ci" ]
@@ -9,8 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     
     steps: 
-      - name: Git clone repo
-        uses: actions/checkout@v1
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
+
+      # - name: Git clone repo
+      #   uses: actions/checkout@v1
         
-      - name: Build with docker-compose  
-        run: docker-compose -f docker-compose.yml up --build -d
+      # - name: Build with docker-compose  
+      #   run: docker-compose -f docker-compose.yml up --build -d
+        
+      # - name: Tag and pull to registry
+      #   run: |
+      #     docker tag popolo-grasso_server cr.yandex/${{ env.REGISTRY_ID }}/popolo-grasso_server:latest
+      #     docker tag postgres:12 cr.yandex/${{ env.REGISTRY_ID }}/postgres:12
+      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/popolo-grasso_server:latest
+      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/postgres:12        
+ 
