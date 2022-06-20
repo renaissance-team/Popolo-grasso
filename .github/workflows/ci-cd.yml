@@ -11,3 +11,5 @@ jobs:
     steps: 
       - name: Print hello
         run: echo "Hello world"
+      - name: Build with docker-compose  
+        run: docker-compose -f docker-compose.yml up --build -d
