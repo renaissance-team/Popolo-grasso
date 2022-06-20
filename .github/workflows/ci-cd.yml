@@ -1,0 +1,13 @@
+name: CI-CD-to-Yandex-cloud
+
+on:
+  push:
+    branches: [ "#90/ci" ]
+
+jobs:
+  ci_pipeline: 
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - name: Print hello
+        run: echo "Hello world"
