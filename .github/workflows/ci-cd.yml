@@ -27,9 +27,9 @@ jobs:
         
       - name: Tag and pull to registry
         run: |
-          docker tag ${{ APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ APP_IMAGE_TAG }}
-          docker tag ${{ POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ POSTGRESS_IMAGE_TAG }}
+          docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          docker tag ${{ env.POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
           
-          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ APP_IMAGE_TAG }}
-          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ POSTGRESS_IMAGE_TAG }}
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
  
