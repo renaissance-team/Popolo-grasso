@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps: 
-      - name: Print hello
-        run: echo "Hello world"
+      - name: Git clone repo
+        uses: actions/checkout@v1
+        
       - name: Build with docker-compose  
         run: docker-compose -f docker-compose.yml up --build -d
