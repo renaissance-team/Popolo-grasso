@@ -1,46 +1,42 @@
 name: CI-CD-to-Yandex-cloud
-env: 
+env:
   REGISTRY_ID: "crpm1djccivqbcnoahla"
   APP_IMAGE_TAG: "popolo-grasso_server"
   POSTGRESS_IMAGE_TAG: "postgres:12"
-  HOST: "51.250.99.104"
-  USERNAME: "vodyanov"
 
 on:
   push:
-    branches: [ "#90/ci" ]
+    branches: ["#90/ci"]
 
 jobs:
-  ci_pipeline: 
+  ci_pipeline:
     runs-on: ubuntu-latest
-    
-    steps: 
-      # - name: Git clone repo
-      #   uses: actions/checkout@v1
 
-      # - name: Login to Yandex Cloud Container Registry
-      #   id: login-cr
-      #   uses: yc-actions/yc-cr-login@v1
-      #   with:
-      #     yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
-        
-      # - name: Build with docker-compose  
-      #   run: docker-compose -f docker-compose.yml up --build -d
-        
-      # - name: Tag and pull to registry
-      #   run: |
-      #     docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
-      #     docker tag ${{ env.POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
-          
-      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
-      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+    steps:
+      - name: Git clone repo
+        uses: actions/checkout@v1
 
-      - name: Connect to VPS     
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
+
+      - name: Build with docker-compose
+        run: docker-compose -f docker-compose.yml up --build -d
+
+      - name: Tag and pull to registry
+        run: |
+          docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          docker tag ${{ env.POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+
+      - name: Connect to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.HOST }}
-          username: ${{ env.USERNAME }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: ls
-        
- 
+          script: docker-compose -f docker-compose.yml down --rmi all && docker-compose pull && docker-compose -f docker-compose.yml up --build -d
