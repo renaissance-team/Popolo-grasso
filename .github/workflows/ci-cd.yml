@@ -13,25 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Git clone repo
-        uses: actions/checkout@v1
+      # - name: Git clone repo
+      #   uses: actions/checkout@v1
 
-      - name: Login to Yandex Cloud Container Registry
-        id: login-cr
-        uses: yc-actions/yc-cr-login@v1
-        with:
-          yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
+      # - name: Login to Yandex Cloud Container Registry
+      #   id: login-cr
+      #   uses: yc-actions/yc-cr-login@v1
+      #   with:
+      #     yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
 
-      - name: Build with docker-compose
-        run: docker-compose -f docker-compose.yml up --build -d
+      # - name: Build with docker-compose
+      #   run: docker-compose -f docker-compose.yml up --build -d
 
-      - name: Tag and pull to registry
-        run: |
-          docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
-          docker tag ${{ env.POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+      # - name: Tag and pull to registry
+      #   run: |
+      #     docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+      #     docker tag ${{ env.POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
 
-          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
-          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+      #     docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
 
       - name: Connect to VPS
         uses: appleboy/ssh-action@master
@@ -39,4 +39,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: docker-compose -f docker-compose.yml down --rmi all && docker-compose pull && docker-compose -f docker-compose.yml up --build -d
+          script: cat key.json | docker login \
+                  --username json_key \
+                  --password-stdin \
+                  cr.yandex \ &&
+                  docker-compose -f docker-compose.yml down --rmi all && docker-compose pull && docker-compose -f docker-compose.yml up --build -d
