@@ -39,8 +39,4 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: cat key.json | docker login \
-                  --username json_key \
-                  --password-stdin \
-                  cr.yandex \ &&
-                  docker-compose -f docker-compose.yml down --rmi all && docker-compose pull && docker-compose -f docker-compose.yml up --build -d
+          script: docker-compose -f docker-compose.yml up --build -d
