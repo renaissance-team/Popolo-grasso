@@ -6,7 +6,7 @@ env:
 
 on:
   push:
-    branches: ["#90/ci"]
+    branches: ["master"]
 
 jobs:
   ci_pipeline:
