@@ -39,4 +39,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          # на VPS лежит собственный compose. Он идентичен текущему,
+          # но берет image's из yc-registry
           script: docker-compose -f docker-compose.yml up --build -d
