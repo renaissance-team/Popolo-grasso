@@ -3,7 +3,7 @@ volumes:
   postgres-data:
 services:
   postgres:
-    image: postgres:12
+    image: cr.yandex/crpm1djccivqbcnoahla/postgres:12
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -15,10 +15,9 @@ services:
     ports:
       - 5432:5432
   server:
+    image: cr.yandex/crpm1djccivqbcnoahla/popolo-grasso_server
     restart: always
     ports:
-      - 444:443
-    build:
-      context: ./
+      - 443:443
     depends_on: 
      - postgres

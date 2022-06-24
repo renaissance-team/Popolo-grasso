@@ -41,4 +41,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           # на VPS лежит собственный compose. Он идентичен текущему,
           # но берет image's из yc-registry
+          # server:
+          #   image: cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
           script: docker-compose -f docker-compose.yml up --build -d

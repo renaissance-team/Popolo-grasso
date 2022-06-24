@@ -1,0 +1,8 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/vodyanov/develop/teach/yandex.practicum/Popolo-grasso'
+docker build -t popollo-grasso .
+heroku container:push web -a popollo-grasso
+heroku container:release web -a popollo-grasso
+heroku open	-a popollo-grasso
+make: Leaving directory `/Users/vodyanov/develop/teach/yandex.practicum/Popolo-grasso'
+ 
