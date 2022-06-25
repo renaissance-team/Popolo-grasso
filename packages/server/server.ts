@@ -50,7 +50,6 @@ app.use(helmet.xssFilter());
 // compression
 app.use(compression({level: 5}));
 
-// в production раздавать статику через Nginx или CDN
 app.use(express.static(path.resolve(__dirname, '../client')));
 
 addApi(app);

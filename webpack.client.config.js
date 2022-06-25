@@ -104,24 +104,17 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
+        test: /\.(woff|woff2|eot|ttf)(\?[a-z0-9=.]+)?$/,
         type: 'asset/inline',
         generator: {
           filename: 'assets/fonts/[hash][ext][query]',
         },
       },
       {
-        test: /\.(woff|woff2|eot|ttf)(\?[a-z0-9=.]+)?$/,
-        type: 'asset/inline',
-        generator: {
-          filename: 'assets/images/[hash][ext][query]',
-        },
-      },
-      {
         test: /\.(jpe?g|png|mp3|gif|svg)(\?[a-z0-9=.]+)?$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/images/[hash][ext][query]',
+          filename: 'assets/images/[name][ext][query]',
         },
       },
       {
