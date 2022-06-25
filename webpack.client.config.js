@@ -3,6 +3,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const PORT = process.env.PORT || 3002;
 const fs = require('fs');
@@ -128,6 +129,11 @@ module.exports = {
       cleanStaleWebpackAssets: false,
     }),
     new MiniCssExtractPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: './packages/client/src/assets/images/favicon.png', to: 'assets/images'},
+      ],
+  }),
   ],
   devtool: 'source-map',
 };
