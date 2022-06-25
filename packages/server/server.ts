@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import path from 'path';
 import express from 'express';
 import compression from 'compression';
@@ -16,6 +17,16 @@ const app = express();
 app.use(jsonParser);
 app.use(urlParser);
 app.use(cookieParser());
+
+app.use('*', (req, res, next) => {
+  console.log(`================================log begin ${new Date().toISOString()}================================`);
+  console.log(req.url, req.params, req.body);
+  console.log('================================log end================================');
+
+  next();
+});
+
+app.use(authMiddleware);
 
 // CSP
 app.use(
@@ -44,7 +55,6 @@ app.use(express.static(path.resolve(__dirname, '../client')));
 
 addApi(app);
 
-app.use(authMiddleware);
 app.use(serverRenderMiddleware);
 
 export {app};

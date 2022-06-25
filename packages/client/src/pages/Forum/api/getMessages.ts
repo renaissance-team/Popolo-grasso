@@ -1,4 +1,3 @@
-import {ENDPOINTS} from '@/api/consts';
 import {http} from '@/utils';
 
 export type MessagesResponseType = {
@@ -16,8 +15,7 @@ export type MessagesRequestParamsType = {
 export const getMessages = async (params: MessagesRequestParamsType): Promise<MessagesResponseType[]> => {
   const {topic_id} = params;
   const result = await http.get<MessagesRequestParamsType, MessagesResponseType[]>(
-    `/api/v1/topic/${topic_id}/message`,
-    {baseURL: ENDPOINTS.SERVER_HOST}
+    `/api/v1/topic/${topic_id}/message`
   );
   return result;
 };
