@@ -26,19 +26,29 @@ $text-color-grey: lighten($black, 50%);
 $border-color: lighten($black, 80%);
 $light-grey: lighten($black, 95%);
 
-
 // media queries
 $min-width: 320px;
 $breakpoint-mobile: 1024px;
+$breakpoint-medium: 900px;
+$breakpoint-small: 768px;
 
 @mixin media($point) {
   @if $point==mobile {
-      @media screen and (max-width: $breakpoint-mobile) {
-          @content;
-      }
+    @media screen and (max-width: $breakpoint-mobile) {
+      @content;
+    }
+  }
+  @if $point==medium {
+    @media screen and (max-width: $breakpoint-medium) {
+      @content;
+    }
+  }
+  @if $point==small {
+    @media screen and (max-width: $breakpoint-small) {
+      @content;
+    }
   }
 }
-
 
 // components
 @mixin block {

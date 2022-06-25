@@ -29,23 +29,24 @@ export default function Leaderboard(): ReactElement {
   }, []);
 
   const renderLeaderboardContent = () => (
-    <InfiniteScroll
-      className={style.content}
-      dataLength={data?.length}
-      next={getLeaderboard}
-      hasMore={hasMore}
-      loader={!error ? <h4>&nbsp;Загрузка...</h4> : null}
-      height={400}
-      endMessage={<p style={{textAlign: 'center'}}>Это все лидеры на сегодня!</p>}
-    >
-      {error ? (
-        <h4>{error}</h4>
-      ) : (
-        data?.map((leader: LeaderResponseType, rating: number) => (
-          <LeaderboardItem {...leader.data} rating={rating + 1} key={leader.data.popolo_grasso_user_id} />
-        ))
-      )}
-    </InfiniteScroll>
+    <div className={style.content}>
+      <InfiniteScroll
+        dataLength={data?.length}
+        next={getLeaderboard}
+        hasMore={hasMore}
+        loader={!error ? <h4>&nbsp;Загрузка...</h4> : null}
+        height={400}
+        endMessage={<p style={{textAlign: 'center'}}>Это все лидеры на сегодня!</p>}
+      >
+        {error ? (
+          <h4>{error}</h4>
+        ) : (
+          data?.map((leader: LeaderResponseType, rating: number) => (
+            <LeaderboardItem {...leader.data} rating={rating + 1} key={leader.data.popolo_grasso_user_id} />
+          ))
+        )}
+      </InfiniteScroll>
+    </div>
   );
 
   return (

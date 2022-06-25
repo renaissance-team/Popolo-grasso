@@ -3,27 +3,68 @@
 .leaderboard_row {
   display: flex;
   justify-content: center;
-  padding: 16px 48px;
+  padding: 10px 16px;
   margin: 6px;
-  width: fit-content;
   background-color: $darkPurpleOpacity;
   color: $pink;
   border-radius: 7px;
+
+  @include media(small) {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
   &_win {
     background-color: $darkPurple;
-    padding: 16px 64px;
+    padding: 18px 26px;
     font-size: 24px;
+
+    @include media(small) {
+      padding: 12px 18px;
+      font-size: 16px;
+    }
   }
 }
 .avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+
+  @include media(small) {
+    width: 50px;
+    height: 50px;
+  }
 }
 .leaderboard_cell {
-  padding: 0 16px;
+  padding: 0 10px;
   line-height: normal;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.fs-10 {
+    font-size: 10px;
+  }
+
+  &.color-green {
+    color: $green;
+  }
+
+  &.fs-14 {
+    font-size: 14px;
+    @include media(small) {
+      display: none;
+    }
+  }
+
+  &.fshrink-0 {
+    flex-shrink: 0;
+  }
+
+  &.fbasis-300 {
+    flex-basis: 300px;
+    @include media(medium) {
+      display: none;
+    }
+  }
 }

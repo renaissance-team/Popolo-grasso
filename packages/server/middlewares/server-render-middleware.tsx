@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import App from '../../client/src/components/App/App';
 import store from '../../client/src/store/index';
 
-function getHtml(reactHtml: string, reduxState = {}) {
+function getHtml(reactHtml: string, reduxState = {}, nonce = '') {
   return `
           <!DOCTYPE html>
           <html lang="en">
@@ -14,26 +14,29 @@ function getHtml(reactHtml: string, reduxState = {}) {
               <meta charset="UTF-8">
               <meta http-equiv="X-UA-Compatible" content="IE=edge">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+              <link rel="shortcut icon" type="image/png" href="/images/favicon.png" nonce="${nonce}">
               <title>Popolo grasso</title>
-              <link href="./main.css" rel="stylesheet">
+              <link href="./main.css" rel="stylesheet" nonce="${nonce}">
           </head>
           <body>
               <div id="root">${reactHtml}</div>
-              <script>
+              <script nonce="${nonce}">
                   window.__INITIAL_STATE__ = ${JSON.stringify(reduxState)}
               </script>
-              <script src="./main.js"></script>
+              <script src="./main.js" nonce="${nonce}"></script>
           </body>
           </html>
       `;
 }
 
-export default (req: Request, res: Response) => {
-  const location = req.url;
+interface ICustomRequest extends Request {
+  nonce?: string;
+}
+export default (req: ICustomRequest, res: Response) => {
+  const {url, nonce} = req;
   const jsx = (
     <Provider store={store}>
-      <StaticRouter location={location}>
+      <StaticRouter location={url}>
         <App />
       </StaticRouter>
     </Provider>
@@ -41,5 +44,5 @@ export default (req: Request, res: Response) => {
   const reactHtml = renderToString(jsx);
   const reduxState = store.getState();
 
-  res.send(getHtml(reactHtml, reduxState));
+  res.send(getHtml(reactHtml, reduxState, nonce));
 };

@@ -1,11 +1,5 @@
+import {LeaderType} from '@/components/Game/api/createLeaderboardResult';
 import {http} from '@/utils';
-
-export type LeaderType = {
-  popolo_grasso_display_name: string;
-  popolo_grasso_points: number;
-  popolo_grasso_avatar: string;
-  popolo_grasso_user_id: string;
-};
 
 export type LeaderResponseType = {
   data: LeaderType;
