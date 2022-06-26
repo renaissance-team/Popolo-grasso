@@ -31,7 +31,7 @@ const themeSlice = createSlice({
       (state, action: PayloadAction<string | number>) => {
         state.loading = false;
         state.error = '';
-        state.theme = action.payload ? EThemes.light : +action.payload;
+        state.theme = action.payload ? +action.payload : EThemes.light;
       },
     )
     .addMatcher(isRejectedWithValue(getTheme, setTheme), (state, action: AnyAction) => {
