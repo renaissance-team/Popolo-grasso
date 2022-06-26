@@ -34,7 +34,7 @@ app.use(
     directives: {
       'default-src': [SELF, 'ya-praktikum.tech', 'nominatim.openstreetmap.org'],
       'script-src': [NONCE],
-      'style-src': [NONCE, 'fonts.googleapis.com'],
+      'style-src-elem': [NONCE, 'fonts.googleapis.com'],
       'font-src': ['fonts.googleapis.com', 'fonts.gstatic.com'],
       'worker-src': [NONCE],
     },
