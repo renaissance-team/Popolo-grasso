@@ -2,7 +2,8 @@ version: '3.3'
 volumes:
   postgres-data:
 services:
-  postgres:
+  popolo-db:
+    container_name: popolo-db
     image: postgres:12
     restart: always
     environment:
@@ -14,11 +15,25 @@ services:
       - ./packages/db/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
     ports:
       - 5432:5432
-  server:
-    restart: always
-    ports:
-      - 444:443
+
+  popolo-app:
+    container_name: popolo-app
     build:
       context: ./
+    restart: always
+    ports:
+      - 3008:3008
     depends_on: 
-     - postgres
+     - popolo-db
+
+  popolo-proxy:
+    build:
+      context: ./packages/nginx
+    container_name: popolo-proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+networks:
+  default:
+    driver: bridge

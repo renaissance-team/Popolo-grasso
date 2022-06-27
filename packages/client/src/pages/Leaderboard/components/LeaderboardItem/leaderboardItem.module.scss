@@ -9,6 +9,10 @@
   color: $pink;
   border-radius: 7px;
 
+  img {
+    object-fit: cover;
+  }
+
   @include media(small) {
     padding: 8px 14px;
     font-size: 12px;

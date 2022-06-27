@@ -1,7 +1,6 @@
-import {ENDPOINTS} from '@/api/consts';
 import {http} from '@/utils';
 
-const baseURL = `${ENDPOINTS.SERVER_HOST}/api/v1/theme/`;
+const baseURL = '/api/v1/theme/';
 
 export type UserThemeType = {
   user_theme_id: number;

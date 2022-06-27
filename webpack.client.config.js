@@ -3,6 +3,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const PORT = process.env.PORT || 3002;
 const fs = require('fs');
@@ -104,24 +105,17 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=.]+)?$/,
+        test: /\.(woff|woff2|eot|ttf)(\?[a-z0-9=.]+)?$/,
         type: 'asset/inline',
         generator: {
           filename: 'assets/fonts/[hash][ext][query]',
         },
       },
       {
-        test: /\.(woff|woff2|eot|ttf)(\?[a-z0-9=.]+)?$/,
-        type: 'asset/inline',
-        generator: {
-          filename: 'assets/images/[hash][ext][query]',
-        },
-      },
-      {
         test: /\.(jpe?g|png|mp3|gif|svg)(\?[a-z0-9=.]+)?$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/images/[hash][ext][query]',
+          filename: 'assets/images/[name][ext][query]',
         },
       },
       {
@@ -135,6 +129,11 @@ module.exports = {
       cleanStaleWebpackAssets: false,
     }),
     new MiniCssExtractPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: './packages/client/src/assets/images/favicon.png', to: 'assets/images'},
+      ],
+  }),
   ],
   devtool: 'source-map',
 };

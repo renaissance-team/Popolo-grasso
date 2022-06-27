@@ -1,3 +1,4 @@
+import {ENDPOINTS} from '@/api/consts';
 import {LeaderType} from '@/components/Game/api/createLeaderboardResult';
 import {http} from '@/utils';
 
@@ -12,6 +13,8 @@ export type LeaderboardRequestParamsType = {
 };
 
 export const getLeaderboard = async (params: LeaderboardRequestParamsType): Promise<LeaderResponseType[]> => {
-  const result = await http.post<LeaderboardRequestParamsType, LeaderResponseType[]>('/leaderboard/all', params);
+  const result = await http.post<LeaderboardRequestParamsType, LeaderResponseType[]>('/leaderboard/all', params, {
+    baseURL: ENDPOINTS.ROOT,
+  });
   return result;
 };

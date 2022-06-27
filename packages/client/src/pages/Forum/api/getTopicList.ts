@@ -1,4 +1,3 @@
-import {ENDPOINTS} from '@/api/consts';
 import {http} from '@/utils';
 
 export type ForumTopicResponseType = {
@@ -12,8 +11,6 @@ export type ForumTopicResponseType = {
 };
 
 export const getTopicList = async (): Promise<ForumTopicResponseType[]> => {
-  const result = await http.get<unknown, ForumTopicResponseType[]>('/api/v1/topic', {
-    baseURL: ENDPOINTS.SERVER_HOST,
-  });
+  const result = await http.get<unknown, ForumTopicResponseType[]>('/api/v1/topic');
   return result;
 };
