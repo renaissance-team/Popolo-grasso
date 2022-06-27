@@ -28,7 +28,7 @@ jobs:
 
       - name: Tag and pull to registry
         run: |
-          docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          docker tag ${{ env.APP_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
           docker tag ${{ env.DB_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.DB_IMAGE_TAG }}
           docker tag ${{ env.PROXY_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.PROXY_IMAGE_TAG }}
 
