@@ -1,12 +1,13 @@
 name: CI-CD-to-Yandex-cloud
 env:
   REGISTRY_ID: "crpm1djccivqbcnoahla"
-  APP_IMAGE_TAG: "popolo-grasso_server"
-  POSTGRESS_IMAGE_TAG: "postgres:12"
+  APP_IMAGE_TAG: "popolo-app"
+  DB_IMAGE_TAG: "popolo-db"
+  PROXY_IMAGE_TAG: "popolo-proxy"
 
 on:
   push:
-    branches: ["master"]
+    branches: ["#90/ci"]
 
 jobs:
   ci_pipeline:
@@ -28,10 +29,12 @@ jobs:
       - name: Tag and pull to registry
         run: |
           docker tag ${{ env.APP_IMAGE_TAG }}       cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
-          docker tag ${{ env.POSTGRESS_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+          docker tag ${{ env.DB_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.DB_IMAGE_TAG }}
+          docker tag ${{ env.PROXY_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.PROXY_IMAGE_TAG }}
 
           docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
-          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.POSTGRESS_IMAGE_TAG }}
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.DB_IMAGE_TAG }}
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.PROXY_IMAGE_TAG }}
 
       - name: Connect to VPS
         uses: appleboy/ssh-action@master
