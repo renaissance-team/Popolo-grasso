@@ -1,4 +1,3 @@
-import {ENDPOINTS} from '@/api/consts';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 
 enum StatusCode {
@@ -17,7 +16,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: ENDPOINTS.ROOT,
+      baseURL: '',
     });
 
     http.interceptors.response.use(

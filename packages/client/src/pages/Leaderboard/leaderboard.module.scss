@@ -22,12 +22,20 @@
     margin-top: 40px;
     text-align: center;
     text-shadow: 0 1px 1px $pink;
+    @include media(small) {
+      font-size: 48px;
+    }
   }
   h3 {
     font-family: $comic;
     font-size: 25px;
     line-height: 20px;
     font-weight: lighter;
+
+    @include media(small) {
+      font-size: 18px;
+    }
+
     span {
       font-family: $vibes;
     }
@@ -37,9 +45,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  min-width: 70%;
   border: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  padding: 0 40px;
+  width: 70%;
+
+  @include media(small) {
+    width: 90%;
+  }
 }

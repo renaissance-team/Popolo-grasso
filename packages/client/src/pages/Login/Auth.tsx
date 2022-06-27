@@ -23,7 +23,7 @@ const initialFormData = [
     name: 'password',
     label: 'Пароль',
     type: 'password',
-    pattern: VALIDATION_PATTERNS.password,
+    // pattern: VALIDATION_PATTERNS.password,
     required: true,
   },
 ];

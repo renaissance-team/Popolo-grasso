@@ -1,4 +1,3 @@
-import {ENDPOINTS} from '@/api/consts';
 import {http} from '@/utils';
 
 export type MessageRequestBodyType = {
@@ -20,10 +19,7 @@ export const createMessage = async (params: MessageRequestParamsType): Promise<M
   const {topic_id, text, user} = params;
   const result = await http.post<MessageRequestBodyType, MessageResponseType>(
     `/api/v1/topic/${topic_id}/message`,
-    {text, user},
-    {
-      baseURL: ENDPOINTS.SERVER_HOST,
-    }
+    {text, user}
   );
   return result;
 };

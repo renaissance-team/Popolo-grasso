@@ -1,4 +1,4 @@
-@import '~styles/variables.scss';
+@import '~styles/variables';
 
 .container {
   display: flex;
@@ -67,4 +67,18 @@ canvas {
     pointer-events: none;
     margin: -60px -70px -30px;
   }
+}
+
+.loader {
+  background: url(../../assets/images/motypest3-min.jpg);
+  color: $white;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fs-24{
+  font-size: 24px;
 }

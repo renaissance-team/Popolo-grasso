@@ -12,4 +12,6 @@ export interface IPlayerState extends ICanvasRectangleObject {
     standLeftSprite: HTMLImageElement,
     standRightSprite: HTMLImageElement,
   }
+  isMoveRight: boolean,
+  isMoveLeft: boolean,
 }

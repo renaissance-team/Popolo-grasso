@@ -19,7 +19,7 @@ function Router(): ReactElement {
   return (
     <Routes>
       <Route path={ROUTES.HOME} element={<Home />} />
-      <Route path={ROUTES.AUTH} element={<Private Component={Auth} allowed={!isAuth} />} />
+      <Route path={ROUTES.AUTH} element={<Private Component={Auth} allowed={!isAuth} redirect={ROUTES.HOME} />} />
       <Route
         path={ROUTES.REGISTRATION}
         element={<Private Component={Register} allowed={!isAuth} />}
