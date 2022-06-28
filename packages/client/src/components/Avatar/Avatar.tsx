@@ -13,7 +13,7 @@ export default function Input({value, className, onChange}: IAvatarProps) {
   const readOnly = !onChange;
   return (
     <label className={cn({[style.readOnly]: readOnly}, className)} htmlFor="avatar">
-      <input type="file" className={style.input} onChange={onChange} disabled={readOnly} id="avatar" />
+      <input type="file" className={style.input} onChange={onChange} accept="image/*" id="avatar" />
       <div
         className={style.image}
         style={value ? {
