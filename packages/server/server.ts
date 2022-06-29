@@ -32,7 +32,7 @@ app.use(authMiddleware);
 app.use(
   expressCspHeader({
     directives: {
-      'default-src': [SELF, 'ya-praktikum.tech', 'nominatim.openstreetmap.org'],
+      'default-src': [SELF, 'ya-praktikum.tech', 'nominatim.openstreetmap.org', 'images.hdqwalls.com'],
       'script-src': [NONCE],
       'style-src': [NONCE, 'fonts.googleapis.com'],
       'font-src': ['fonts.googleapis.com', 'fonts.gstatic.com'],

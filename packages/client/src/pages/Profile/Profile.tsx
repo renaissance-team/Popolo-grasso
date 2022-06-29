@@ -3,7 +3,7 @@ import {AnyAction} from 'redux';
 import Avatar from '@/components/Avatar/Avatar';
 import Block from '@/components/Block/Block';
 import Button from '@/components/Button/Button';
-import {changeAvatar, changeUser} from '@/store/user/actions';
+import {changeUser} from '@/store/user/actions';
 import {useAppSelector} from '@/utils';
 import React, {ReactElement, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
@@ -72,17 +72,11 @@ function Profile(): ReactElement {
     dispatch(changeUser(data) as unknown as AnyAction);
   };
 
-  const changeAvatarHandler = (event: React.FormEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files?.length) {
-      const file = target.files[0];
-      dispatch(changeAvatar(file) as unknown as AnyAction);
-    }
-  };
-
   return (
     <Block title="Профиль">
-      <Avatar value={userAvatar} onChange={changeAvatarHandler} />
+      <Avatar
+        value={userAvatar}
+      />
       <Form initialData={userFormData} onSubmit={saveForm} loading={loading}>
         <Button type="submit">Сохранить</Button>
       </Form>
