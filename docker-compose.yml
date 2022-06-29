@@ -4,7 +4,7 @@ volumes:
 services:
   popolo-db:
     container_name: popolo-db
-    image: postgres:12
+    image: postgres:alpine
     restart: always
     environment:
       POSTGRES_USER: postgres
