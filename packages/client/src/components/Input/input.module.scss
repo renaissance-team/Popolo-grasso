@@ -19,6 +19,7 @@
   &::placeholder {
     color: transparent;
   }
+  &HasError ~ .label,
   &:focus ~ .label,
   &:not(:placeholder-shown) ~ .label {
     transform: translateY(-16px) scale(0.7);
@@ -47,8 +48,7 @@
   transform-origin: 0 50%;
   transition: transform 200ms, color 200ms;
   left: 0;
-  top: 50%;
-  margin-top: -6px;
+  top: 0;
 }
 
 .errorText {

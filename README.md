@@ -21,6 +21,11 @@
 - `docker:start` - сборка приложения в докере.
 - `docker:stop` - остановка докера.
 
+## Архитектура SSR
+
+![popolo_arc_final](https://user-images.githubusercontent.com/8277597/176119211-f734f084-d823-436f-bfec-ccc4f070fddb.jpeg)
+
+
 ## Изображения
 
 ![alt text](https://github.com/12-team-05/game/blob/3c4a490237e65448e4fc046da74a203b771dda67/motypest1-min.png?raw=true)

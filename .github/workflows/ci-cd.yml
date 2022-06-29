@@ -1,0 +1,49 @@
+name: CI-CD-to-Yandex-cloud
+env:
+  REGISTRY_ID: "crpm1djccivqbcnoahla"
+  APP_IMAGE_TAG: "popolo-grasso_popolo-app"
+  # DB_IMAGE_TAG: "postgres:12"
+  # PROXY_IMAGE_TAG: "popolo-grasso_popolo-proxy"
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  ci_pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone repo
+        uses: actions/checkout@v1
+
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.SA_TOKEN }}
+
+      - name: Build with docker-compose
+        run: docker-compose -f docker-compose.yml up --build -d
+
+      - name: Tag and pull to registry
+        run: |
+          docker tag ${{ env.APP_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          # docker tag ${{ env.DB_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.DB_IMAGE_TAG }}
+          # docker tag ${{ env.PROXY_IMAGE_TAG }} cr.yandex/${{ env.REGISTRY_ID }}/${{ env.PROXY_IMAGE_TAG }}
+
+          docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          # docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.DB_IMAGE_TAG }}
+          # docker push cr.yandex/${{ env.REGISTRY_ID }}/${{ env.PROXY_IMAGE_TAG }}
+
+      - name: Connect to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          # на VPS лежит собственный compose. Он идентичен текущему,
+          # но берет image's из yc-registry
+          # server:
+          #   image: cr.yandex/${{ env.REGISTRY_ID }}/${{ env.APP_IMAGE_TAG }}
+          script: docker-compose -f docker-compose.yml up --build -d
